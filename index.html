@@ -418,7 +418,7 @@
         </ul>
       </div>
       <div class="pricing-cta">
-        <button class="btn-buy" onclick="openModal()">🔐 Get Instant Access — C$47</button>
+        <button class="btn-buy" type="button" onclick="event.preventDefault(); event.stopPropagation(); openModal();">🔐 Get Instant Access — C$47</button>
         <div class="security-note">🔒 Secure checkout · Visa, Mastercard, Interac · Instant delivery</div>
         <div class="guarantee-box">
           <span style="font-size:1.5rem">🛡️</span>
@@ -513,7 +513,7 @@
       <input type="text" class="access-input" id="accessCodeInput" placeholder="CWO-XXXXX" maxlength="9" oninput="formatAccessCode(this)">
       <div class="access-error" id="accessError"></div>
       <button class="btn-access" onclick="verifyAccessCode()">Unlock My Access →</button>
-      <div class="access-note">Just purchased? Your code arrives within 60 seconds. <br>Need help? Email support@canadawealthos.ca</div>
+      <div class="access-note">Just purchased? Your code arrives within 60 seconds. <br>Need help? Email <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="186b6d6868776a6c587b7976797c796f7d79746c70776b367b79">[email&#160;protected]</a></div>
     </div>
   </div>
 </div>
@@ -577,7 +577,7 @@
   </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ═══════════════════════════════════════════
 //              DATA — 6 MODULES × 4 LESSONS
 // ═══════════════════════════════════════════
@@ -1080,11 +1080,14 @@ function goHome() {
 // ═══════════════════════════════════════════
 //              CHECKOUT MODAL
 // ═══════════════════════════════════════════
-function openModal() {
+function openModal(e) {
+  if (e) { e.preventDefault(); e.stopPropagation(); }
   document.getElementById('checkoutModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
 }
 function closeModal() {
   document.getElementById('checkoutModal').classList.remove('open');
+  document.body.style.overflow = '';
 }
 
 function formatCard(input) {
@@ -1318,12 +1321,4 @@ function toggleFaq(btn) {
 }
 
 function logout() {
-  document.getElementById('dashboard').style.display = 'none';
-  document.getElementById('landing').style.display = 'block';
-  lessonProgress = {}; checklistProgress = {};
-  memberName = ''; memberEmail = '';
-  window.scrollTo(0,0);
-}
-</script>
-</body>
-</html>
+  document.getElementById
