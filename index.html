@@ -160,8 +160,8 @@
   footer .logo span { color: var(--red); }
 
   /* CHECKOUT MODAL */
-  .modal-overlay { position: fixed; inset: 0; z-index: 1000; background: rgba(15,13,10,0.7); backdrop-filter: blur(6px); display: none; place-items: center; padding: 20px; }
-  .modal-overlay.open { display: grid; }
+  .modal-overlay { position: fixed; inset: 0; z-index: 1000; background: rgba(15,13,10,0.7); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; padding: 20px; visibility: hidden; opacity: 0; transition: opacity 0.2s; }
+  .modal-overlay.open { visibility: visible; opacity: 1; }
   .modal { background: var(--white); border-radius: 20px; width: 100%; max-width: 480px; overflow: hidden; animation: scaleIn 0.3s ease both; }
   .modal-header { background: var(--ink); color: var(--white); padding: 24px 28px; display: flex; justify-content: space-between; align-items: center; }
   .modal-header h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; }
@@ -237,8 +237,8 @@
   .tool-card p { font-size: 0.75rem; color: rgba(255,255,255,0.5); }
 
   /* LESSON MODAL */
-  .lesson-modal-overlay { position: fixed; inset: 0; z-index: 2000; background: rgba(0,0,0,0.8); display: none; place-items: center; padding: 20px; overflow-y: auto; }
-  .lesson-modal-overlay.open { display: grid; }
+  .lesson-modal-overlay { position: fixed; inset: 0; z-index: 2000; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; padding: 20px; overflow-y: auto; visibility: hidden; opacity: 0; transition: opacity 0.2s; }
+  .lesson-modal-overlay.open { visibility: visible; opacity: 1; }
   .lesson-modal { background: var(--white); border-radius: 16px; width: 100%; max-width: 720px; animation: scaleIn 0.3s ease both; }
   .lesson-header { background: var(--ink); color: var(--white); padding: 20px 28px; border-radius: 16px 16px 0 0; display: flex; justify-content: space-between; align-items: center; }
   .lesson-tabs { display: flex; gap: 2px; background: rgba(255,255,255,0.1); border-radius: 8px; padding: 3px; margin-top: 12px; flex-wrap: wrap; }
@@ -394,7 +394,8 @@
   </div>
 </section>
 
-<section id="pricing" style="text-align:center;">
+<div id="pricing"></div>
+<section style="text-align:center;">
   <div class="section-inner">
     <div class="section-label" style="text-align:center">// Simple Pricing</div>
     <div class="section-title">One Payment. Lifetime Access.</div>
@@ -418,7 +419,7 @@
         </ul>
       </div>
       <div class="pricing-cta">
-        <button class="btn-buy" type="button" onclick="event.preventDefault(); event.stopPropagation(); openModal();">🔐 Get Instant Access — C$47</button>
+        <button class="btn-buy" type="button" onclick="openModal()">🔐 Get Instant Access — C$47</button>
         <div class="security-note">🔒 Secure checkout · Visa, Mastercard, Interac · Instant delivery</div>
         <div class="guarantee-box">
           <span style="font-size:1.5rem">🛡️</span>
