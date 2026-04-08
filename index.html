@@ -29,12 +29,12 @@
     cursor: pointer;
   }
   .nav-logo span { color: var(--red); }
-  nav a.cta-btn {
+  nav a.cta-btn, nav button.cta-btn {
     background: var(--red); color: var(--white); padding: 10px 24px;
     border-radius: 6px; font-size: 0.85rem; font-weight: 600;
     text-decoration: none; transition: background 0.2s;
   }
-  nav a.cta-btn:hover { background: var(--red-dark); }
+  nav a.cta-btn:hover, nav button.cta-btn:hover { background: var(--red-dark); }
 
   /* HERO */
   .hero { min-height: 100vh; display: grid; place-items: center; padding: 120px 48px 80px; position: relative; overflow: hidden; }
@@ -63,8 +63,8 @@
   .btn-primary {
     display: inline-flex; align-items: center; gap: 10px;
     background: var(--red); color: var(--white); padding: 18px 40px;
-    border-radius: 8px; font-size: 1.05rem; font-weight: 600;
-    text-decoration: none; transition: all 0.2s;
+    border-radius: 8px; font-size: 1.05rem; font-weight: 600; font-family: 'DM Sans', sans-serif;
+    text-decoration: none; transition: all 0.2s; border: none; cursor: pointer;
     box-shadow: 0 4px 20px rgba(200,16,46,0.3);
   }
   .btn-primary:hover { background: var(--red-dark); transform: translateY(-1px); box-shadow: 0 6px 28px rgba(200,16,46,0.35); }
@@ -303,7 +303,7 @@
 
 <nav>
   <a class="nav-logo" onclick="goHome()" href="#">Canada<span>Wealth</span>OS</a>
-  <button onclick="openModal()" class="cta-btn" style="border:none;cursor:pointer;">Get Instant Access →</button>
+  <button onclick="openModal()" class="cta-btn">Get Instant Access →</button>
 </nav>
 
 <div class="hero">
@@ -319,7 +319,7 @@
       <div class="hero-stat"><div class="num">$89B</div><div class="label">Canadian e-commerce by 2025</div></div>
     </div>
     <div class="hero-cta-group">
-      <button onclick="openModal()" class="btn-primary" style="border:none;cursor:pointer;">Get Full Access Now <span class="price-tag">C$47 One-Time</span></button>
+      <button onclick="openModal()" class="btn-primary">Get Full Access Now <span class="price-tag">C$47 One-Time</span></button>
       <div class="guarantee-note"><span>✓ 30-Day Money-Back Guarantee</span> — No questions asked</div>
     </div>
   </div>
