@@ -614,7 +614,7 @@ function logout() {
       <input type="text" class="access-input" id="accessCodeInput" placeholder="CWO-XXXXX" maxlength="9" oninput="formatAccessCode(this)">
       <div class="access-error" id="accessError"></div>
       <button class="btn-access" onclick="verifyAccessCode()">Unlock My Access →</button>
-      <div class="access-note">Just purchased? Your code arrives within 60 seconds. <br>Need help? <a href="mailto:support&#64;canadawealthos&#46;ca" style="color:var(--muted)">Contact Support</a></div>
+      <div class="access-note">Just purchased? Your code arrives within 60 seconds. <br>Need help? <a href="#" onclick="alert('Email: support [at] canadawealthos [dot] ca')" style="color:var(--muted)">Contact Support</a></div>
     </div>
   </div>
 </div>
@@ -1422,4 +1422,12 @@ function toggleFaq(btn) {
 }
 
 function logout() {
-  document.getElementById
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('landing').style.display = 'block';
+  lessonProgress = {}; checklistProgress = {};
+  memberName = ''; memberEmail = '';
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
