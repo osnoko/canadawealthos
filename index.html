@@ -310,6 +310,88 @@ function goHome() {
   if (l) l.style.display = 'block';
   window.scrollTo(0,0);
 }
+function toggleFaq(btn) {
+  var ans = btn.nextElementSibling;
+  var isOpen = ans.classList.contains('open');
+  document.querySelectorAll('.faq-a').forEach(function(a) { a.classList.remove('open'); });
+  document.querySelectorAll('.faq-q').forEach(function(b) { b.classList.remove('open'); });
+  if (!isOpen) { ans.classList.add('open'); btn.classList.add('open'); }
+}
+function formatCard(input) {
+  var v = input.value.replace(/\D/g,'').substring(0,16);
+  input.value = v.replace(/(.{4})/g,'$1 ').trim();
+}
+function formatExpiry(input) {
+  var v = input.value.replace(/\D/g,'');
+  if (v.length >= 2) v = v.substring(0,2) + '/' + v.substring(2,4);
+  input.value = v;
+}
+function formatAccessCode(input) {
+  var v = input.value.toUpperCase().replace(/[^A-Z0-9]/g,'');
+  if (v.length > 3) v = v.substring(0,3) + '-' + v.substring(3,8);
+  input.value = v;
+}
+function processPurchase() {
+  var name = document.getElementById('ch-name').value.trim();
+  var email = document.getElementById('ch-email').value.trim();
+  var card = document.getElementById('ch-card').value.replace(/\s/g,'');
+  var expiry = document.getElementById('ch-expiry').value.trim();
+  var cvv = document.getElementById('ch-cvv').value.trim();
+  var valid = true;
+  function setErr(id, errId, condition) {
+    document.getElementById(id).classList.toggle('error', !condition);
+    document.getElementById(errId).classList.toggle('show', !condition);
+    if (!condition) valid = false;
+  }
+  setErr('ch-name','err-name', name.length >= 2 && name.indexOf(' ') > -1);
+  setErr('ch-email','err-email', /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email));
+  setErr('ch-card','err-card', card.length === 16 && /^\d+$/.test(card));
+  setErr('ch-expiry','err-expiry', /^\d{2}\/\d{2}$/.test(expiry));
+  setErr('ch-cvv','err-cvv', cvv.length === 3 && /^\d+$/.test(cvv));
+  if (!valid) return;
+  window._memberName = name;
+  window._memberEmail = email;
+  var btn = document.getElementById('btn-submit');
+  btn.disabled = true;
+  btn.textContent = 'Processing...';
+  setTimeout(function() {
+    btn.disabled = false;
+    btn.textContent = '✓ Complete Purchase — C$47';
+    closeModal();
+    var am = document.getElementById('accessModal');
+    if (am) { am.classList.add('open'); }
+    document.getElementById('accessCodeInput').placeholder = 'CWO-DEMO1';
+  }, 1800);
+}
+function closeAccessModal() {
+  var m = document.getElementById('accessModal');
+  if (m) { m.classList.remove('open'); document.body.style.overflow = ''; }
+}
+function verifyAccessCode() {
+  var VALID_CODES = ['CWO-12345','CWO-ALPHA','CWO-DEMO1','CWO-PILOT'];
+  var code = document.getElementById('accessCodeInput').value.trim().toUpperCase();
+  var err = document.getElementById('accessError');
+  if (VALID_CODES.indexOf(code) > -1) {
+    err.textContent = '';
+    closeAccessModal();
+    if (typeof showDashboard === 'function') {
+      window._memberName = window._memberName || 'Member';
+      showDashboard();
+    }
+  } else {
+    err.textContent = 'Invalid code. Check your email or contact support@canadawealthos.ca';
+    var input = document.getElementById('accessCodeInput');
+    input.classList.add('shake');
+    setTimeout(function() { input.classList.remove('shake'); }, 500);
+  }
+}
+function logout() {
+  var d = document.getElementById('dashboard');
+  var l = document.getElementById('landing');
+  if (d) d.style.display = 'none';
+  if (l) l.style.display = 'block';
+  window.scrollTo(0,0);
+}
 </script>
 </head>
 <body>
@@ -502,7 +584,7 @@ function goHome() {
       <div class="card-row">
         <div class="form-group">
           <label>Expiry</label>
-          <input type="text" placeholder="MM/YY" maxlength="5" id="ch-expiry" oninput="formatExpiry(this)">
+          <input type="text" placeholder="MM/YY" maxlength="5" id="ch-expiry" oninput="formatExpiry(this)" inputmode="numeric">
           <div class="field-error" id="err-expiry">Invalid expiry.</div>
         </div>
         <div class="form-group">
