@@ -293,6 +293,24 @@
     .lesson-footer { flex-direction: column; }
   }
 </style>
+<script type="text/javascript">
+function openModal(e) {
+  if (e) { e.preventDefault(); e.stopPropagation(); }
+  var m = document.getElementById('checkoutModal');
+  if (m) { m.classList.add('open'); document.body.style.overflow = 'hidden'; }
+}
+function closeModal() {
+  var m = document.getElementById('checkoutModal');
+  if (m) { m.classList.remove('open'); document.body.style.overflow = ''; }
+}
+function goHome() {
+  var d = document.getElementById('dashboard');
+  var l = document.getElementById('landing');
+  if (d) d.style.display = 'none';
+  if (l) l.style.display = 'block';
+  window.scrollTo(0,0);
+}
+</script>
 </head>
 <body>
 
