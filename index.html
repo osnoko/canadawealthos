@@ -203,7 +203,7 @@
   .dash-user { display: flex; align-items: center; gap: 12px; font-size: 0.88rem; }
   .dash-avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--red), var(--gold)); display: grid; place-items: center; font-weight: 700; font-size: 0.8rem; }
   .btn-logout { background: rgba(255,255,255,0.1); border: none; color: white; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 0.8rem; }
-  .dash-body { padding: 120px 20px 40px; max-width: 1100px; margin: 0 auto; }
+  .dash-body { padding: 80px 40px 40px; max-width: 1100px; margin: 0 auto; }
   .dash-welcome { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 900; margin-bottom: 6px; }
   .dash-sub { color: var(--muted); margin-bottom: 40px; }
   .progress-bar-wrap { background: var(--white); border-radius: 12px; padding: 20px 24px; margin-bottom: 32px; border: 1px solid var(--border); }
@@ -281,9 +281,6 @@
   @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
 
   @media (max-width: 768px) {
-  nav { padding: 12px 16px; }
-  .nav-logo { font-size: 1.1rem; }
-  nav button.cta-btn { padding: 8px 14px; font-size: 0.78rem; }
     nav { padding: 14px 20px; }
     .hero { padding: 100px 20px 60px; }
     section { padding: 60px 20px; }
@@ -291,7 +288,7 @@
     .hero-stat-row { gap: 20px; }
     .bonuses-list { grid-template-columns: 1fr; }
     footer { flex-direction: column; gap: 10px; }
-    .dash-body { padding: 80px 20px 20px; }
+    .dash-body { padding: 20px; }
     .dash-nav { padding: 14px 20px; }
     .lesson-footer { flex-direction: column; }
   }
@@ -406,7 +403,7 @@ function logout() {
 
 <nav>
   <a class="nav-logo" onclick="goHome()" href="#">Canada<span>Wealth</span>OS</a>
-  <button onclick="window.location.href='https://buy.stripe.com/5kQ3cu7ad8Pk9J20Bv7g400'" class="cta-btn">Get Instant Access →</button>
+  <button onclick="openModal()" class="cta-btn">Get Instant Access →</button>
 </nav>
 
 <div class="hero">
@@ -422,7 +419,7 @@ function logout() {
       <div class="hero-stat"><div class="num">$89B</div><div class="label">Canadian e-commerce by 2025</div></div>
     </div>
     <div class="hero-cta-group">
-      <button onclick="window.location.href='https://buy.stripe.com/5kQ3cu7ad8Pk9J20Bv7g400'" class="btn-primary">Get Full Access Now <span class="price-tag">C$47 One-Time</span></button>
+      <button onclick="openModal()" class="btn-primary">Get Full Access Now <span class="price-tag">C$47 One-Time</span></button>
       <div class="guarantee-note"><span>✓ 30-Day Money-Back Guarantee</span> — No questions asked</div>
     </div>
   </div>
@@ -522,7 +519,7 @@ function logout() {
         </ul>
       </div>
       <div class="pricing-cta">
-        <button class="btn-buy" type="button" onclick="window.location.href='https://buy.stripe.com/5kQ3cu7ad8Pk9J20Bv7g400'">🔐 Get Instant Access — C$47</button>
+        <button class="btn-buy" type="button" onclick="openModal()">🔐 Get Instant Access — C$47</button>
         <div class="security-note">🔒 Secure checkout · Visa, Mastercard, Interac · Instant delivery</div>
         <div class="guarantee-box">
           <span style="font-size:1.5rem">🛡️</span>
@@ -645,12 +642,12 @@ function logout() {
     <h3 style="font-family:'Playfair Display',serif;margin:40px 0 8px;font-size:1.3rem">Your Bonus Tools</h3>
     <p style="font-size:0.85rem;color:var(--muted);margin-bottom:0">Six tools to run alongside the modules. Download links unlock with your access code email.</p>
     <div class="tools-row">
-      <div class="tool-card"><div class="tool-icon">📊</div><div><h5>Budget Spreadsheet</h5><p>Google Sheets — pre-built for Canada</p></div></div>
-      <div class="tool-card"><div class="tool-icon">🧮</div><div><h5>TFSA Room Calculator</h5><p>Enter birth year → get 2026 room</p></div></div>
-      <div class="tool-card"><div class="tool-icon">💼</div><div><h5>Side Hustle Tax Tracker</h5><p>Excel template with CRA categories</p></div></div>
-      <div class="tool-card"><div class="tool-icon">🗺️</div><div><h5>FI Number Calculator</h5><p>Your Canadian retirement target</p></div></div>
-      <div class="tool-card"><div class="tool-icon">📈</div><div><h5>Net Worth Tracker</h5><p>Monthly snapshot — assets vs liabilities</p></div></div>
-      <div class="tool-card"><div class="tool-icon">🧾</div><div><h5>Tax Bracket Calculator</h5><p>Federal + provincial marginal rates</p></div></div>
+      <div class="tool-card" onclick="window.location.href='tools.html#tfsa'"><div class="tool-icon">📊</div><div><h5>Budget Spreadsheet</h5><p>Google Sheets — coming soon</p></div></div>
+      <div class="tool-card" onclick="window.location.href='tools.html#tfsa'"><div class="tool-icon">🧮</div><div><h5>TFSA Room Calculator</h5><p>Enter birth year → get 2026 room</p></div></div>
+      <div class="tool-card" onclick="window.location.href='tools.html#tfsa'"><div class="tool-icon">💼</div><div><h5>Side Hustle Tax Tracker</h5><p>Excel template — coming soon</p></div></div>
+      <div class="tool-card" onclick="window.location.href='tools.html#fi'"><div class="tool-icon">🗺️</div><div><h5>FI Number Calculator</h5><p>Your Canadian retirement target</p></div></div>
+      <div class="tool-card" onclick="window.location.href='tools.html#fi'"><div class="tool-icon">📈</div><div><h5>Net Worth Tracker</h5><p>Monthly snapshot — coming soon</p></div></div>
+      <div class="tool-card" onclick="window.location.href='tools.html#tax'"><div class="tool-icon">🧾</div><div><h5>Tax Bracket Calculator</h5><p>Federal + provincial marginal rates</p></div></div>
     </div>
   </div>
 </div>

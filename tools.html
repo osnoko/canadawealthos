@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bonus Tools — CanadaWealthOS</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #C8102E; --red-dark: #9E0C24; --gold: #D4A017; --gold-light: #F0C040;
+    --ink: #0F0D0A; --ink-soft: #2D2A26; --cream: #FAF7F2; --white: #FFFFFF;
+    --border: rgba(15,13,10,0.12); --success: #1A7A4A; --muted: #7A7570;
+    --warning: #B45309;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: #F5F3F0; color: var(--ink); }
+
+  /* NAV */
+  .tools-nav {
+    background: var(--ink); color: var(--white);
+    padding: 16px 40px; display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .tools-nav-logo { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.2rem; }
+  .tools-nav-logo span { color: var(--gold-light); }
+  .btn-back {
+    background: rgba(255,255,255,0.1); border: none; color: white;
+    padding: 8px 16px; border-radius: 6px; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; font-size: 0.85rem;
+    text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+  }
+  .btn-back:hover { background: rgba(255,255,255,0.2); }
+
+  /* LAYOUT */
+  .tools-body { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+  .tools-header { margin-bottom: 40px; }
+  .tools-header h1 { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 900; margin-bottom: 8px; }
+  .tools-header p { color: var(--muted); font-size: 0.95rem; }
+
+  /* TOOL TABS */
+  .tool-tabs { display: flex; gap: 4px; background: var(--white); border-radius: 12px; padding: 6px; margin-bottom: 32px; border: 1px solid var(--border); flex-wrap: wrap; }
+  .tool-tab {
+    flex: 1; padding: 10px 16px; border: none; background: none; cursor: pointer;
+    border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 0.85rem;
+    font-weight: 600; color: var(--muted); transition: all 0.2s; white-space: nowrap;
+    min-width: 120px;
+  }
+  .tool-tab.active { background: var(--ink); color: var(--white); }
+  .tool-tab:hover:not(.active) { background: #F3F0EB; color: var(--ink); }
+
+  /* CALCULATOR CARD */
+  .calc-card { background: var(--white); border-radius: 16px; border: 1px solid var(--border); overflow: hidden; display: none; }
+  .calc-card.active { display: block; }
+  .calc-header { background: var(--ink); color: var(--white); padding: 24px 28px; }
+  .calc-header h2 { font-family: 'Playfair Display', serif; font-size: 1.4rem; margin-bottom: 6px; }
+  .calc-header p { font-size: 0.85rem; color: rgba(255,255,255,0.6); }
+  .calc-body { padding: 28px; }
+
+  /* FORM ELEMENTS */
+  .input-group { margin-bottom: 20px; }
+  .input-group label { display: block; font-size: 0.83rem; font-weight: 600; color: var(--muted); margin-bottom: 6px; font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.5px; }
+  .input-group input, .input-group select {
+    width: 100%; padding: 12px 14px; border: 1.5px solid var(--border);
+    border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 1rem;
+    color: var(--ink); background: var(--cream); transition: border-color 0.2s;
+  }
+  .input-group input:focus, .input-group select:focus { outline: none; border-color: var(--red); }
+  .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .input-hint { font-size: 0.75rem; color: var(--muted); margin-top: 4px; }
+
+  /* RESULTS */
+  .result-box { background: var(--ink); border-radius: 12px; padding: 24px; margin-top: 24px; }
+  .result-box h3 { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px; }
+  .result-main { font-family: 'Playfair Display', serif; font-size: 2.4rem; font-weight: 900; color: var(--gold-light); margin-bottom: 4px; }
+  .result-label { font-size: 0.85rem; color: rgba(255,255,255,0.6); margin-bottom: 20px; }
+  .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .result-item { background: rgba(255,255,255,0.06); border-radius: 8px; padding: 12px 14px; }
+  .result-item .r-label { font-size: 0.72rem; color: rgba(255,255,255,0.45); font-family: 'DM Mono', monospace; text-transform: uppercase; margin-bottom: 4px; }
+  .result-item .r-value { font-size: 1rem; font-weight: 700; color: var(--white); }
+  .result-item .r-value.green { color: #4ADE80; }
+  .result-item .r-value.gold { color: var(--gold-light); }
+  .result-item .r-value.red { color: #F87171; }
+
+  .tip-banner { background: rgba(200,16,46,0.06); border-left: 3px solid var(--red); padding: 14px 18px; border-radius: 0 8px 8px 0; margin-top: 20px; font-size: 0.88rem; color: var(--ink-soft); line-height: 1.6; }
+  .tip-banner strong { color: var(--red); }
+
+  .btn-calc { width: 100%; padding: 14px; background: var(--red); color: white; border: none; border-radius: 8px; cursor: pointer; font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 1rem; margin-top: 8px; transition: background 0.2s; }
+  .btn-calc:hover { background: var(--red-dark); }
+
+  /* TAX BRACKETS TABLE */
+  .bracket-table { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 0.85rem; }
+  .bracket-table th { background: var(--ink); color: var(--gold-light); padding: 10px 12px; text-align: left; font-family: 'DM Mono', monospace; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1px; }
+  .bracket-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); }
+  .bracket-table tr.active-bracket { background: rgba(200,16,46,0.06); font-weight: 700; }
+  .bracket-table tr.active-bracket td:first-child { border-left: 3px solid var(--red); }
+
+  /* PROVINCE SELECTOR */
+  .province-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px; margin-bottom: 20px; }
+  .province-btn { padding: 8px 12px; border: 1.5px solid var(--border); border-radius: 8px; background: var(--cream); cursor: pointer; font-size: 0.82rem; font-weight: 600; color: var(--muted); transition: all 0.2s; text-align: center; font-family: 'DM Sans', sans-serif; }
+  .province-btn.selected { background: var(--red); color: white; border-color: var(--red); }
+  .province-btn:hover:not(.selected) { border-color: var(--red); color: var(--red); }
+
+  @media (max-width: 600px) {
+    .tools-nav { padding: 12px 16px; }
+    .tools-body { padding: 20px 16px; }
+    .input-row { grid-template-columns: 1fr; }
+    .result-grid { grid-template-columns: 1fr; }
+    .tool-tab { font-size: 0.78rem; padding: 8px 10px; min-width: 90px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="tools-nav">
+  <div class="tools-nav-logo">Canada<span>Wealth</span>OS <span style="color:rgba(255,255,255,0.3);font-size:0.7rem;font-family:'DM Mono',monospace;margin-left:6px">TOOLS</span></div>
+  <a href="/" class="btn-back">← Back to Dashboard</a>
+</nav>
+
+<div class="tools-body">
+  <div class="tools-header">
+    <h1>Your Bonus Tools 🛠️</h1>
+    <p>Three interactive Canadian financial calculators. All numbers are estimates — consult a financial advisor for personalized advice.</p>
+  </div>
+
+  <div class="tool-tabs">
+    <button class="tool-tab active" onclick="showTool('tfsa')">🧮 TFSA Calculator</button>
+    <button class="tool-tab" onclick="showTool('fi')">🗺️ FI Number</button>
+    <button class="tool-tab" onclick="showTool('tax')">🧾 Tax Brackets</button>
+  </div>
+
+  <!-- ══════════════════════════════════════ -->
+  <!--           TOOL 1: TFSA CALCULATOR      -->
+  <!-- ══════════════════════════════════════ -->
+  <div class="calc-card active" id="tool-tfsa">
+    <div class="calc-header">
+      <h2>🧮 TFSA Contribution Room Calculator</h2>
+      <p>Find your exact 2026 TFSA room based on your birth year and contribution history.</p>
+    </div>
+    <div class="calc-body">
+      <div class="input-row">
+        <div class="input-group">
+          <label>Your Birth Year</label>
+          <input type="number" id="tfsa-birth" placeholder="e.g. 1990" min="1991" max="2008" oninput="calcTFSA()">
+          <div class="input-hint">Must be 18+ to open a TFSA</div>
+        </div>
+        <div class="input-group">
+          <label>Total Already Contributed (Lifetime)</label>
+          <input type="number" id="tfsa-contributed" placeholder="e.g. 25000" min="0" oninput="calcTFSA()">
+          <div class="input-hint">Check CRA My Account for exact amount</div>
+        </div>
+      </div>
+      <div class="input-group">
+        <label>Total Withdrawn from TFSA (Lifetime)</label>
+        <input type="number" id="tfsa-withdrawn" placeholder="e.g. 5000" min="0" oninput="calcTFSA()">
+        <div class="input-hint">Withdrawn amounts re-added to room on Jan 1 of following year</div>
+      </div>
+
+      <div class="result-box" id="tfsa-result" style="display:none">
+        <h3>Your 2026 TFSA Room</h3>
+        <div class="result-main" id="tfsa-room-main">$0</div>
+        <div class="result-label">Available contribution room right now</div>
+        <div class="result-grid">
+          <div class="result-item">
+            <div class="r-label">Lifetime Room Accumulated</div>
+            <div class="r-value gold" id="tfsa-lifetime">$0</div>
+          </div>
+          <div class="result-item">
+            <div class="r-label">Total Contributed</div>
+            <div class="r-value" id="tfsa-contrib-display">$0</div>
+          </div>
+          <div class="result-item">
+            <div class="r-label">Withdrawn (Re-Added)</div>
+            <div class="r-value green" id="tfsa-withdrawn-display">$0</div>
+          </div>
+          <div class="result-item">
+            <div class="r-label">2027 New Room (Jan 1)</div>
+            <div class="r-value gold" id="tfsa-next-year">$7,000</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tip-banner" id="tfsa-tip" style="display:none">
+        <strong>🍁 Important:</strong> Over-contributing to your TFSA — even by $1 — triggers a 1% per month penalty on the excess amount. Always verify your exact room at <strong>canada.ca → CRA My Account</strong> before making large contributions.
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════ -->
+  <!--         TOOL 2: FI NUMBER CALCULATOR   -->
+  <!-- ══════════════════════════════════════ -->
+  <div class="calc-card" id="tool-fi">
+    <div class="calc-header">
+      <h2>🗺️ Canadian FI Number Calculator</h2>
+      <p>Calculate exactly how much you need to retire in Canada — adjusted for CPP, OAS, and your lifestyle.</p>
+    </div>
+    <div class="calc-body">
+      <div class="input-row">
+        <div class="input-group">
+          <label>Current Age</label>
+          <input type="number" id="fi-age" placeholder="e.g. 35" min="18" max="65" oninput="calcFI()">
+        </div>
+        <div class="input-group">
+          <label>Target Retirement Age</label>
+          <input type="number" id="fi-retire" placeholder="e.g. 55" min="40" max="75" oninput="calcFI()">
+        </div>
+      </div>
+      <div class="input-group">
+        <label>Annual Living Expenses (Today's Dollars)</label>
+        <input type="number" id="fi-expenses" placeholder="e.g. 55000" oninput="calcFI()">
+        <div class="input-hint">Include rent/mortgage, food, transport, entertainment, insurance</div>
+      </div>
+      <div class="input-row">
+        <div class="input-group">
+          <label>Expected CPP at 65 (Monthly)</label>
+          <input type="number" id="fi-cpp" placeholder="e.g. 800" oninput="calcFI()">
+          <div class="input-hint">Check Service Canada account for estimate. Avg: ~$758/mo</div>
+        </div>
+        <div class="input-group">
+          <label>Current Investments & Savings</label>
+          <input type="number" id="fi-current" placeholder="e.g. 25000" oninput="calcFI()">
+          <div class="input-hint">TFSA + RRSP + non-registered combined</div>
+        </div>
+      </div>
+      <div class="input-group">
+        <label>Monthly Savings & Investments</label>
+        <input type="number" id="fi-monthly" placeholder="e.g. 800" oninput="calcFI()">
+        <div class="input-hint">Amount you invest every month toward FI</div>
+      </div>
+
+      <div class="result-box" id="fi-result" style="display:none">
+        <h3>Your Financial Independence Numbers</h3>
+        <div class="result-main" id="fi-number-main">$0</div>
+        <div class="result-label">Your Canadian FI Number (portfolio target)</div>
+        <div class="result-grid">
+          <div class="result-item">
+            <div class="r-label">Raw FI Number (no CPP/OAS)</div>
+            <div class="r-value" id="fi-raw">$0</div>
+          </div>
+          <div class="result-item">
+            <div class="r-label">CPP + OAS Offset</div>
+            <div class="r-value green" id="fi-govt">$0</div>
+          </div>
+          <div class="result-item">
+            <div class="r-label">Years to FI at Current Rate</div>
+            <div class="r-value gold" id="fi-years">-- years</div>
+          </div>
+          <div class="result-item">
+            <div class="r-label">Projected FI Date</div>
+            <div class="r-value" id="fi-date">--</div>
+          </div>
+          <div class="result-item">
+            <div class="r-label">Monthly Withdrawal at FI</div>
+            <div class="r-value gold" id="fi-monthly-withdraw">$0</div>
+          </div>
+          <div class="result-item">
+            <div class="r-label">Safe Withdrawal Rate</div>
+            <div class="r-value">4%</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tip-banner" id="fi-tip" style="display:none">
+        <strong>🍁 Canadian Advantage:</strong> OAS adds approximately $698/month at 65 (2026 rate). Combined CPP + OAS for a couple can reach $3,000–$4,500/month — significantly reducing the portfolio you need to build.
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════ -->
+  <!--       TOOL 3: TAX BRACKET CALCULATOR   -->
+  <!-- ══════════════════════════════════════ -->
+  <div class="calc-card" id="tool-tax">
+    <div class="calc-header">
+      <h2>🧾 Canadian Tax Bracket Calculator</h2>
+      <p>See your exact federal + provincial marginal tax rate and how much CRA takes from each dollar.</p>
+    </div>
+    <div class="calc-body">
+      <div class="input-group">
+        <label>Select Your Province</label>
+        <div class="province-grid" id="province-grid">
+          <button class="province-btn" onclick="selectProvince('ON', this)">Ontario</button>
+          <button class="province-btn" onclick="selectProvince('BC', this)">BC</button>
+          <button class="province-btn" onclick="selectProvince('AB', this)">Alberta</button>
+          <button class="province-btn" onclick="selectProvince('QC', this)">Quebec</button>
+          <button class="province-btn" onclick="selectProvince('MB', this)">Manitoba</button>
+          <button class="province-btn" onclick="selectProvince('SK', this)">Saskatchewan</button>
+          <button class="province-btn" onclick="selectProvince('NS', this)">Nova Scotia</button>
+          <button class="province-btn" onclick="selectProvince('NB', this)">New Brunswick</button>
+          <button class="province-btn" onclick="selectProvince('NL', this)">Newfoundland</button>
+          <button class="province-btn" onclick="selectProvince('PE', this)">PEI</button>
+        </div>
+      </div>
+      <div class="input-group">
+        <label>Annual Employment Income</label>
+        <input type="number" id="tax-income" placeholder="e.g. 75000" oninput="calcTax()">
+        <div class="input-hint">Enter your gross annual salary before deductions</div>
+      </div>
+
+      <div id="tax-result" style="display:none">
+        <div class="result-box">
+          <h3>Your Tax Summary — <span id="tax-province-label">Ontario</span></h3>
+          <div class="result-main" id="tax-total-display">$0</div>
+          <div class="result-label">Estimated total tax (federal + provincial)</div>
+          <div class="result-grid">
+            <div class="result-item">
+              <div class="r-label">Federal Tax</div>
+              <div class="r-value" id="tax-federal">$0</div>
+            </div>
+            <div class="result-item">
+              <div class="r-label">Provincial Tax</div>
+              <div class="r-value" id="tax-provincial">$0</div>
+            </div>
+            <div class="result-item">
+              <div class="r-label">Marginal Rate (top bracket)</div>
+              <div class="r-value red" id="tax-marginal">0%</div>
+            </div>
+            <div class="result-item">
+              <div class="r-label">Effective Rate (actual %)</div>
+              <div class="r-value gold" id="tax-effective">0%</div>
+            </div>
+            <div class="result-item">
+              <div class="r-label">Monthly Take-Home</div>
+              <div class="r-value green" id="tax-monthly">$0</div>
+            </div>
+            <div class="result-item">
+              <div class="r-label">Annual Take-Home</div>
+              <div class="r-value green" id="tax-annual">$0</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:24px">
+          <h3 style="font-size:0.9rem;font-weight:700;margin-bottom:12px">2026 Combined Federal + Provincial Brackets</h3>
+          <table class="bracket-table" id="bracket-table">
+            <thead><tr><th>Income Range</th><th>Federal</th><th>Provincial</th><th>Combined</th></tr></thead>
+            <tbody id="bracket-tbody"></tbody>
+          </table>
+        </div>
+
+        <div class="tip-banner" style="margin-top:20px">
+          <strong>🍁 Key Insight:</strong> Your <strong>marginal rate</strong> is what you pay on the NEXT dollar earned. Your <strong>effective rate</strong> is what you actually pay on average. An RRSP contribution saves you tax at your <strong>marginal rate</strong> — which is why high earners benefit most from RRSP contributions.
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ══════════════════════════════════
+//         TAB NAVIGATION
+// ══════════════════════════════════
+function showTool(tool) {
+  document.querySelectorAll('.calc-card').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.tool-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tool-' + tool).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ══════════════════════════════════
+//       TFSA CALCULATOR
+// ══════════════════════════════════
+const TFSA_LIMITS = {
+  2009:5000,2010:5000,2011:5000,2012:5000,2013:5500,2014:5500,
+  2015:10000,2016:5500,2017:5500,2018:5500,2019:6000,2020:6000,
+  2021:6000,2022:6000,2023:6500,2024:7000,2025:7000,2026:7000
+};
+
+function calcTFSA() {
+  const birth = parseInt(document.getElementById('tfsa-birth').value);
+  const contributed = parseFloat(document.getElementById('tfsa-contributed').value) || 0;
+  const withdrawn = parseFloat(document.getElementById('tfsa-withdrawn').value) || 0;
+
+  if (!birth || birth < 1900 || birth > 2009) return;
+
+  const eligibleYear = Math.max(birth + 18, 2009);
+  if (eligibleYear > 2026) {
+    document.getElementById('tfsa-result').style.display = 'none';
+    return;
+  }
+
+  let lifetime = 0;
+  for (let y = eligibleYear; y <= 2026; y++) {
+    lifetime += TFSA_LIMITS[y] || 7000;
+  }
+
+  const room = lifetime - contributed + withdrawn;
+
+  document.getElementById('tfsa-result').style.display = 'block';
+  document.getElementById('tfsa-tip').style.display = 'block';
+  document.getElementById('tfsa-room-main').textContent = fmt(Math.max(0, room));
+  document.getElementById('tfsa-lifetime').textContent = fmt(lifetime);
+  document.getElementById('tfsa-contrib-display').textContent = fmt(contributed);
+  document.getElementById('tfsa-withdrawn-display').textContent = fmt(withdrawn);
+  document.getElementById('tfsa-next-year').textContent = fmt(7000);
+
+  // Warning if over-contributed
+  if (room < 0) {
+    document.getElementById('tfsa-room-main').textContent = '⚠️ Over-contributed by ' + fmt(Math.abs(room));
+    document.getElementById('tfsa-room-main').style.color = '#F87171';
+  } else {
+    document.getElementById('tfsa-room-main').style.color = '#F0C040';
+  }
+}
+
+// ══════════════════════════════════
+//       FI NUMBER CALCULATOR
+// ══════════════════════════════════
+function calcFI() {
+  const age = parseInt(document.getElementById('fi-age').value);
+  const retireAge = parseInt(document.getElementById('fi-retire').value);
+  const expenses = parseFloat(document.getElementById('fi-expenses').value) || 0;
+  const cpp = parseFloat(document.getElementById('fi-cpp').value) || 0;
+  const current = parseFloat(document.getElementById('fi-current').value) || 0;
+  const monthly = parseFloat(document.getElementById('fi-monthly').value) || 0;
+
+  if (!age || !retireAge || !expenses) return;
+
+  const oas = 698 * 12; // Annual OAS 2026
+  const cppAnnual = cpp * 12;
+  const govtIncome = cppAnnual + oas;
+  const govtOffset = govtIncome / 0.04;
+  const rawFI = expenses / 0.04;
+  const fiNumber = Math.max(0, rawFI - govtOffset);
+
+  // Years to FI calculation (8% growth assumption)
+  const r = 0.08 / 12;
+  let years = 0;
+  if (monthly > 0) {
+    let portfolio = current;
+    while (portfolio < fiNumber && years < 100) {
+      portfolio = portfolio * (1 + r) + monthly;
+      years += 1/12;
+    }
+    years = Math.ceil(years);
+  }
+
+  const fiDate = new Date();
+  fiDate.setFullYear(fiDate.getFullYear() + years);
+
+  document.getElementById('fi-result').style.display = 'block';
+  document.getElementById('fi-tip').style.display = 'block';
+  document.getElementById('fi-number-main').textContent = fmt(fiNumber);
+  document.getElementById('fi-raw').textContent = fmt(rawFI);
+  document.getElementById('fi-govt').textContent = fmt(govtOffset);
+  document.getElementById('fi-years').textContent = monthly > 0 ? years + ' years' : 'Enter savings';
+  document.getElementById('fi-date').textContent = monthly > 0 ? fiDate.getFullYear().toString() : '--';
+  document.getElementById('fi-monthly-withdraw').textContent = fmt(fiNumber * 0.04 / 12);
+}
+
+// ══════════════════════════════════
+//     TAX BRACKET CALCULATOR
+// ══════════════════════════════════
+const FEDERAL_BRACKETS = [
+  {min:0, max:57375, rate:0.15},
+  {min:57375, max:114750, rate:0.205},
+  {min:114750, max:158519, rate:0.26},
+  {min:158519, max:220000, rate:0.29},
+  {min:220000, max:Infinity, rate:0.33}
+];
+
+const PROVINCIAL_RATES = {
+  ON:[{min:0,max:51446,rate:0.0505},{min:51446,max:102894,rate:0.0915},{min:102894,max:150000,rate:0.1116},{min:150000,max:220000,rate:0.1216},{min:220000,max:Infinity,rate:0.1316}],
+  BC:[{min:0,max:45654,rate:0.0506},{min:45654,max:91310,rate:0.077},{min:91310,max:104835,rate:0.105},{min:104835,max:127299,rate:0.1229},{min:127299,max:172602,rate:0.147},{min:172602,max:240716,rate:0.168},{min:240716,max:Infinity,rate:0.205}],
+  AB:[{min:0,max:148269,rate:0.10},{min:148269,max:177922,rate:0.12},{min:177922,max:237230,rate:0.13},{min:237230,max:355845,rate:0.14},{min:355845,max:Infinity,rate:0.15}],
+  QC:[{min:0,max:51780,rate:0.14},{min:51780,max:103545,rate:0.19},{min:103545,max:126000,rate:0.24},{min:126000,max:Infinity,rate:0.2575}],
+  MB:[{min:0,max:47000,rate:0.108},{min:47000,max:100000,rate:0.1275},{min:100000,max:Infinity,rate:0.174}],
+  SK:[{min:0,max:49720,rate:0.105},{min:49720,max:142058,rate:0.125},{min:142058,max:Infinity,rate:0.145}],
+  NS:[{min:0,max:29590,rate:0.0879},{min:29590,max:59180,rate:0.1495},{min:59180,max:93000,rate:0.1667},{min:93000,max:150000,rate:0.175},{min:150000,max:Infinity,rate:0.21}],
+  NB:[{min:0,max:47715,rate:0.094},{min:47715,max:95431,rate:0.14},{min:95431,max:176756,rate:0.16},{min:176756,max:Infinity,rate:0.195}],
+  NL:[{min:0,max:43198,rate:0.087},{min:43198,max:86395,rate:0.145},{min:86395,max:154244,rate:0.158},{min:154244,max:215943,rate:0.178},{min:215943,max:275870,rate:0.198},{min:275870,max:Infinity,rate:0.208}],
+  PE:[{min:0,max:32656,rate:0.096},{min:32656,max:64313,rate:0.1337},{min:64313,max:105000,rate:0.1667},{min:105000,max:140000,rate:0.18},{min:140000,max:Infinity,rate:0.1875}]
+};
+
+const PROVINCE_NAMES = {ON:'Ontario',BC:'British Columbia',AB:'Alberta',QC:'Quebec',MB:'Manitoba',SK:'Saskatchewan',NS:'Nova Scotia',NB:'New Brunswick',NL:'Newfoundland',PE:'PEI'};
+
+let selectedProvince = null;
+
+function selectProvince(prov, btn) {
+  selectedProvince = prov;
+  document.querySelectorAll('.province-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  document.getElementById('tax-province-label').textContent = PROVINCE_NAMES[prov];
+  calcTax();
+}
+
+function calcTax() {
+  const income = parseFloat(document.getElementById('tax-income').value) || 0;
+  if (!income || !selectedProvince) return;
+
+  const fedTax = calcBracketTax(income, FEDERAL_BRACKETS);
+  const provTax = calcBracketTax(income, PROVINCIAL_RATES[selectedProvince]);
+  const totalTax = fedTax + provTax;
+  const takeHome = income - totalTax;
+  const effective = (totalTax / income * 100).toFixed(1);
+
+  // Marginal rate
+  const fedMarginal = getMarginalRate(income, FEDERAL_BRACKETS);
+  const provMarginal = getMarginalRate(income, PROVINCIAL_RATES[selectedProvince]);
+  const combined = ((fedMarginal + provMarginal) * 100).toFixed(1);
+
+  document.getElementById('tax-result').style.display = 'block';
+  document.getElementById('tax-total-display').textContent = fmt(totalTax);
+  document.getElementById('tax-federal').textContent = fmt(fedTax);
+  document.getElementById('tax-provincial').textContent = fmt(provTax);
+  document.getElementById('tax-marginal').textContent = combined + '%';
+  document.getElementById('tax-effective').textContent = effective + '%';
+  document.getElementById('tax-monthly').textContent = fmt(takeHome / 12);
+  document.getElementById('tax-annual').textContent = fmt(takeHome);
+
+  // Build bracket table
+  const tbody = document.getElementById('bracket-tbody');
+  tbody.innerHTML = '';
+  FEDERAL_BRACKETS.forEach((fb, i) => {
+    const pb = PROVINCIAL_RATES[selectedProvince][i] || {rate: 0};
+    const combined = ((fb.rate + (pb.rate || 0)) * 100).toFixed(1);
+    const isActive = income > fb.min && income <= fb.max;
+    const row = `<tr class="${isActive ? 'active-bracket' : ''}">
+      <td>${fmt(fb.min)} – ${fb.max === Infinity ? '∞' : fmt(fb.max)}</td>
+      <td>${(fb.rate*100).toFixed(1)}%</td>
+      <td>${pb ? (pb.rate*100).toFixed(1) : '—'}%</td>
+      <td><strong>${combined}%</strong>${isActive ? ' ← You' : ''}</td>
+    </tr>`;
+    tbody.innerHTML += row;
+  });
+}
+
+function calcBracketTax(income, brackets) {
+  let tax = 0;
+  for (const b of brackets) {
+    if (income <= b.min) break;
+    const taxable = Math.min(income, b.max) - b.min;
+    tax += taxable * b.rate;
+  }
+  return tax;
+}
+
+function getMarginalRate(income, brackets) {
+  for (let i = brackets.length - 1; i >= 0; i--) {
+    if (income > brackets[i].min) return brackets[i].rate;
+  }
+  return brackets[0].rate;
+}
+
+function fmt(n) {
+  return '$' + Math.round(n).toLocaleString('en-CA');
+}
+</script>
+</body>
+</html>
