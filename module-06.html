@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 06 — Financial Independence — Canadian Path | CanadaWealthOS</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --red: #C0392B; --red-deep: #922B21; --red-glow: rgba(192,57,43,0.15);
+  --gold: #D4A017; --gold-glow: rgba(212,160,23,0.12);
+  --ink: #0F0F0F; --ink-soft: #1E1E1E; --paper: #F7F3EE; --paper-dark: #EDE8E0;
+  --text: #1A1208; --text-mid: #4A3F2F; --text-soft: #7A6E5F;
+  --border: rgba(26,18,8,0.1); --success: #1A6B3C; --lesson-w: 720px;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Outfit', sans-serif; background: var(--paper); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+body::after { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; opacity: 0.4; }
+.topnav { position: sticky; top: 0; z-index: 100; height: 56px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; background: rgba(247,243,238,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+.nav-left { display: flex; align-items: center; gap: 20px; }
+.nav-back { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; color: var(--text-soft); text-decoration: none; padding: 6px 12px; border: 1px solid var(--border); border-radius: 4px; transition: all 0.2s; background: white; }
+.nav-back:hover { border-color: var(--red); color: var(--red); background: var(--red-glow); }
+.nav-divider { width: 1px; height: 20px; background: var(--border); }
+.nav-breadcrumb { font-size: 12px; color: var(--text-soft); letter-spacing: 0.04em; }
+.nav-breadcrumb span { color: var(--red); font-weight: 600; }
+.reading-progress-wrap { display: flex; align-items: center; gap: 8px; }
+.reading-time { font-size: 11px; color: var(--text-soft); font-family: 'JetBrains Mono', monospace; }
+.nav-progress-bar { width: 80px; height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.nav-progress-fill { height: 100%; background: linear-gradient(90deg, var(--red), var(--gold)); border-radius: 2px; width: 0%; transition: width 0.3s ease; }
+.layout { display: flex; min-height: calc(100vh - 56px); }
+.sidebar { width: 280px; flex-shrink: 0; position: sticky; top: 56px; height: calc(100vh - 56px); overflow-y: auto; background: white; border-right: 1px solid var(--border); padding: 32px 0; }
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+.sidebar-module-label { padding: 0 24px 16px; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-soft); font-weight: 600; }
+.sidebar-module-title { padding: 0 24px 24px; font-family: 'Lora', serif; font-size: 15px; font-weight: 700; color: var(--text); line-height: 1.4; border-bottom: 1px solid var(--border); margin-bottom: 8px; }
+.lesson-nav-item { display: flex; align-items: flex-start; gap: 12px; padding: 14px 24px; cursor: pointer; transition: background 0.2s; border-left: 3px solid transparent; }
+.lesson-nav-item:hover { background: var(--paper); }
+.lesson-nav-item.active { background: var(--red-glow); border-left-color: var(--red); }
+.lesson-num-badge { width: 24px; height: 24px; border-radius: 50%; background: var(--paper-dark); display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 500; color: var(--text-soft); flex-shrink: 0; margin-top: 1px; transition: all 0.2s; }
+.lesson-nav-item.active .lesson-num-badge { background: var(--red); color: white; }
+.lesson-nav-item.completed .lesson-num-badge { background: var(--success); color: white; }
+.lesson-nav-text { flex: 1; }
+.lesson-nav-title { font-size: 13px; font-weight: 600; color: var(--text); line-height: 1.3; margin-bottom: 3px; }
+.lesson-nav-meta { font-size: 11px; color: var(--text-soft); font-family: 'JetBrains Mono', monospace; }
+.lesson-nav-item.active .lesson-nav-title { color: var(--red-deep); }
+.sidebar-footer { padding: 24px; margin-top: 16px; border-top: 1px solid var(--border); }
+.module-progress-label { font-size: 11px; color: var(--text-soft); margin-bottom: 8px; display: flex; justify-content: space-between; }
+.module-progress-bar { height: 4px; background: var(--paper-dark); border-radius: 2px; overflow: hidden; }
+.module-progress-fill { height: 100%; background: linear-gradient(90deg, var(--red), var(--gold)); border-radius: 2px; transition: width 0.6s ease; }
+.content-area { flex: 1; overflow-y: auto; padding: 0 0 80px; }
+.lesson-panel { display: none; animation: lessonFade 0.4s ease both; }
+.lesson-panel.active { display: block; }
+@keyframes lessonFade { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+.lesson-hero { padding: 56px 64px 48px; max-width: var(--lesson-w); margin: 0 auto; position: relative; }
+.lesson-hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--red), var(--gold), transparent); }
+.lesson-tag { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; background: var(--red-glow); border: 1px solid rgba(192,57,43,0.2); border-radius: 20px; font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--red); margin-bottom: 20px; }
+.lesson-title { font-family: 'Lora', serif; font-size: clamp(26px, 4vw, 38px); font-weight: 700; line-height: 1.2; color: var(--text); margin-bottom: 16px; }
+.lesson-subtitle { font-size: 17px; color: var(--text-mid); line-height: 1.65; font-weight: 300; max-width: 600px; margin-bottom: 28px; }
+.lesson-meta { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+.meta-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-soft); font-family: 'JetBrains Mono', monospace; }
+.meta-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--border); }
+.lesson-body { padding: 0 64px 48px; max-width: var(--lesson-w); margin: 0 auto; }
+.lesson-body h2 { font-family: 'Lora', serif; font-size: 22px; font-weight: 700; color: var(--text); margin: 48px 0 16px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+.lesson-body h3 { font-family: 'Lora', serif; font-size: 17px; font-weight: 600; color: var(--text); margin: 32px 0 12px; }
+.lesson-body p { font-size: 16px; line-height: 1.85; color: var(--text-mid); margin-bottom: 20px; }
+.lesson-body strong { color: var(--text); font-weight: 600; }
+.lesson-body ul, .lesson-body ol { margin: 16px 0 24px 20px; }
+.lesson-body li { font-size: 16px; line-height: 1.75; color: var(--text-mid); margin-bottom: 8px; padding-left: 8px; }
+.lesson-body ul li::marker { color: var(--red); }
+.lesson-body ol li::marker { color: var(--red); font-weight: 600; font-family: 'JetBrains Mono', monospace; font-size: 13px; }
+.callout { border-radius: 4px; padding: 20px 24px; margin: 28px 0; border-left: 4px solid; }
+.callout-canadian { background: linear-gradient(135deg, rgba(192,57,43,0.06), rgba(212,160,23,0.04)); border-color: var(--red); }
+.callout-tip { background: var(--gold-glow); border-color: var(--gold); }
+.callout-warning { background: rgba(231,76,60,0.06); border-color: #E74C3C; }
+.callout-fact { background: rgba(26,107,60,0.06); border-color: var(--success); }
+.callout-label { font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+.callout-canadian .callout-label { color: var(--red); }
+.callout-tip .callout-label { color: var(--gold); }
+.callout-warning .callout-label { color: #C0392B; }
+.callout-fact .callout-label { color: var(--success); }
+.callout p { font-size: 14.5px; margin-bottom: 0; line-height: 1.7; }
+.data-table { width: 100%; border-collapse: collapse; margin: 24px 0; font-size: 14px; border-radius: 6px; overflow: hidden; border: 1px solid var(--border); }
+.data-table th { background: var(--ink-soft); color: white; padding: 12px 16px; text-align: left; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; font-family: 'JetBrains Mono', monospace; }
+.data-table td { padding: 12px 16px; border-bottom: 1px solid var(--border); color: var(--text-mid); vertical-align: top; }
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:nth-child(even) td { background: var(--paper); }
+.data-table tr:hover td { background: var(--red-glow); }
+.data-table .good { color: var(--success); font-weight: 600; }
+.data-table .highlight { color: var(--red); font-weight: 600; }
+.formula-box { background: white; border: 2px solid var(--border); border-radius: 6px; padding: 24px 28px; margin: 24px 0; text-align: center; font-family: 'Lora', serif; font-size: 19px; font-weight: 700; color: var(--text); line-height: 1.5; }
+.stat-highlight { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin: 28px 0; }
+.stat-box { background: white; border: 1px solid var(--border); border-radius: 6px; padding: 20px; text-align: center; transition: border-color 0.2s, transform 0.2s; }
+.stat-box:hover { border-color: var(--gold); transform: translateY(-2px); }
+.stat-box-num { font-family: 'Lora', serif; font-size: 28px; font-weight: 700; color: var(--red); margin-bottom: 6px; line-height: 1; }
+.stat-box-label { font-size: 12px; color: var(--text-soft); line-height: 1.4; }
+.takeaways { background: var(--ink); border-radius: 8px; padding: 32px 36px; margin: 40px 0; position: relative; overflow: hidden; }
+.takeaways::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--red), var(--gold)); }
+.takeaways-label { font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); font-weight: 700; margin-bottom: 16px; }
+.takeaways h3 { font-family: 'Lora', serif; font-size: 18px; color: white; margin-bottom: 16px; font-weight: 700; }
+.takeaways ul { margin: 0; padding: 0; list-style: none; }
+.takeaways li { color: rgba(255,255,255,0.8); font-size: 14.5px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.07); display: flex; align-items: flex-start; gap: 10px; line-height: 1.6; }
+.takeaways li:last-child { border-bottom: none; }
+.takeaway-check { color: var(--gold); font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+.action-box { background: white; border: 1px solid var(--border); border-radius: 6px; padding: 28px 32px; margin: 32px 0; }
+.action-box-title { font-family: 'Lora', serif; font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 16px; }
+.action-item { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 14px; color: var(--text-mid); line-height: 1.6; }
+.action-item:last-child { border-bottom: none; }
+.action-checkbox { width: 18px; height: 18px; border: 2px solid var(--border); border-radius: 4px; flex-shrink: 0; margin-top: 1px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; font-size: 11px; color: transparent; }
+.action-checkbox.checked { background: var(--success); border-color: var(--success); color: white; }
+.lesson-footer { padding: 40px 64px 0; max-width: var(--lesson-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 20px; border-top: 1px solid var(--border); flex-wrap: wrap; }
+.complete-btn { display: flex; align-items: center; gap: 8px; padding: 14px 28px; background: var(--red); color: white; border: none; border-radius: 4px; font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+.complete-btn:hover { background: var(--red-deep); transform: translateY(-1px); }
+.complete-btn.done { background: var(--success); cursor: default; transform: none; }
+.nav-arrows { display: flex; gap: 10px; }
+.nav-arrow { display: flex; align-items: center; gap: 6px; padding: 12px 20px; border: 1px solid var(--border); border-radius: 4px; background: white; font-size: 13px; font-weight: 500; color: var(--text-mid); cursor: pointer; transition: all 0.2s; font-family: 'Outfit', sans-serif; }
+.nav-arrow:hover:not(:disabled) { border-color: var(--red); color: var(--red); background: var(--red-glow); }
+.nav-arrow:disabled { opacity: 0.3; cursor: not-allowed; }
+.nav-arrow.next { background: var(--ink); border-color: var(--ink); color: white; }
+.nav-arrow.next:hover:not(:disabled) { background: var(--red-deep); border-color: var(--red-deep); color: white; }
+.final-banner { display: none; background: linear-gradient(135deg, #0F0F0F, #1E1A10); border-radius: 8px; padding: 48px 40px; margin: 40px 64px; max-width: calc(var(--lesson-w) - 128px); margin-left: auto; margin-right: auto; text-align: center; position: relative; overflow: hidden; }
+.final-banner::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--red), var(--gold), var(--red)); }
+.final-banner.visible { display: block; }
+.final-maple { font-size: 56px; margin-bottom: 16px; display: block; }
+.final-title { font-family: 'Lora', serif; font-size: 28px; font-weight: 700; color: white; margin-bottom: 8px; }
+.final-sub-title { font-family: 'Lora', serif; font-size: 16px; color: var(--gold); margin-bottom: 20px; font-style: italic; }
+.final-sub { font-size: 15px; color: rgba(255,255,255,0.7); line-height: 1.7; margin-bottom: 32px; max-width: 480px; margin-left: auto; margin-right: auto; }
+.final-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.final-btn-primary { padding: 14px 32px; background: var(--gold); color: var(--ink); border: none; border-radius: 4px; font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 700; text-decoration: none; display: inline-block; transition: all 0.2s; }
+.final-btn-primary:hover { background: var(--gold-light, #F0C040); }
+.final-btn-secondary { padding: 14px 28px; background: transparent; color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 500; text-decoration: none; display: inline-block; transition: all 0.2s; }
+.final-btn-secondary:hover { border-color: rgba(255,255,255,0.5); color: white; }
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .lesson-hero, .lesson-body, .lesson-footer { padding-left: 24px; padding-right: 24px; }
+  .final-banner { margin-left: 24px; margin-right: 24px; }
+  .topnav { padding: 0 16px; }
+  .nav-breadcrumb { display: none; }
+}
+</style>
+</head>
+<body>
+<nav class="topnav">
+  <div class="nav-left">
+    <a href="members.html" class="nav-back">← Dashboard</a>
+    <div class="nav-divider"></div>
+    <div class="nav-breadcrumb">Module 06 — <span id="currentLessonTitle">Your FI Number</span></div>
+  </div>
+  <div class="nav-right">
+    <div class="reading-progress-wrap">
+      <span class="reading-time" id="readingTimeDisplay">~9 min read</span>
+      <div class="nav-progress-bar"><div class="nav-progress-fill" id="navProgressFill"></div></div>
+    </div>
+  </div>
+</nav>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-module-label">🍁 Module 06</div>
+    <div class="sidebar-module-title">Financial Independence — Canadian Path</div>
+    <div class="lesson-nav-item active" id="nav-0" onclick="goToLesson(0)">
+      <div class="lesson-num-badge">1</div>
+      <div class="lesson-nav-text"><div class="lesson-nav-title">Your FI Number</div><div class="lesson-nav-meta">~9 min · Calculate your target</div></div>
+    </div>
+    <div class="lesson-nav-item" id="nav-1" onclick="goToLesson(1)">
+      <div class="lesson-num-badge">2</div>
+      <div class="lesson-nav-text"><div class="lesson-nav-title">The 4% Rule in Canada</div><div class="lesson-nav-meta">~8 min · Canadian adjustments</div></div>
+    </div>
+    <div class="lesson-nav-item" id="nav-2" onclick="goToLesson(2)">
+      <div class="lesson-num-badge">3</div>
+      <div class="lesson-nav-text"><div class="lesson-nav-title">CPP &amp; OAS Strategy</div><div class="lesson-nav-meta">~8 min · Maximize government income</div></div>
+    </div>
+    <div class="lesson-nav-item" id="nav-3" onclick="goToLesson(3)">
+      <div class="lesson-num-badge">4</div>
+      <div class="lesson-nav-text"><div class="lesson-nav-title">Your 10-Year Wealth Plan</div><div class="lesson-nav-meta">~9 min · Build the roadmap</div></div>
+    </div>
+    <div class="sidebar-footer">
+      <div class="module-progress-label"><span>Module progress</span><span id="progressText">0 / 4</span></div>
+      <div class="module-progress-bar"><div class="module-progress-fill" id="moduleProgressFill" style="width:0%"></div></div>
+    </div>
+  </aside>
+
+  <main class="content-area" id="contentArea">
+
+    <!-- LESSON 1 -->
+    <div class="lesson-panel active" id="lesson-0">
+      <div class="lesson-hero">
+        <div class="lesson-tag">🍁 Lesson 1 of 4</div>
+        <h1 class="lesson-title">Your Canadian FI Number — The Exact Amount You Need to Retire</h1>
+        <p class="lesson-subtitle">Financial Independence isn't a vague dream. It's a specific dollar number — and once you know yours, every financial decision you make has a target.</p>
+        <div class="lesson-meta">
+          <div class="meta-item">⏱ ~9 min read</div><div class="meta-dot"></div>
+          <div class="meta-item">📘 Module 06</div><div class="meta-dot"></div>
+          <div class="meta-item">🎯 Calculate Your Target</div>
+        </div>
+      </div>
+      <div class="lesson-body">
+        <p>Financial Independence means your investment portfolio generates enough passive income to cover your living expenses indefinitely — without needing to work. The number that makes this possible is your FI number. Every Canadian's is different. Here's how to calculate yours.</p>
+
+        <h2>The FI Number Formula</h2>
+        <div class="formula-box">
+          FI Number = Annual Expenses × 25
+        </div>
+        <p>This formula comes directly from the 4% Rule (covered in Lesson 2), which shows that a portfolio can sustainably withdraw 4% per year in perpetuity. Multiplying your annual expenses by 25 gives you the portfolio size needed to fund those expenses at 4% annually.</p>
+
+        <h2>Calculating Your Canadian Annual Expenses</h2>
+        <p>Your FI number is only as accurate as your expense estimate. Use these Canadian-specific categories:</p>
+        <table class="data-table">
+          <thead><tr><th>Expense Category</th><th>Annual Estimate</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td>Housing (rent or ownership costs)</td><td>$___</td><td>Rent, mortgage, property tax, maintenance</td></tr>
+            <tr><td>Food &amp; groceries</td><td>$___</td><td>Average Canadian household: ~$14,000/yr</td></tr>
+            <tr><td>Transportation</td><td>$___</td><td>Car costs or transit pass</td></tr>
+            <tr><td>Healthcare &amp; dental</td><td>$___</td><td>Provincial coverage + supplemental plan</td></tr>
+            <tr><td>Utilities &amp; phone</td><td>$___</td><td>Hydro, gas, internet, cell</td></tr>
+            <tr><td>Insurance</td><td>$___</td><td>Home, auto, life</td></tr>
+            <tr><td>Travel &amp; lifestyle</td><td>$___</td><td>Vacations, hobbies, dining out</td></tr>
+            <tr><td>Miscellaneous</td><td>$___</td><td>Clothing, gifts, subscriptions</td></tr>
+            <tr><td><strong>Total Annual Expenses</strong></td><td class="highlight"><strong>$___ × 25 = FI Number</strong></td><td></td></tr>
+          </tbody>
+        </table>
+
+        <div class="callout callout-canadian">
+          <div class="callout-label">🍁 Canadian FI Numbers by Lifestyle</div>
+          <p>A frugal Canadian living on $40,000/year needs a <strong>$1,000,000</strong> portfolio. A comfortable lifestyle at $60,000/year needs <strong>$1,500,000</strong>. A high-income lifestyle at $100,000/year needs <strong>$2,500,000</strong>. Remember: these numbers assume CPP and OAS are NOT counted — when you factor in CPP ($10,000–$15,000/year) and OAS ($8,000–$9,000/year), your portfolio requirement drops by $250,000–$600,000.</p>
+        </div>
+
+        <h2>FI Number vs. FIRE Number</h2>
+        <p>FI (Financial Independence) means you <em>could</em> stop working. FIRE (Financial Independence, Retire Early) means you actually do. Most Canadians pursue FI as the goal — the freedom to choose work, not the obligation to work — and continue some form of income-generating activity they enjoy.</p>
+        <p>Types of FIRE relevant to Canadians:</p>
+        <ul>
+          <li><strong>Lean FIRE</strong> — $600K–$900K portfolio, $25,000–$35,000/year spending, very frugal lifestyle</li>
+          <li><strong>Regular FIRE</strong> — $1M–$1.5M portfolio, $40,000–$60,000/year, moderate lifestyle</li>
+          <li><strong>Fat FIRE</strong> — $2.5M+ portfolio, $80,000–$100,000+/year, no lifestyle compromises</li>
+          <li><strong>Barista FIRE</strong> — smaller portfolio + part-time income to cover the gap. Popular in Canada due to the healthcare coverage question being less acute (we have provincial health coverage)</li>
+        </ul>
+
+        <div class="callout callout-fact">
+          <div class="callout-label">📊 Canada's Healthcare Advantage for FIRE</div>
+          <p>One of the biggest barriers to early retirement in the US is losing employer-sponsored health insurance. In Canada, provincial health coverage continues regardless of employment status. This makes early retirement significantly more achievable for Canadians — you don't need to budget an extra $15,000–$25,000/year (US average) for private health insurance. This alone reduces the Canadian FI number by $375,000–$625,000 compared to an equivalent American pursuing the same lifestyle.</p>
+        </div>
+
+        <div class="takeaways">
+          <div class="takeaways-label">🎯 Key Takeaways</div>
+          <h3>What You Just Learned</h3>
+          <ul>
+            <li><span class="takeaway-check">✦</span> Your FI Number = Annual Expenses × 25 — a specific, calculable target</li>
+            <li><span class="takeaway-check">✦</span> CPP and OAS reduce your required portfolio by $250,000–$600,000 depending on your benefit amounts</li>
+            <li><span class="takeaway-check">✦</span> Canada's universal healthcare eliminates a major FIRE cost that burdens American retirees</li>
+            <li><span class="takeaway-check">✦</span> FI means freedom to choose work — FIRE means choosing to stop. Both require the same number</li>
+            <li><span class="takeaway-check">✦</span> Knowing your number transforms every financial decision — it becomes your north star</li>
+          </ul>
+        </div>
+
+        <div class="action-box">
+          <div class="action-box-title">⚡ This Week's Action Items</div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Calculate your current annual expenses — use bank statements and credit card history for accuracy</span></div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Multiply your annual expenses by 25 — write your FI number somewhere visible</span></div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Use the FI Number Calculator in your bonus tools to model different expense scenarios</span></div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Log into your CRA My Account and check your CPP Statement of Contributions to estimate future CPP benefit</span></div>
+        </div>
+      </div>
+      <div class="lesson-footer">
+        <button class="complete-btn" onclick="markComplete(0)" id="complete-0">✓ Mark Lesson Complete</button>
+        <div class="nav-arrows">
+          <button class="nav-arrow" disabled>← Previous</button>
+          <button class="nav-arrow next" onclick="goToLesson(1)">Next →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- LESSON 2 -->
+    <div class="lesson-panel" id="lesson-1">
+      <div class="lesson-hero">
+        <div class="lesson-tag">🍁 Lesson 2 of 4</div>
+        <h1 class="lesson-title">The 4% Rule in Canada — What It Really Means for Canadian Retirees</h1>
+        <p class="lesson-subtitle">The 4% rule is the most cited retirement guideline in the world. But it was built on US data. Here's what changes — and what doesn't — for Canadians.</p>
+        <div class="lesson-meta">
+          <div class="meta-item">⏱ ~8 min read</div><div class="meta-dot"></div>
+          <div class="meta-item">📘 Module 06</div><div class="meta-dot"></div>
+          <div class="meta-item">📊 Canadian Adjustments</div>
+        </div>
+      </div>
+      <div class="lesson-body">
+        <p>The 4% Rule comes from the Trinity Study (1998), which analyzed US stock and bond portfolio performance from 1926–1995. It concluded that withdrawing 4% of your initial portfolio annually — adjusted for inflation — had a 95%+ success rate over 30 years.</p>
+        <p>For Canadians, the rule holds — with some important adjustments.</p>
+
+        <h2>How the 4% Rule Works</h2>
+        <p>Year 1: You retire with $1,000,000. You withdraw $40,000 (4%). Year 2: You withdraw $40,000 × inflation (say 2.5%) = $41,000. Year 3: $41,000 × inflation. And so on — the withdrawal grows with inflation, but the portfolio (invested in equities and bonds) continues to grow alongside it.</p>
+        <p>The math works because diversified equity portfolios have historically returned 7–10% annually. Even after a 4% withdrawal and 2–3% inflation adjustment, the portfolio continues compounding.</p>
+
+        <div class="callout callout-canadian">
+          <div class="callout-label">🍁 The Canadian Adjustments</div>
+          <p><strong>Currency:</strong> Canadian stocks slightly underperformed US stocks historically. A globally diversified ETF (XEQT) solves this — you own the entire world market, not just Canada. <strong>CPP/OAS:</strong> These government benefits reduce the amount you need to withdraw from your portfolio, effectively making the 4% rule more conservative — meaning safer. A Canadian with $1,000/month CPP and $750/month OAS withdraws $21,000/year less from their portfolio, dramatically extending its life. <strong>Healthcare:</strong> No private insurance cost in retirement. <strong>Result:</strong> The 4% rule is slightly more achievable for Canadians than Americans, all else being equal.</p>
+        </div>
+
+        <h2>Safe Withdrawal Rate by Scenario</h2>
+        <table class="data-table">
+          <thead><tr><th>Retirement Age</th><th>Horizon</th><th>Recommended Rate</th><th>Why</th></tr></thead>
+          <tbody>
+            <tr><td>65 (traditional)</td><td>25–30 years</td><td class="good">4.0–4.5%</td><td>Standard Trinity Study range</td></tr>
+            <tr><td>55 (early)</td><td>35–40 years</td><td>3.5–4.0%</td><td>Longer horizon requires more caution</td></tr>
+            <tr><td>45 (very early)</td><td>45–50 years</td><td class="highlight">3.0–3.5%</td><td>Rare sequence-of-returns risk</td></tr>
+            <tr><td>Any age + CPP/OAS</td><td>—</td><td class="good">4.5–5.0%</td><td>Government income reduces portfolio stress</td></tr>
+          </tbody>
+        </table>
+
+        <h2>Sequence of Returns Risk — The Biggest Threat</h2>
+        <p>The 4% rule's main enemy isn't average returns — it's <strong>bad returns early in retirement</strong>. If markets drop 30% in your first two years of retirement and you're withdrawing 4%, your portfolio may not recover even if markets rebound strongly afterward.</p>
+        <p>Canadian mitigation strategies:</p>
+        <ul>
+          <li><strong>The Cash Buffer</strong> — keep 1–2 years of expenses in HISA. Draw from this during down markets so you're not selling equities at a loss</li>
+          <li><strong>The Flexible Withdrawal</strong> — reduce withdrawals by 10–20% in market downturns; return to normal in recoveries</li>
+          <li><strong>The Bond Tent</strong> — hold slightly more bonds (40–50%) in the 5 years before and after retirement, then gradually shift back to equity-heavy as the sequence-of-returns risk window passes</li>
+        </ul>
+
+        <div class="takeaways">
+          <div class="takeaways-label">🎯 Key Takeaways</div>
+          <h3>What You Just Learned</h3>
+          <ul>
+            <li><span class="takeaway-check">✦</span> The 4% rule works for Canadians — global diversification via XEQT solves the Canadian equity underperformance issue</li>
+            <li><span class="takeaway-check">✦</span> CPP and OAS effectively boost your sustainable withdrawal rate by reducing portfolio dependence</li>
+            <li><span class="takeaway-check">✦</span> Earlier retirement requires a more conservative rate (3–3.5%) due to longer time horizons</li>
+            <li><span class="takeaway-check">✦</span> Sequence of returns risk — bad markets early in retirement — is the primary threat to manage</li>
+            <li><span class="takeaway-check">✦</span> A cash buffer of 1–2 years of expenses protects against forced equity selling during downturns</li>
+          </ul>
+        </div>
+
+        <div class="action-box">
+          <div class="action-box-title">⚡ This Week's Action Items</div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Apply your preferred withdrawal rate to your FI number — recalculate if needed (e.g., 3.5% for early retirement)</span></div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Research CPP enhancement benefits — contributions since 2019 are going to a higher-benefit second tier</span></div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Mentally plan your "cash buffer" strategy — how many months of expenses would you hold outside equities in early retirement?</span></div>
+        </div>
+      </div>
+      <div class="lesson-footer">
+        <button class="complete-btn" onclick="markComplete(1)" id="complete-1">✓ Mark Lesson Complete</button>
+        <div class="nav-arrows">
+          <button class="nav-arrow" onclick="goToLesson(0)">← Previous</button>
+          <button class="nav-arrow next" onclick="goToLesson(2)">Next →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- LESSON 3 -->
+    <div class="lesson-panel" id="lesson-2">
+      <div class="lesson-hero">
+        <div class="lesson-tag">🍁 Lesson 3 of 4</div>
+        <h1 class="lesson-title">CPP &amp; OAS Strategy — Maximizing Canada's Government Retirement Income</h1>
+        <p class="lesson-subtitle">CPP and OAS are the two pillars of Canada's public pension system. Most Canadians leave tens of thousands on the table by claiming at the wrong time. Here's the optimal strategy.</p>
+        <div class="lesson-meta">
+          <div class="meta-item">⏱ ~8 min read</div><div class="meta-dot"></div>
+          <div class="meta-item">📘 Module 06</div><div class="meta-dot"></div>
+          <div class="meta-item">🏛️ Maximize Government Income</div>
+        </div>
+      </div>
+      <div class="lesson-body">
+        <p>CPP and OAS are inflation-indexed, government-guaranteed income streams. For most Canadians, they represent $500,000–$800,000 in present-value retirement income. Optimizing when and how you claim them is one of the highest-leverage retirement decisions you'll ever make.</p>
+
+        <h2>Canada Pension Plan (CPP)</h2>
+        <p>CPP replaces a portion of your pre-retirement income based on how much you contributed and for how long. The 2026 maximum CPP at age 65 is approximately <strong>$1,364/month</strong> — but the average Canadian receives around $700–$800/month because most don't max out contributions over a 39-year career.</p>
+
+        <h3>The CPP Timing Decision</h3>
+        <table class="data-table">
+          <thead><tr><th>Claim Age</th><th>Adjustment</th><th>Monthly Amount*</th><th>Annual Amount*</th></tr></thead>
+          <tbody>
+            <tr><td>60 (early)</td><td class="highlight">-36% penalty</td><td>~$490</td><td>~$5,880</td></tr>
+            <tr><td>65 (standard)</td><td>Baseline</td><td class="good">~$765</td><td class="good">~$9,180</td></tr>
+            <tr><td>70 (deferred)</td><td class="good">+42% bonus</td><td class="good">~$1,086</td><td class="good">~$13,032</td></tr>
+          </tbody>
+        </table>
+        <p><em>*Based on average Canadian CPP benefit of ~$765/month at 65</em></p>
+
+        <div class="callout callout-tip">
+          <div class="callout-label">💡 The Break-Even Analysis</div>
+          <p>Deferring CPP from 65 to 70 costs you 5 years of payments (~$54,900) but pays you $321/month more forever. The break-even age — when deferred payments catch up — is approximately <strong>age 82–83</strong>. Canadians who live past 83 (average life expectancy is 83 for men, 85 for women) are financially better off deferring to 70. If your health suggests a shorter lifespan, claiming at 65 or earlier may be optimal.</p>
+        </div>
+
+        <h2>Old Age Security (OAS)</h2>
+        <p>OAS is a universal government pension paid to Canadians 65+ who have lived in Canada for at least 10 years after age 18. The 2026 maximum OAS is approximately <strong>$727/month</strong> at age 65 (indexed quarterly to inflation).</p>
+        <p>Key OAS facts:</p>
+        <ul>
+          <li><strong>No contribution required</strong> — unlike CPP, OAS doesn't depend on work history</li>
+          <li><strong>Residency-based</strong> — 40 years of Canadian residency after 18 = full OAS; partial for fewer years</li>
+          <li><strong>Deferral bonus</strong> — like CPP, you can defer OAS up to age 70 for a 36% permanent increase</li>
+          <li><strong>Clawback threshold</strong> — if your net income exceeds ~$90,997 (2026), OAS is clawed back at 15 cents per dollar above the threshold</li>
+        </ul>
+
+        <div class="callout callout-canadian">
+          <div class="callout-label">🍁 The OAS Clawback Strategy</div>
+          <p>If your retirement income (RRSP withdrawals, pension, investment income) pushes you above the OAS clawback threshold, use these strategies to stay below: withdraw from TFSA instead of RRSP (TFSA income is not counted), split pension income with a spouse, manage RRSP-to-RRIF conversions carefully, and consider Prescribed Rate Loans to shift investment income to a lower-income spouse. The clawback affects higher-income retirees — but with planning, it's largely avoidable.</p>
+        </div>
+
+        <h2>Guaranteed Income Supplement (GIS)</h2>
+        <p>If your retirement income is below approximately $21,000/year (single person, 2026), you may qualify for the <strong>Guaranteed Income Supplement</strong> — an additional tax-free monthly payment up to $1,054/month. GIS is income-tested and reduces as income rises. If you're pursuing a lean FIRE or early retirement with minimal RRSP withdrawals, GIS eligibility in later years can significantly boost your income floor.</p>
+
+        <div class="takeaways">
+          <div class="takeaways-label">🎯 Key Takeaways</div>
+          <h3>What You Just Learned</h3>
+          <ul>
+            <li><span class="takeaway-check">✦</span> CPP at 70 pays 42% more than at 65 — Canadians who live past 82–83 are better off deferring</li>
+            <li><span class="takeaway-check">✦</span> OAS is universal and inflation-indexed — deferring to 70 adds 36% permanently</li>
+            <li><span class="takeaway-check">✦</span> TFSA withdrawals don't count as income — use them strategically to avoid the OAS clawback</li>
+            <li><span class="takeaway-check">✦</span> GIS provides additional tax-free income for low-income retirees — plan RRSP withdrawals carefully if this applies</li>
+            <li><span class="takeaway-check">✦</span> Combined CPP + OAS can provide $1,500–$2,000/month — reducing your portfolio withdrawal requirement significantly</li>
+          </ul>
+        </div>
+
+        <div class="action-box">
+          <div class="action-box-title">⚡ This Week's Action Items</div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Log into My Service Canada Account and check your CPP Statement of Contributions and estimated benefit</span></div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Calculate your break-even age for CPP deferral using your estimated benefit and your family health history</span></div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Note the current OAS clawback threshold and estimate whether your projected retirement income approaches it</span></div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>If eligible, research GIS eligibility thresholds — they could significantly affect your retirement income floor</span></div>
+        </div>
+      </div>
+      <div class="lesson-footer">
+        <button class="complete-btn" onclick="markComplete(2)" id="complete-2">✓ Mark Lesson Complete</button>
+        <div class="nav-arrows">
+          <button class="nav-arrow" onclick="goToLesson(1)">← Previous</button>
+          <button class="nav-arrow next" onclick="goToLesson(3)">Next →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- LESSON 4 -->
+    <div class="lesson-panel" id="lesson-3">
+      <div class="lesson-hero">
+        <div class="lesson-tag">🍁 Lesson 4 of 4</div>
+        <h1 class="lesson-title">Your 10-Year Canadian Wealth Plan — Build the Roadmap</h1>
+        <p class="lesson-subtitle">Everything you've learned across 6 modules comes together here. This is your personal financial operating system — the plan that turns knowledge into wealth.</p>
+        <div class="lesson-meta">
+          <div class="meta-item">⏱ ~9 min read</div><div class="meta-dot"></div>
+          <div class="meta-item">📘 Module 06</div><div class="meta-dot"></div>
+          <div class="meta-item">🗺️ Build the Roadmap</div>
+        </div>
+      </div>
+      <div class="lesson-body">
+        <p>You've now covered the complete Canadian financial system: how the CRA works, how to budget, how to use TFSA/RRSP/FHSA, how to eliminate debt, how to invest, how to run a side hustle, and how to plan for financial independence. The final step is turning that knowledge into a personal decade-long plan.</p>
+
+        <h2>The 5 Financial Stages of a Canadian Wealth Journey</h2>
+        <ol>
+          <li><strong>Stage 1 — Stability</strong>: Emergency fund (3–6 months), basic budget, CRA My Account set up, debt minimum payments automated</li>
+          <li><strong>Stage 2 — Defence</strong>: High-interest debt eliminated, TFSA opened and funded, FHSA opened (if applicable), HST registered (if self-employed)</li>
+          <li><strong>Stage 3 — Offence</strong>: Maxing TFSA annually, RRSP contributions underway, side hustle income flowing, net worth growing</li>
+          <li><strong>Stage 4 — Acceleration</strong>: All registered accounts maximized, non-registered investing started, net worth doubling every 7–10 years via compound growth</li>
+          <li><strong>Stage 5 — Independence</strong>: Portfolio at FI number, CPP/OAS strategy in place, work becomes optional</li>
+        </ol>
+
+        <h2>The 10-Year Milestone Map</h2>
+        <table class="data-table">
+          <thead><tr><th>Year</th><th>Key Milestone</th><th>Module Reference</th></tr></thead>
+          <tbody>
+            <tr><td>Year 1</td><td>Emergency fund complete. Budget automated. CRA My Account verified.</td><td>Module 01</td></tr>
+            <tr><td>Year 1–2</td><td>All high-interest debt eliminated (credit cards, payday loans)</td><td>Module 03</td></tr>
+            <tr><td>Year 2</td><td>TFSA open and funded with XEQT + DRIP enabled. FHSA open.</td><td>Modules 02 &amp; 04</td></tr>
+            <tr><td>Year 2–3</td><td>Side hustle generating $500–$1,500/month. Tax system set up.</td><td>Module 05</td></tr>
+            <tr><td>Year 3–5</td><td>TFSA maxed annually. RRSP contributions underway. Net worth: $50K–$150K</td><td>Modules 02 &amp; 04</td></tr>
+            <tr><td>Year 5–7</td><td>Car loan and OSAP eliminated. Non-registered investing started.</td><td>Module 03</td></tr>
+            <tr><td>Year 7–10</td><td class="good">Net worth: $200K–$500K. FI number in sight. Work becomes optional.</td><td>Module 06</td></tr>
+          </tbody>
+        </table>
+
+        <h2>The Canadian Wealth Acceleration Formula</h2>
+        <p>The three variables that determine how fast you reach FI:</p>
+        <div class="formula-box">
+          Wealth Speed = (Income − Expenses) × Investment Return Rate
+        </div>
+        <p>You control two of the three variables. Investment return rate is largely fixed by the market (7–9% long term for a diversified ETF portfolio). But income and expenses are completely within your control. The highest-leverage actions:</p>
+        <ul>
+          <li><strong>Increase income</strong> — career growth, side hustle, skill development (cybersecurity, tech, trades)</li>
+          <li><strong>Decrease expenses</strong> — the budget audit (Module 01) finds money you didn't know you were losing</li>
+          <li><strong>Close the gap</strong> — every $500/month increase in the gap between income and expenses cuts your time to FI by years</li>
+        </ul>
+
+        <div class="stat-highlight">
+          <div class="stat-box">
+            <div class="stat-box-num">7 yrs</div>
+            <div class="stat-box-label">Time to double your money at 10% annual return (Rule of 72)</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-box-num">$1,000</div>
+            <div class="stat-box-label">Extra monthly savings invested for 20 years at 8% = $589,000</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-box-num">50%</div>
+            <div class="stat-box-label">Savings rate needed to reach FI in approximately 17 years from zero</div>
+          </div>
+        </div>
+
+        <h2>Your Personal CanadaWealthOS Action Plan</h2>
+        <p>Based on everything in this system, here is your complete action priority list — in order:</p>
+        <ol>
+          <li>Set up CRA My Account and verify TFSA room and tax info</li>
+          <li>Build a 3-month emergency fund in a HISA (EQ Bank, Oaken)</li>
+          <li>Eliminate all credit card and high-interest debt using the avalanche method</li>
+          <li>Open TFSA at Wealthsimple Trade → buy XEQT → enable DRIP → automate contributions</li>
+          <li>Open FHSA if you're a first-time buyer — contribute annually regardless of home timeline</li>
+          <li>Open RRSP and contribute to the income-bracket-optimal amount (Module 02)</li>
+          <li>Launch your side hustle → set up two-account system → track deductions from day one</li>
+          <li>Register for HST when revenues approach $25,000 (buffer before mandatory $30K)</li>
+          <li>Calculate your FI number → track net worth monthly → watch it grow</li>
+          <li>Optimize CPP/OAS timing as retirement approaches — consider deferring to 70</li>
+        </ol>
+
+        <div class="callout callout-canadian">
+          <div class="callout-label">🍁 The Final Truth About Canadian Wealth</div>
+          <p>Wealth in Canada is not a function of income. It's a function of <strong>system</strong>. Canadians earning $60,000/year with this system consistently out-accumulate Canadians earning $120,000/year without it. The tools are all here: tax-sheltered accounts that most people leave empty, a healthcare system that enables risk-taking, government pensions that provide a guaranteed floor, and an immigration system that brings motivated, skilled people who build wealth faster than any other demographic. You now have the system. The rest is execution.</p>
+        </div>
+
+        <div class="takeaways">
+          <div class="takeaways-label">🎯 Key Takeaways</div>
+          <h3>What You Just Learned</h3>
+          <ul>
+            <li><span class="takeaway-check">✦</span> Wealth is built in 5 stages: Stability → Defence → Offence → Acceleration → Independence</li>
+            <li><span class="takeaway-check">✦</span> The 10-year milestone map gives you concrete checkpoints from emergency fund to FI number in sight</li>
+            <li><span class="takeaway-check">✦</span> Wealth speed = (Income − Expenses) × Return Rate — you control two of three variables</li>
+            <li><span class="takeaway-check">✦</span> Every $500/month increase in savings rate meaningfully accelerates your FI date</li>
+            <li><span class="takeaway-check">✦</span> The system is complete — wealth in Canada is a function of execution, not luck or income alone</li>
+          </ul>
+        </div>
+
+        <div class="action-box">
+          <div class="action-box-title">⚡ Your Final CanadaWealthOS Actions</div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Identify which of the 5 wealth stages you're currently in — write it down</span></div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Write your FI number and your current net worth — calculate the gap and how long to close it</span></div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Pick the single highest-leverage action from the 10-step list above and complete it this week</span></div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Set a monthly "net worth date" — the same day each month you update your numbers and track progress</span></div>
+        </div>
+      </div>
+      <div class="lesson-footer">
+        <button class="complete-btn" onclick="markComplete(3)" id="complete-3">✓ Mark Lesson Complete</button>
+        <div class="nav-arrows">
+          <button class="nav-arrow" onclick="goToLesson(2)">← Previous</button>
+          <button class="nav-arrow next" disabled>Course Complete 🍁</button>
+        </div>
+      </div>
+
+      <div class="final-banner" id="completeBanner">
+        <span class="final-maple">🍁</span>
+        <div class="final-title">CanadaWealthOS — Complete</div>
+        <div class="final-sub-title">6 Modules. 24 Lessons. One System.</div>
+        <p class="final-sub">You've done something most Canadians never do — you built a complete financial operating system for your life. The knowledge in these modules, consistently applied, is worth multiples of what you invested in this course. Now go build the wealth.</p>
+        <div class="final-actions">
+          <a href="members.html" class="final-btn-primary">🏆 Back to Dashboard</a>
+          <a href="tools.html" class="final-btn-secondary">Open Your Tools →</a>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  const READING_TIMES=['~9 min read','~8 min read','~8 min read','~9 min read'];
+  const LESSON_TITLES=['Your FI Number','The 4% Rule in Canada','CPP & OAS Strategy','Your 10-Year Wealth Plan'];
+  let currentLesson=0, completed=new Array(4).fill(false);
+  try{const s=JSON.parse(localStorage.getItem('cwo_m06')||'{}');if(s.completed)completed=s.completed;if(s.lesson!==undefined)currentLesson=s.lesson;}catch(e){}
+  function saveState(){try{localStorage.setItem('cwo_m06',JSON.stringify({completed,lesson:currentLesson}));}catch(e){}}
+  function goToLesson(i){
+    document.getElementById('lesson-'+currentLesson).classList.remove('active');
+    document.getElementById('nav-'+currentLesson).classList.remove('active');
+    currentLesson=i;
+    document.getElementById('lesson-'+i).classList.add('active');
+    document.getElementById('nav-'+i).classList.add('active');
+    document.getElementById('contentArea').scrollTo({top:0,behavior:'smooth'});
+    window.scrollTo({top:0,behavior:'smooth'});
+    document.getElementById('readingTimeDisplay').textContent=READING_TIMES[i];
+    document.getElementById('currentLessonTitle').textContent=LESSON_TITLES[i];
+    if(completed[i]){const b=document.getElementById('complete-'+i);b.textContent='✓ Completed';b.classList.add('done');}
+    updateProgress();saveState();
+  }
+  function markComplete(i){
+    completed[i]=true;
+    const b=document.getElementById('complete-'+i);b.textContent='✓ Completed';b.classList.add('done');
+    document.getElementById('nav-'+i).classList.add('completed');
+    if(i===3&&completed.every(Boolean)){setTimeout(()=>{document.getElementById('completeBanner').classList.add('visible');document.getElementById('completeBanner').scrollIntoView({behavior:'smooth',block:'center'});},600);}
+    updateProgress();saveState();
+  }
+  function updateProgress(){
+    const c=completed.filter(Boolean).length;
+    document.getElementById('moduleProgressFill').style.width=(c/4*100)+'%';
+    document.getElementById('navProgressFill').style.width=(c/4*100)+'%';
+    document.getElementById('progressText').textContent=c+' / 4';
+  }
+  function toggleCheck(el){el.classList.toggle('checked');el.textContent=el.classList.contains('checked')?'✓':'';}
+  goToLesson(currentLesson);updateProgress();
+</script>
+</body>
+</html>

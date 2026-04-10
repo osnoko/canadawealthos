@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 05 — Side Hustle & Self-Employment | CanadaWealthOS</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --red: #C0392B; --red-deep: #922B21; --red-glow: rgba(192,57,43,0.15);
+  --gold: #D4A017; --gold-glow: rgba(212,160,23,0.12);
+  --ink: #0F0F0F; --ink-soft: #1E1E1E; --paper: #F7F3EE; --paper-dark: #EDE8E0;
+  --text: #1A1208; --text-mid: #4A3F2F; --text-soft: #7A6E5F;
+  --border: rgba(26,18,8,0.1); --success: #1A6B3C; --lesson-w: 720px;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Outfit', sans-serif; background: var(--paper); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+body::after { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; opacity: 0.4; }
+.topnav { position: sticky; top: 0; z-index: 100; height: 56px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; background: rgba(247,243,238,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+.nav-left { display: flex; align-items: center; gap: 20px; }
+.nav-back { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; color: var(--text-soft); text-decoration: none; padding: 6px 12px; border: 1px solid var(--border); border-radius: 4px; transition: all 0.2s; background: white; }
+.nav-back:hover { border-color: var(--red); color: var(--red); background: var(--red-glow); }
+.nav-divider { width: 1px; height: 20px; background: var(--border); }
+.nav-breadcrumb { font-size: 12px; color: var(--text-soft); letter-spacing: 0.04em; }
+.nav-breadcrumb span { color: var(--red); font-weight: 600; }
+.reading-progress-wrap { display: flex; align-items: center; gap: 8px; }
+.reading-time { font-size: 11px; color: var(--text-soft); font-family: 'JetBrains Mono', monospace; }
+.nav-progress-bar { width: 80px; height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.nav-progress-fill { height: 100%; background: linear-gradient(90deg, var(--red), var(--gold)); border-radius: 2px; width: 0%; transition: width 0.3s ease; }
+.layout { display: flex; min-height: calc(100vh - 56px); }
+.sidebar { width: 280px; flex-shrink: 0; position: sticky; top: 56px; height: calc(100vh - 56px); overflow-y: auto; background: white; border-right: 1px solid var(--border); padding: 32px 0; }
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+.sidebar-module-label { padding: 0 24px 16px; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-soft); font-weight: 600; }
+.sidebar-module-title { padding: 0 24px 24px; font-family: 'Lora', serif; font-size: 15px; font-weight: 700; color: var(--text); line-height: 1.4; border-bottom: 1px solid var(--border); margin-bottom: 8px; }
+.lesson-nav-item { display: flex; align-items: flex-start; gap: 12px; padding: 14px 24px; cursor: pointer; transition: background 0.2s; border-left: 3px solid transparent; }
+.lesson-nav-item:hover { background: var(--paper); }
+.lesson-nav-item.active { background: var(--red-glow); border-left-color: var(--red); }
+.lesson-num-badge { width: 24px; height: 24px; border-radius: 50%; background: var(--paper-dark); display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 500; color: var(--text-soft); flex-shrink: 0; margin-top: 1px; transition: all 0.2s; }
+.lesson-nav-item.active .lesson-num-badge { background: var(--red); color: white; }
+.lesson-nav-item.completed .lesson-num-badge { background: var(--success); color: white; }
+.lesson-nav-text { flex: 1; }
+.lesson-nav-title { font-size: 13px; font-weight: 600; color: var(--text); line-height: 1.3; margin-bottom: 3px; }
+.lesson-nav-meta { font-size: 11px; color: var(--text-soft); font-family: 'JetBrains Mono', monospace; }
+.lesson-nav-item.active .lesson-nav-title { color: var(--red-deep); }
+.sidebar-footer { padding: 24px; margin-top: 16px; border-top: 1px solid var(--border); }
+.module-progress-label { font-size: 11px; color: var(--text-soft); margin-bottom: 8px; display: flex; justify-content: space-between; }
+.module-progress-bar { height: 4px; background: var(--paper-dark); border-radius: 2px; overflow: hidden; }
+.module-progress-fill { height: 100%; background: linear-gradient(90deg, var(--red), var(--gold)); border-radius: 2px; transition: width 0.6s ease; }
+.content-area { flex: 1; overflow-y: auto; padding: 0 0 80px; }
+.lesson-panel { display: none; animation: lessonFade 0.4s ease both; }
+.lesson-panel.active { display: block; }
+@keyframes lessonFade { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+.lesson-hero { padding: 56px 64px 48px; max-width: var(--lesson-w); margin: 0 auto; position: relative; }
+.lesson-hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--red), var(--gold), transparent); }
+.lesson-tag { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; background: var(--red-glow); border: 1px solid rgba(192,57,43,0.2); border-radius: 20px; font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--red); margin-bottom: 20px; }
+.lesson-title { font-family: 'Lora', serif; font-size: clamp(26px, 4vw, 38px); font-weight: 700; line-height: 1.2; color: var(--text); margin-bottom: 16px; }
+.lesson-subtitle { font-size: 17px; color: var(--text-mid); line-height: 1.65; font-weight: 300; max-width: 600px; margin-bottom: 28px; }
+.lesson-meta { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+.meta-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-soft); font-family: 'JetBrains Mono', monospace; }
+.meta-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--border); }
+.lesson-body { padding: 0 64px 48px; max-width: var(--lesson-w); margin: 0 auto; }
+.lesson-body h2 { font-family: 'Lora', serif; font-size: 22px; font-weight: 700; color: var(--text); margin: 48px 0 16px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+.lesson-body h3 { font-family: 'Lora', serif; font-size: 17px; font-weight: 600; color: var(--text); margin: 32px 0 12px; }
+.lesson-body p { font-size: 16px; line-height: 1.85; color: var(--text-mid); margin-bottom: 20px; }
+.lesson-body strong { color: var(--text); font-weight: 600; }
+.lesson-body ul, .lesson-body ol { margin: 16px 0 24px 20px; }
+.lesson-body li { font-size: 16px; line-height: 1.75; color: var(--text-mid); margin-bottom: 8px; padding-left: 8px; }
+.lesson-body ul li::marker { color: var(--red); }
+.lesson-body ol li::marker { color: var(--red); font-weight: 600; font-family: 'JetBrains Mono', monospace; font-size: 13px; }
+.callout { border-radius: 4px; padding: 20px 24px; margin: 28px 0; border-left: 4px solid; }
+.callout-canadian { background: linear-gradient(135deg, rgba(192,57,43,0.06), rgba(212,160,23,0.04)); border-color: var(--red); }
+.callout-tip { background: var(--gold-glow); border-color: var(--gold); }
+.callout-warning { background: rgba(231,76,60,0.06); border-color: #E74C3C; }
+.callout-fact { background: rgba(26,107,60,0.06); border-color: var(--success); }
+.callout-label { font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+.callout-canadian .callout-label { color: var(--red); }
+.callout-tip .callout-label { color: var(--gold); }
+.callout-warning .callout-label { color: #C0392B; }
+.callout-fact .callout-label { color: var(--success); }
+.callout p { font-size: 14.5px; margin-bottom: 0; line-height: 1.7; }
+.data-table { width: 100%; border-collapse: collapse; margin: 24px 0; font-size: 14px; border-radius: 6px; overflow: hidden; border: 1px solid var(--border); }
+.data-table th { background: var(--ink-soft); color: white; padding: 12px 16px; text-align: left; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; font-family: 'JetBrains Mono', monospace; }
+.data-table td { padding: 12px 16px; border-bottom: 1px solid var(--border); color: var(--text-mid); vertical-align: top; }
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:nth-child(even) td { background: var(--paper); }
+.data-table tr:hover td { background: var(--red-glow); }
+.data-table .good { color: var(--success); font-weight: 600; }
+.data-table .bad { color: var(--red); font-weight: 600; }
+.data-table .highlight { color: var(--red); font-weight: 600; }
+.takeaways { background: var(--ink); border-radius: 8px; padding: 32px 36px; margin: 40px 0; position: relative; overflow: hidden; }
+.takeaways::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--red), var(--gold)); }
+.takeaways-label { font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); font-weight: 700; margin-bottom: 16px; }
+.takeaways h3 { font-family: 'Lora', serif; font-size: 18px; color: white; margin-bottom: 16px; font-weight: 700; }
+.takeaways ul { margin: 0; padding: 0; list-style: none; }
+.takeaways li { color: rgba(255,255,255,0.8); font-size: 14.5px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.07); display: flex; align-items: flex-start; gap: 10px; line-height: 1.6; }
+.takeaways li:last-child { border-bottom: none; }
+.takeaway-check { color: var(--gold); font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+.action-box { background: white; border: 1px solid var(--border); border-radius: 6px; padding: 28px 32px; margin: 32px 0; }
+.action-box-title { font-family: 'Lora', serif; font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 16px; }
+.action-item { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 14px; color: var(--text-mid); line-height: 1.6; }
+.action-item:last-child { border-bottom: none; }
+.action-checkbox { width: 18px; height: 18px; border: 2px solid var(--border); border-radius: 4px; flex-shrink: 0; margin-top: 1px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; font-size: 11px; color: transparent; }
+.action-checkbox.checked { background: var(--success); border-color: var(--success); color: white; }
+.lesson-footer { padding: 40px 64px 0; max-width: var(--lesson-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 20px; border-top: 1px solid var(--border); flex-wrap: wrap; }
+.complete-btn { display: flex; align-items: center; gap: 8px; padding: 14px 28px; background: var(--red); color: white; border: none; border-radius: 4px; font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+.complete-btn:hover { background: var(--red-deep); transform: translateY(-1px); }
+.complete-btn.done { background: var(--success); cursor: default; transform: none; }
+.nav-arrows { display: flex; gap: 10px; }
+.nav-arrow { display: flex; align-items: center; gap: 6px; padding: 12px 20px; border: 1px solid var(--border); border-radius: 4px; background: white; font-size: 13px; font-weight: 500; color: var(--text-mid); cursor: pointer; transition: all 0.2s; font-family: 'Outfit', sans-serif; }
+.nav-arrow:hover:not(:disabled) { border-color: var(--red); color: var(--red); background: var(--red-glow); }
+.nav-arrow:disabled { opacity: 0.3; cursor: not-allowed; }
+.nav-arrow.next { background: var(--ink); border-color: var(--ink); color: white; }
+.nav-arrow.next:hover:not(:disabled) { background: var(--red-deep); border-color: var(--red-deep); color: white; }
+.module-complete-banner { display: none; background: linear-gradient(135deg, var(--ink), var(--ink-soft)); border-radius: 8px; padding: 36px 40px; margin: 40px 64px; max-width: calc(var(--lesson-w) - 128px); margin-left: auto; margin-right: auto; text-align: center; position: relative; overflow: hidden; }
+.module-complete-banner::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--red), var(--gold), var(--red)); }
+.module-complete-banner.visible { display: block; }
+.complete-maple { font-size: 48px; margin-bottom: 16px; display: block; }
+.complete-title { font-family: 'Lora', serif; font-size: 24px; font-weight: 700; color: white; margin-bottom: 12px; }
+.complete-sub { font-size: 14px; color: rgba(255,255,255,0.6); line-height: 1.65; margin-bottom: 24px; }
+.complete-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.complete-btn-next { padding: 12px 28px; background: var(--red); color: white; border: none; border-radius: 4px; font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 600; text-decoration: none; display: inline-block; transition: background 0.2s; }
+.complete-btn-next:hover { background: var(--red-deep); }
+.complete-btn-dashboard { padding: 12px 28px; background: transparent; color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 500; text-decoration: none; display: inline-block; transition: all 0.2s; }
+.complete-btn-dashboard:hover { border-color: rgba(255,255,255,0.5); color: white; }
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .lesson-hero, .lesson-body, .lesson-footer { padding-left: 24px; padding-right: 24px; }
+  .module-complete-banner { margin-left: 24px; margin-right: 24px; }
+  .topnav { padding: 0 16px; }
+  .nav-breadcrumb { display: none; }
+}
+</style>
+</head>
+<body>
+<nav class="topnav">
+  <div class="nav-left">
+    <a href="members.html" class="nav-back">← Dashboard</a>
+    <div class="nav-divider"></div>
+    <div class="nav-breadcrumb">Module 05 — <span id="currentLessonTitle">CRA Self-Employment</span></div>
+  </div>
+  <div class="nav-right">
+    <div class="reading-progress-wrap">
+      <span class="reading-time" id="readingTimeDisplay">~8 min read</span>
+      <div class="nav-progress-bar"><div class="nav-progress-fill" id="navProgressFill"></div></div>
+    </div>
+  </div>
+</nav>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-module-label">🍁 Module 05</div>
+    <div class="sidebar-module-title">Side Hustle &amp; Self-Employment</div>
+    <div class="lesson-nav-item active" id="nav-0" onclick="goToLesson(0)">
+      <div class="lesson-num-badge">1</div>
+      <div class="lesson-nav-text"><div class="lesson-nav-title">CRA Self-Employment</div><div class="lesson-nav-meta">~8 min · Know the rules</div></div>
+    </div>
+    <div class="lesson-nav-item" id="nav-1" onclick="goToLesson(1)">
+      <div class="lesson-num-badge">2</div>
+      <div class="lesson-nav-text"><div class="lesson-nav-title">HST — When to Register</div><div class="lesson-nav-meta">~7 min · The $30K threshold</div></div>
+    </div>
+    <div class="lesson-nav-item" id="nav-2" onclick="goToLesson(2)">
+      <div class="lesson-num-badge">3</div>
+      <div class="lesson-nav-text"><div class="lesson-nav-title">Top Deductions T2125</div><div class="lesson-nav-meta">~9 min · Keep more of what you earn</div></div>
+    </div>
+    <div class="lesson-nav-item" id="nav-3" onclick="goToLesson(3)">
+      <div class="lesson-num-badge">4</div>
+      <div class="lesson-nav-text"><div class="lesson-nav-title">Side Hustle Ideas Canada</div><div class="lesson-nav-meta">~8 min · What pays in 2026</div></div>
+    </div>
+    <div class="sidebar-footer">
+      <div class="module-progress-label"><span>Module progress</span><span id="progressText">0 / 4</span></div>
+      <div class="module-progress-bar"><div class="module-progress-fill" id="moduleProgressFill" style="width:0%"></div></div>
+    </div>
+  </aside>
+
+  <main class="content-area" id="contentArea">
+
+    <!-- LESSON 1 -->
+    <div class="lesson-panel active" id="lesson-0">
+      <div class="lesson-hero">
+        <div class="lesson-tag">🍁 Lesson 1 of 4</div>
+        <h1 class="lesson-title">CRA Self-Employment Rules — What Every Canadian Side Hustler Must Know</h1>
+        <p class="lesson-subtitle">The moment you earn income outside an employer, you're self-employed in the eyes of the CRA. The rules aren't complicated — but ignoring them is expensive.</p>
+        <div class="lesson-meta">
+          <div class="meta-item">⏱ ~8 min read</div><div class="meta-dot"></div>
+          <div class="meta-item">📘 Module 05</div><div class="meta-dot"></div>
+          <div class="meta-item">📋 Know the Rules</div>
+        </div>
+      </div>
+      <div class="lesson-body">
+        <p>7.4 million Canadians now run a side hustle. Most have no idea how the CRA views their income, what they must report, or what they can deduct. This lesson fixes that.</p>
+
+        <h2>Are You Self-Employed? The CRA Definition</h2>
+        <p>The CRA considers you self-employed if you earn income from any activity where you set your own hours, determine your own methods, use your own tools, and take on financial risk. This includes freelancing, gig work (Uber, DoorDash, TaskRabbit), selling online (Etsy, Shopify, eBay), content creation (YouTube, sponsorships, Patreon), Airbnb rental income, and any service provided for payment as a non-employee.</p>
+
+        <div class="callout callout-warning">
+          <div class="callout-label">⚠️ There Is No Minimum Threshold</div>
+          <p>Canada has no minimum self-employment income before you must report. If you earn $1 in self-employment income, it must be reported on your T1 using Form T2125. The CRA receives payment data from PayPal, Stripe, Amazon, Etsy, and gig platforms. Unreported income is a CRA audit trigger.</p>
+        </div>
+
+        <h2>The CPP Double Hit</h2>
+        <p>As an employee, your employer matches your CPP contributions. As a self-employed person, you pay <strong>both the employee and employer portions</strong> — effectively doubling your rate to 11.9% on net self-employment income up to the Year's Maximum Pensionable Earnings.</p>
+
+        <table class="data-table">
+          <thead><tr><th>Contribution</th><th>Employee Rate</th><th>Self-Employed Rate</th></tr></thead>
+          <tbody>
+            <tr><td>CPP</td><td>5.95%</td><td class="bad">11.9% (both sides)</td></tr>
+            <tr><td>EI Premium</td><td>1.66%</td><td class="good">Exempt (no EI coverage)</td></tr>
+            <tr><td>Income Tax</td><td>Withheld by employer</td><td class="bad">Must remit yourself</td></tr>
+          </tbody>
+        </table>
+
+        <div class="callout callout-tip">
+          <div class="callout-label">💡 The Tax Reserve Rule</div>
+          <p>Set aside <strong>28–30% of every self-employment payment</strong> in a separate account the day you receive it. This covers income tax at your marginal rate plus the CPP double contribution. Never touch this account until tax time. This one habit eliminates the single biggest financial shock self-employed Canadians face.</p>
+        </div>
+
+        <h2>Form T2125 — Your Business Tax Summary</h2>
+        <p>All self-employment income and expenses are reported on <strong>Form T2125 (Statement of Business or Professional Activities)</strong>, filed as part of your annual T1 return. It captures gross revenue, all deductible expenses, net income, home office use, and vehicle expenses. Net income from T2125 flows to your T1 and is subject to both income tax and CPP — which is exactly why every deduction you claim reduces both simultaneously.</p>
+
+        <div class="callout callout-canadian">
+          <div class="callout-label">🍁 Sole Proprietor vs. Incorporation</div>
+          <p>You don't need to incorporate to be self-employed. You can operate as a sole proprietor under your legal name and report income on T2125 — no registration needed. If you want to use a business name, register it with ServiceOntario for $60. Incorporating typically makes financial sense only when annual net profit exceeds $50,000–$100,000 and you want to access the small business tax rate of 12.2% in Ontario.</p>
+        </div>
+
+        <div class="takeaways">
+          <div class="takeaways-label">🎯 Key Takeaways</div>
+          <h3>What You Just Learned</h3>
+          <ul>
+            <li><span class="takeaway-check">✦</span> All self-employment income must be reported in Canada — there is no minimum threshold</li>
+            <li><span class="takeaway-check">✦</span> Self-employed Canadians pay both sides of CPP (11.9%) — plan for this from day one</li>
+            <li><span class="takeaway-check">✦</span> Set aside 28–30% of every payment in a separate tax reserve account immediately</li>
+            <li><span class="takeaway-check">✦</span> Form T2125 captures income and deductions — net income is what you're taxed on</li>
+            <li><span class="takeaway-check">✦</span> Every dollar deducted reduces both income tax AND CPP contributions simultaneously</li>
+          </ul>
+        </div>
+
+        <div class="action-box">
+          <div class="action-box-title">⚡ This Week's Action Items</div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Open a separate savings account labeled "Tax Reserve" — transfer 28% of every self-employment payment here</span></div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Start a simple income log — date, client/source, amount for every payment received</span></div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Download Form T2125 from canada.ca and review the expense categories that apply to your business</span></div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Check if you owed over $3,000 in self-employment tax last year — if so, you may need to pay quarterly instalments</span></div>
+        </div>
+      </div>
+      <div class="lesson-footer">
+        <button class="complete-btn" onclick="markComplete(0)" id="complete-0">✓ Mark Lesson Complete</button>
+        <div class="nav-arrows">
+          <button class="nav-arrow" disabled>← Previous</button>
+          <button class="nav-arrow next" onclick="goToLesson(1)">Next →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- LESSON 2 -->
+    <div class="lesson-panel" id="lesson-1">
+      <div class="lesson-hero">
+        <div class="lesson-tag">🍁 Lesson 2 of 4</div>
+        <h1 class="lesson-title">HST Registration — The $30,000 Rule Canadian Side Hustlers Must Know</h1>
+        <p class="lesson-subtitle">Missing the HST registration threshold is a CRA compliance issue. Registering voluntarily before the threshold can save you money. Here's the full picture.</p>
+        <div class="lesson-meta">
+          <div class="meta-item">⏱ ~7 min read</div><div class="meta-dot"></div>
+          <div class="meta-item">📘 Module 05</div><div class="meta-dot"></div>
+          <div class="meta-item">🧾 The $30K Threshold</div>
+        </div>
+      </div>
+      <div class="lesson-body">
+        <p>Most new self-employed Canadians don't think about HST until they're forced to register. By then, they may have missed the threshold, charged clients without a valid BN, or failed to collect when required.</p>
+
+        <h2>The $30,000 Rule</h2>
+        <p>You must register for a GST/HST account once your total taxable revenues exceed <strong>$30,000 in any single calendar quarter, or over four consecutive calendar quarters</strong>. Once you hit this threshold, register within 29 days and begin charging HST immediately.</p>
+
+        <div class="callout callout-warning">
+          <div class="callout-label">⚠️ The Threshold Is Cumulative</div>
+          <p>The $30,000 threshold counts ALL your business activities combined — freelancing, Etsy, Uber, Airbnb. Many multi-income Canadians hit the threshold faster than expected without realizing it. Failing to register on time means the CRA can hold you responsible for the HST you should have collected — retroactively.</p>
+        </div>
+
+        <h2>HST Rates by Province (2026)</h2>
+        <table class="data-table">
+          <thead><tr><th>Province</th><th>Rate</th><th>Note</th></tr></thead>
+          <tbody>
+            <tr><td>Ontario</td><td class="highlight">13% HST</td><td>Combined federal + provincial</td></tr>
+            <tr><td>Alberta</td><td class="good">5% GST only</td><td>No provincial sales tax</td></tr>
+            <tr><td>BC</td><td>5% GST + 7% PST</td><td>Separate systems</td></tr>
+            <tr><td>Quebec</td><td>5% GST + 9.975% QST</td><td>Separate systems</td></tr>
+            <tr><td>NS / NB / NL / PEI</td><td class="bad">15% HST</td><td>Highest combined rate</td></tr>
+          </tbody>
+        </table>
+
+        <h2>Why Register Voluntarily Before $30,000?</h2>
+        <p>Voluntary registration makes sense when:</p>
+        <ul>
+          <li><strong>Your clients are businesses</strong> — B2B clients claim the HST you charge as an Input Tax Credit (ITC), so it costs them nothing. Many actually prefer HST-registered suppliers</li>
+          <li><strong>You have significant business expenses</strong> — once registered, you claim ITCs on HST paid for all business purchases, often generating a net refund</li>
+          <li><strong>You're approaching $30K quickly</strong> — register early to avoid the compliance scramble</li>
+        </ul>
+
+        <div class="callout callout-tip">
+          <div class="callout-label">💡 The Quick Method</div>
+          <p>If annual revenues are under $400,000, you may qualify for the HST Quick Method — remit a flat percentage of gross revenue (4.4% for Ontario service businesses) instead of tracking every ITC individually. For businesses with few expenses, this simplifies HST filing dramatically and sometimes results in keeping a small portion of the HST collected.</p>
+        </div>
+
+        <div class="callout callout-canadian">
+          <div class="callout-label">🍁 How to Register</div>
+          <p>Register online through CRA My Business Account at canada.ca — free, takes 10 minutes, processes in about 5 business days. You'll receive a Business Number (BN) ending in RT0001. Once registered: charge applicable HST on all taxable sales, show your BN on invoices, file quarterly or annual HST returns, and remit net HST (collected minus ITCs) to the CRA.</p>
+        </div>
+
+        <div class="takeaways">
+          <div class="takeaways-label">🎯 Key Takeaways</div>
+          <h3>What You Just Learned</h3>
+          <ul>
+            <li><span class="takeaway-check">✦</span> Register for HST once combined revenues from all business activities exceed $30,000</li>
+            <li><span class="takeaway-check">✦</span> The threshold is cumulative across all income streams — not per business</li>
+            <li><span class="takeaway-check">✦</span> Voluntary registration before $30K makes sense if you have significant business expenses</li>
+            <li><span class="takeaway-check">✦</span> Ontario rate is 13% HST — charge this on all taxable services and products</li>
+            <li><span class="takeaway-check">✦</span> The Quick Method simplifies HST filing for service businesses under $400K revenue</li>
+          </ul>
+        </div>
+
+        <div class="action-box">
+          <div class="action-box-title">⚡ This Week's Action Items</div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Add up all your self-employment revenue streams for the past 12 months — are you approaching $30,000?</span></div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>If over $30K, register at canada.ca/cra-my-business-account immediately</span></div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Research the HST Quick Method and whether it applies to your business type</span></div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Update your invoice template to include your BN and HST amount as a separate line item</span></div>
+        </div>
+      </div>
+      <div class="lesson-footer">
+        <button class="complete-btn" onclick="markComplete(1)" id="complete-1">✓ Mark Lesson Complete</button>
+        <div class="nav-arrows">
+          <button class="nav-arrow" onclick="goToLesson(0)">← Previous</button>
+          <button class="nav-arrow next" onclick="goToLesson(2)">Next →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- LESSON 3 -->
+    <div class="lesson-panel" id="lesson-2">
+      <div class="lesson-hero">
+        <div class="lesson-tag">🍁 Lesson 3 of 4</div>
+        <h1 class="lesson-title">Top T2125 Deductions — Keep More of What You Earn</h1>
+        <p class="lesson-subtitle">CRA allows you to deduct all reasonable expenses incurred to earn self-employment income. Most Canadians claim 30–50% less than they're entitled to. Here's the full list.</p>
+        <div class="lesson-meta">
+          <div class="meta-item">⏱ ~9 min read</div><div class="meta-dot"></div>
+          <div class="meta-item">📘 Module 05</div><div class="meta-dot"></div>
+          <div class="meta-item">💰 Keep More of What You Earn</div>
+        </div>
+      </div>
+      <div class="lesson-body">
+        <p>The CRA allows you to deduct any expense that is "reasonable" and incurred to earn business income. The key word is <em>reasonable</em> — the expense must have a genuine business purpose, and if it has both personal and business use, only the business portion is deductible.</p>
+
+        <h2>The Major T2125 Deduction Categories</h2>
+
+        <h3>1. Home Office (Business Use of Home)</h3>
+        <p>If you work from home, you can deduct a portion of home expenses proportional to the space used exclusively for business. Calculate your home office percentage:</p>
+        <p><strong>Formula:</strong> (Office square footage ÷ Total home square footage) × 100 = Business use %</p>
+        <p>Apply this percentage to: rent or mortgage interest, property tax, heat, electricity, home insurance, and internet.</p>
+
+        <div class="callout callout-tip">
+          <div class="callout-label">💡 The Dedicated Space Rule</div>
+          <p>The CRA requires the home office space be used <em>exclusively and regularly</em> for business. A kitchen table doesn't qualify. A spare bedroom used only as a home office does. Measure it accurately — the CRA can request floor plans during an audit. A 150 sq ft office in a 1,200 sq ft home = 12.5% deductible on all eligible home expenses.</p>
+        </div>
+
+        <h3>2. Vehicle Expenses</h3>
+        <p>If you use a vehicle for business (client visits, supply runs, delivery, gig driving), you can deduct the business-use percentage of all vehicle costs: gas, insurance, maintenance, licensing, and either lease payments or Capital Cost Allowance (depreciation) on a purchased vehicle.</p>
+        <p><strong>Key requirement:</strong> Keep a mileage log showing date, destination, business purpose, and km driven for every business trip. The CRA considers this the most important documentation for vehicle deductions.</p>
+
+        <h3>3. Office Supplies &amp; Equipment</h3>
+        <p>Deductible immediately: pens, paper, printer ink, postage, packaging materials, small tools under $500. Equipment over $500 (laptop, camera, printer) is typically depreciated over time using Capital Cost Allowance (CCA) — though there are immediate expensing rules that may allow 100% deduction in year one for eligible equipment.</p>
+
+        <h3>4. Phone &amp; Internet</h3>
+        <p>The business-use portion of your phone and internet bills is fully deductible. If you use your phone 60% for business, deduct 60% of your monthly bill. Keep 2–3 months of bills as documentation. A dedicated business line is 100% deductible.</p>
+
+        <h3>5. Professional Services</h3>
+        <p>Fully deductible: accountant fees for business tax preparation, lawyer fees for business contracts, bookkeeper fees. Your personal tax return preparation is not deductible — but the portion attributable to your T2125 is.</p>
+
+        <h3>6. Advertising &amp; Marketing</h3>
+        <p>Fully deductible: website hosting, domain registration, social media advertising, Google Ads, business cards, logo design, photography for business use, CanadaWealthOS and similar educational courses directly related to your business.</p>
+
+        <h3>7. Software &amp; Subscriptions</h3>
+        <p>Any software used for business is deductible: accounting software (QuickBooks, Wave), design tools (Canva Pro, Adobe), project management (Notion, Asana), cloud storage (Google Drive, Dropbox), video editing tools (CapCut Pro, DaVinci). Keep receipts and document the business purpose for each subscription.</p>
+
+        <h3>8. Meals &amp; Entertainment</h3>
+        <p>Only <strong>50% deductible</strong> — and only for meals with clients or business partners where business is discussed. Personal meals are never deductible. Keep receipts with the business purpose and attendees written on the back.</p>
+
+        <table class="data-table">
+          <thead><tr><th>Expense Type</th><th>Deductibility</th><th>Key Requirement</th></tr></thead>
+          <tbody>
+            <tr><td>Home Office</td><td class="good">% of home costs</td><td>Exclusive business use, calculate sq ft</td></tr>
+            <tr><td>Vehicle</td><td class="good">% of vehicle costs</td><td>Mileage log required</td></tr>
+            <tr><td>Phone &amp; Internet</td><td class="good">Business % only</td><td>Estimate business use honestly</td></tr>
+            <tr><td>Office Supplies</td><td class="good">100%</td><td>Must be for business use</td></tr>
+            <tr><td>Software/Subscriptions</td><td class="good">100%</td><td>Business purpose documented</td></tr>
+            <tr><td>Professional Services</td><td class="good">100%</td><td>Business-related only</td></tr>
+            <tr><td>Advertising/Marketing</td><td class="good">100%</td><td>Must promote the business</td></tr>
+            <tr><td>Meals &amp; Entertainment</td><td class="bad">50% only</td><td>Client/business purpose required</td></tr>
+          </tbody>
+        </table>
+
+        <div class="callout callout-canadian">
+          <div class="callout-label">🍁 The Receipt Retention Rule</div>
+          <p>The CRA requires you to keep all business receipts and records for <strong>6 years</strong> from the end of the tax year they relate to. Digital copies are accepted — scan or photograph every receipt and store in a dedicated folder (Google Drive, Dropbox). Apps like Wave and Dext make receipt capture effortless. Missing receipts during an audit = denied deductions.</p>
+        </div>
+
+        <div class="takeaways">
+          <div class="takeaways-label">🎯 Key Takeaways</div>
+          <h3>What You Just Learned</h3>
+          <ul>
+            <li><span class="takeaway-check">✦</span> Home office deduction = % of home expenses matching your office's share of total floor space</li>
+            <li><span class="takeaway-check">✦</span> Vehicle deductions require a mileage log — this is the CRA's most requested documentation</li>
+            <li><span class="takeaway-check">✦</span> Phone, internet, software, and marketing expenses are 100% deductible (business portion)</li>
+            <li><span class="takeaway-check">✦</span> Meals and entertainment are only 50% deductible — and only with genuine business purpose</li>
+            <li><span class="takeaway-check">✦</span> Keep all receipts digitally for 6 years — missing receipts = denied deductions in an audit</li>
+          </ul>
+        </div>
+
+        <div class="action-box">
+          <div class="action-box-title">⚡ This Week's Action Items</div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Measure your home office space and calculate your business-use percentage</span></div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Download a mileage log app (MileIQ or TripLog) and start tracking every business drive today</span></div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>List every subscription and software you pay for — identify which are business deductible</span></div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Set up a digital receipt folder (Google Drive or Dropbox) and scan all business receipts going forward</span></div>
+        </div>
+      </div>
+      <div class="lesson-footer">
+        <button class="complete-btn" onclick="markComplete(2)" id="complete-2">✓ Mark Lesson Complete</button>
+        <div class="nav-arrows">
+          <button class="nav-arrow" onclick="goToLesson(1)">← Previous</button>
+          <button class="nav-arrow next" onclick="goToLesson(3)">Next →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- LESSON 4 -->
+    <div class="lesson-panel" id="lesson-3">
+      <div class="lesson-hero">
+        <div class="lesson-tag">🍁 Lesson 4 of 4</div>
+        <h1 class="lesson-title">Side Hustle Ideas Canada — What Actually Pays in 2026</h1>
+        <p class="lesson-subtitle">Not all side hustles are equal. Some scale. Some don't. Some work in Hamilton. Some don't work anywhere. Here's the honest breakdown for Canadians in 2026.</p>
+        <div class="lesson-meta">
+          <div class="meta-item">⏱ ~8 min read</div><div class="meta-dot"></div>
+          <div class="meta-item">📘 Module 05</div><div class="meta-dot"></div>
+          <div class="meta-item">💡 What Pays in 2026</div>
+        </div>
+      </div>
+      <div class="lesson-body">
+        <p>A side hustle that generates $500–$1,500/month in Ontario doesn't just add spending money. Applied to debt payoff or TFSA contributions, it becomes one of the most powerful financial tools available to working Canadians.</p>
+
+        <h2>Tier 1 — High Income, Scalable</h2>
+        <p>These hustles can replace a full-time income if developed over 12–24 months:</p>
+        <ul>
+          <li><strong>Freelance tech (web dev, UX, cybersecurity consulting)</strong> — $50–$150/hr. Remote, high demand. CompTIA certifications or a portfolio on GitHub unlocks this market immediately</li>
+          <li><strong>Digital products</strong> — ebooks, templates, courses, prompt packs. Create once, sell forever. Low overhead, 90%+ margins, Stripe + Gumroad make payments instant</li>
+          <li><strong>Content creation (YouTube, TikTok, newsletters)</strong> — slow to monetize but scales to $5K–$50K+/month with the right niche. Canadian finance, immigration, and career content has strong demand</li>
+          <li><strong>Consulting/coaching</strong> — leverages existing professional expertise. A cybersecurity professional can charge $100–$200/hr for SMB security audits</li>
+        </ul>
+
+        <h2>Tier 2 — Reliable Income, Lower Ceiling</h2>
+        <p>Solid $500–$2,000/month potential with consistent effort:</p>
+        <ul>
+          <li><strong>Gig delivery (DoorDash, Uber Eats, Instacart)</strong> — $18–$25/hr effective in Ontario after expenses. Flexible, immediate income. Track mileage obsessively for deductions</li>
+          <li><strong>Print-on-demand (Printify + Etsy/Shopify)</strong> — no inventory, global reach. Works well for niche communities (faith-based, sports, cultural identity). Margins 20–40%</li>
+          <li><strong>Tutoring and test prep</strong> — $30–$80/hr for academic tutoring. ESL tutoring for newcomers to Canada pays $25–$45/hr and is in high demand in Hamilton and GTA</li>
+          <li><strong>Handyman / skilled trades</strong> — Ontario has a shortage of skilled tradespeople. Licensed electricians, plumbers, and HVAC techs command $80–$120/hr for side work</li>
+        </ul>
+
+        <h2>Tier 3 — Supplemental Income</h2>
+        <p>Good for $100–$500/month with minimal time investment:</p>
+        <ul>
+          <li><strong>Selling unused items</strong> — Kijiji, Facebook Marketplace, eBay. A one-time purge of a Canadian home generates $500–$2,000 on average</li>
+          <li><strong>Survey and research panels</strong> — Leger, Angus Reid, Respondent.io. $10–$50/hr for qualified participants. Limited availability but zero overhead</li>
+          <li><strong>Renting assets</strong> — car on Turo, tools on Loanables, parking space on SpotHero or Rover. Passive once set up</li>
+        </ul>
+
+        <div class="callout callout-canadian">
+          <div class="callout-label">🍁 The Two-Account Protection System</div>
+          <p>Never mix side hustle money with personal funds. Open two dedicated accounts: (1) a <strong>business chequing account</strong> where all income lands and all business expenses are paid from, and (2) a <strong>tax reserve savings account</strong> where 28% of every deposit is immediately transferred. This system makes bookkeeping simple, makes taxes predictable, and protects you if the CRA ever requests business records — your personal account never appears in the business record.</p>
+        </div>
+
+        <h2>The $1,000/Month Challenge</h2>
+        <p>An extra $1,000/month from a side hustle — after setting aside 28% for taxes ($280) — leaves $720 net. Applied strategically:</p>
+        <ul>
+          <li>$720/month into a TFSA at 8% annual return = <strong>$1.06M after 30 years</strong></li>
+          <li>$720/month toward a $20,000 debt at 22% interest = <strong>debt-free in 28 months</strong> instead of 18 years on minimums</li>
+          <li>$720/month into an emergency fund = <strong>3-month fund in 12 months</strong></li>
+        </ul>
+        <p>The side hustle isn't the strategy. <em>What you do with the side hustle income</em> is the strategy.</p>
+
+        <div class="takeaways">
+          <div class="takeaways-label">🎯 Key Takeaways</div>
+          <h3>What You Just Learned</h3>
+          <ul>
+            <li><span class="takeaway-check">✦</span> Tier 1 hustles (freelance tech, digital products, content) can replace full-time income within 24 months</li>
+            <li><span class="takeaway-check">✦</span> Print-on-demand, gig delivery, and tutoring offer reliable $500–$2K/month with consistent effort</li>
+            <li><span class="takeaway-check">✦</span> The two-account system (business chequing + tax reserve) protects both your books and your sanity</li>
+            <li><span class="takeaway-check">✦</span> $1,000/month net side hustle income into a TFSA = $1M+ after 30 years</li>
+            <li><span class="takeaway-check">✦</span> The hustle creates the income — the system determines whether it builds wealth</li>
+          </ul>
+        </div>
+
+        <div class="action-box">
+          <div class="action-box-title">⚡ Module Completion Actions</div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Identify your Tier 1 or Tier 2 side hustle — pick one and commit to starting within 30 days</span></div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Open a dedicated business chequing account — keep all side income completely separate from personal funds</span></div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Set up your 28% tax reserve automatic transfer the moment income lands in your business account</span></div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Calculate what $500–$1,000/month extra would do to your debt-free date or TFSA balance — use this as motivation</span></div>
+        </div>
+      </div>
+      <div class="lesson-footer">
+        <button class="complete-btn" onclick="markComplete(3)" id="complete-3">✓ Mark Lesson Complete</button>
+        <div class="nav-arrows">
+          <button class="nav-arrow" onclick="goToLesson(2)">← Previous</button>
+          <button class="nav-arrow next" disabled>Module Complete ✓</button>
+        </div>
+      </div>
+
+      <div class="module-complete-banner" id="completeBanner">
+        <span class="complete-maple">🍁</span>
+        <div class="complete-title">Module 05 Complete!</div>
+        <p class="complete-sub">You now have the full Canadian self-employment framework — CRA rules, HST registration, T2125 deductions, and the best side hustles for 2026. One module left: your Financial Independence roadmap.</p>
+        <div class="complete-actions">
+          <a href="module-06.html" class="complete-btn-next">Final Module →</a>
+          <a href="members.html" class="complete-btn-dashboard">Back to Dashboard</a>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  const READING_TIMES = ['~8 min read','~7 min read','~9 min read','~8 min read'];
+  const LESSON_TITLES = ['CRA Self-Employment','HST — When to Register','Top Deductions T2125','Side Hustle Ideas Canada'];
+  let currentLesson = 0;
+  let completed = new Array(4).fill(false);
+  try { const s = JSON.parse(localStorage.getItem('cwo_m05')||'{}'); if(s.completed) completed=s.completed; if(s.lesson!==undefined) currentLesson=s.lesson; } catch(e){}
+  function saveState(){try{localStorage.setItem('cwo_m05',JSON.stringify({completed,lesson:currentLesson}));}catch(e){}}
+  function goToLesson(i){
+    document.getElementById('lesson-'+currentLesson).classList.remove('active');
+    document.getElementById('nav-'+currentLesson).classList.remove('active');
+    currentLesson=i;
+    document.getElementById('lesson-'+i).classList.add('active');
+    document.getElementById('nav-'+i).classList.add('active');
+    document.getElementById('contentArea').scrollTo({top:0,behavior:'smooth'});
+    window.scrollTo({top:0,behavior:'smooth'});
+    document.getElementById('readingTimeDisplay').textContent=READING_TIMES[i];
+    document.getElementById('currentLessonTitle').textContent=LESSON_TITLES[i];
+    if(completed[i]){const b=document.getElementById('complete-'+i);b.textContent='✓ Completed';b.classList.add('done');}
+    updateProgress();saveState();
+  }
+  function markComplete(i){
+    completed[i]=true;
+    const b=document.getElementById('complete-'+i);b.textContent='✓ Completed';b.classList.add('done');
+    document.getElementById('nav-'+i).classList.add('completed');
+    if(i===3&&completed.every(Boolean)){setTimeout(()=>{document.getElementById('completeBanner').classList.add('visible');document.getElementById('completeBanner').scrollIntoView({behavior:'smooth',block:'center'});},600);}
+    updateProgress();saveState();
+  }
+  function updateProgress(){
+    const c=completed.filter(Boolean).length;
+    document.getElementById('moduleProgressFill').style.width=(c/4*100)+'%';
+    document.getElementById('navProgressFill').style.width=(c/4*100)+'%';
+    document.getElementById('progressText').textContent=c+' / 4';
+  }
+  function toggleCheck(el){el.classList.toggle('checked');el.textContent=el.classList.contains('checked')?'✓':'';}
+  goToLesson(currentLesson);updateProgress();
+</script>
+</body>
+</html>

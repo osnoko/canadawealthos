@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 03 — Debt Elimination Blueprint | CanadaWealthOS</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --red: #C0392B;
+  --red-deep: #922B21;
+  --red-glow: rgba(192,57,43,0.15);
+  --gold: #D4A017;
+  --gold-light: #F0C040;
+  --gold-glow: rgba(212,160,23,0.12);
+  --ink: #0F0F0F;
+  --ink-soft: #1E1E1E;
+  --paper: #F7F3EE;
+  --paper-dark: #EDE8E0;
+  --text: #1A1208;
+  --text-mid: #4A3F2F;
+  --text-soft: #7A6E5F;
+  --border: rgba(26,18,8,0.1);
+  --border-gold: rgba(212,160,23,0.3);
+  --white: #FFFFFF;
+  --success: #1A6B3C;
+  --success-bg: #E8F5EE;
+  --lesson-w: 720px;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--paper);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.4;
+}
+.topnav {
+  position: sticky; top: 0; z-index: 100;
+  height: 56px; display: flex; align-items: center; justify-content: space-between;
+  padding: 0 32px;
+  background: rgba(247,243,238,0.92); backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-left { display: flex; align-items: center; gap: 20px; }
+.nav-back {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 13px; font-weight: 500; color: var(--text-soft);
+  text-decoration: none; padding: 6px 12px;
+  border: 1px solid var(--border); border-radius: 4px;
+  transition: all 0.2s; background: white;
+}
+.nav-back:hover { border-color: var(--red); color: var(--red); background: var(--red-glow); }
+.nav-divider { width: 1px; height: 20px; background: var(--border); }
+.nav-breadcrumb { font-size: 12px; color: var(--text-soft); letter-spacing: 0.04em; }
+.nav-breadcrumb span { color: var(--red); font-weight: 600; }
+.nav-right { display: flex; align-items: center; gap: 12px; }
+.reading-progress-wrap { display: flex; align-items: center; gap: 8px; }
+.reading-time { font-size: 11px; color: var(--text-soft); font-family: 'JetBrains Mono', monospace; letter-spacing: 0.05em; }
+.nav-progress-bar { width: 80px; height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.nav-progress-fill { height: 100%; background: linear-gradient(90deg, var(--red), var(--gold)); border-radius: 2px; width: 0%; transition: width 0.3s ease; }
+.layout { display: flex; min-height: calc(100vh - 56px); }
+.sidebar {
+  width: 280px; flex-shrink: 0;
+  position: sticky; top: 56px; height: calc(100vh - 56px);
+  overflow-y: auto; background: white;
+  border-right: 1px solid var(--border); padding: 32px 0;
+}
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+.sidebar-module-label { padding: 0 24px 16px; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-soft); font-weight: 600; }
+.sidebar-module-title { padding: 0 24px 24px; font-family: 'Lora', serif; font-size: 15px; font-weight: 700; color: var(--text); line-height: 1.4; border-bottom: 1px solid var(--border); margin-bottom: 8px; }
+.lesson-nav-item { display: flex; align-items: flex-start; gap: 12px; padding: 14px 24px; cursor: pointer; transition: background 0.2s; border-left: 3px solid transparent; }
+.lesson-nav-item:hover { background: var(--paper); }
+.lesson-nav-item.active { background: var(--red-glow); border-left-color: var(--red); }
+.lesson-num-badge { width: 24px; height: 24px; border-radius: 50%; background: var(--paper-dark); display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 500; color: var(--text-soft); flex-shrink: 0; margin-top: 1px; transition: all 0.2s; }
+.lesson-nav-item.active .lesson-num-badge { background: var(--red); color: white; }
+.lesson-nav-item.completed .lesson-num-badge { background: var(--success); color: white; }
+.lesson-nav-text { flex: 1; }
+.lesson-nav-title { font-size: 13px; font-weight: 600; color: var(--text); line-height: 1.3; margin-bottom: 3px; }
+.lesson-nav-meta { font-size: 11px; color: var(--text-soft); font-family: 'JetBrains Mono', monospace; }
+.lesson-nav-item.active .lesson-nav-title { color: var(--red-deep); }
+.sidebar-footer { padding: 24px; margin-top: 16px; border-top: 1px solid var(--border); }
+.module-progress-label { font-size: 11px; color: var(--text-soft); margin-bottom: 8px; display: flex; justify-content: space-between; }
+.module-progress-bar { height: 4px; background: var(--paper-dark); border-radius: 2px; overflow: hidden; }
+.module-progress-fill { height: 100%; background: linear-gradient(90deg, var(--red), var(--gold)); border-radius: 2px; transition: width 0.6s ease; }
+.content-area { flex: 1; overflow-y: auto; padding: 0 0 80px; }
+.lesson-panel { display: none; animation: lessonFade 0.4s ease both; }
+.lesson-panel.active { display: block; }
+@keyframes lessonFade { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+.lesson-hero { padding: 56px 64px 48px; max-width: var(--lesson-w); margin: 0 auto; position: relative; }
+.lesson-hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--red), var(--gold), transparent); }
+.lesson-tag { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; background: var(--red-glow); border: 1px solid rgba(192,57,43,0.2); border-radius: 20px; font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--red); margin-bottom: 20px; }
+.lesson-title { font-family: 'Lora', serif; font-size: clamp(26px, 4vw, 38px); font-weight: 700; line-height: 1.2; color: var(--text); margin-bottom: 16px; }
+.lesson-subtitle { font-size: 17px; color: var(--text-mid); line-height: 1.65; font-weight: 300; max-width: 600px; margin-bottom: 28px; }
+.lesson-meta { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+.meta-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-soft); font-family: 'JetBrains Mono', monospace; }
+.meta-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--border); }
+.lesson-body { padding: 0 64px 48px; max-width: var(--lesson-w); margin: 0 auto; }
+.lesson-body h2 { font-family: 'Lora', serif; font-size: 22px; font-weight: 700; color: var(--text); margin: 48px 0 16px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+.lesson-body h3 { font-family: 'Lora', serif; font-size: 17px; font-weight: 600; color: var(--text); margin: 32px 0 12px; }
+.lesson-body p { font-size: 16px; line-height: 1.85; color: var(--text-mid); margin-bottom: 20px; }
+.lesson-body strong { color: var(--text); font-weight: 600; }
+.lesson-body ul, .lesson-body ol { margin: 16px 0 24px 20px; }
+.lesson-body li { font-size: 16px; line-height: 1.75; color: var(--text-mid); margin-bottom: 8px; padding-left: 8px; }
+.lesson-body ul li::marker { color: var(--red); }
+.lesson-body ol li::marker { color: var(--red); font-weight: 600; font-family: 'JetBrains Mono', monospace; font-size: 13px; }
+.callout { border-radius: 4px; padding: 20px 24px; margin: 28px 0; border-left: 4px solid; position: relative; }
+.callout-canadian { background: linear-gradient(135deg, rgba(192,57,43,0.06), rgba(212,160,23,0.04)); border-color: var(--red); }
+.callout-tip { background: var(--gold-glow); border-color: var(--gold); }
+.callout-warning { background: rgba(231,76,60,0.06); border-color: #E74C3C; }
+.callout-fact { background: rgba(26,107,60,0.06); border-color: var(--success); }
+.callout-label { font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+.callout-canadian .callout-label { color: var(--red); }
+.callout-tip .callout-label { color: var(--gold); }
+.callout-warning .callout-label { color: #C0392B; }
+.callout-fact .callout-label { color: var(--success); }
+.callout p { font-size: 14.5px; margin-bottom: 0; line-height: 1.7; }
+.data-table { width: 100%; border-collapse: collapse; margin: 24px 0; font-size: 14px; border-radius: 6px; overflow: hidden; border: 1px solid var(--border); }
+.data-table th { background: var(--ink-soft); color: white; padding: 12px 16px; text-align: left; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; font-family: 'JetBrains Mono', monospace; }
+.data-table td { padding: 12px 16px; border-bottom: 1px solid var(--border); color: var(--text-mid); vertical-align: top; }
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:nth-child(even) td { background: var(--paper); }
+.data-table tr:hover td { background: var(--red-glow); }
+.data-table .highlight { color: var(--red); font-weight: 600; }
+.data-table .good { color: var(--success); font-weight: 600; }
+.data-table .bad { color: var(--red); font-weight: 600; }
+.data-table .gold { color: var(--gold); font-weight: 600; }
+.stat-highlight { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin: 28px 0; }
+.stat-box { background: white; border: 1px solid var(--border); border-radius: 6px; padding: 20px; text-align: center; transition: border-color 0.2s, transform 0.2s; }
+.stat-box:hover { border-color: var(--gold); transform: translateY(-2px); }
+.stat-box-num { font-family: 'Lora', serif; font-size: 28px; font-weight: 700; color: var(--red); margin-bottom: 6px; line-height: 1; }
+.stat-box-label { font-size: 12px; color: var(--text-soft); line-height: 1.4; }
+.takeaways { background: var(--ink); border-radius: 8px; padding: 32px 36px; margin: 40px 0; position: relative; overflow: hidden; }
+.takeaways::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--red), var(--gold)); }
+.takeaways-label { font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+.takeaways h3 { font-family: 'Lora', serif; font-size: 18px; color: white; margin-bottom: 16px; font-weight: 700; }
+.takeaways ul { margin: 0; padding: 0; list-style: none; }
+.takeaways li { color: rgba(255,255,255,0.8); font-size: 14.5px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.07); display: flex; align-items: flex-start; gap: 10px; line-height: 1.6; }
+.takeaways li:last-child { border-bottom: none; }
+.takeaway-check { color: var(--gold); font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+.action-box { background: white; border: 1px solid var(--border); border-radius: 6px; padding: 28px 32px; margin: 32px 0; }
+.action-box-title { font-family: 'Lora', serif; font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+.action-item { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 14px; color: var(--text-mid); line-height: 1.6; }
+.action-item:last-child { border-bottom: none; }
+.action-checkbox { width: 18px; height: 18px; border: 2px solid var(--border); border-radius: 4px; flex-shrink: 0; margin-top: 1px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; font-size: 11px; color: transparent; }
+.action-checkbox.checked { background: var(--success); border-color: var(--success); color: white; }
+.formula-box { background: white; border: 2px solid var(--border); border-radius: 6px; padding: 24px 28px; margin: 24px 0; text-align: center; font-family: 'Lora', serif; font-size: 19px; font-weight: 700; color: var(--text); line-height: 1.5; }
+.method-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 28px 0; }
+.method-card { background: white; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+.method-header { padding: 16px 20px; font-family: 'Lora', serif; font-weight: 700; font-size: 15px; color: white; }
+.method-header.avalanche { background: #2E4A8B; }
+.method-header.snowball { background: var(--success); }
+.method-body { padding: 16px 20px; }
+.method-row { font-size: 13px; color: var(--text-mid); padding: 8px 0; border-bottom: 1px solid var(--border); line-height: 1.5; }
+.method-row:last-child { border-bottom: none; }
+.method-row strong { color: var(--text); display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 2px; }
+.lesson-footer { padding: 40px 64px 0; max-width: var(--lesson-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 20px; border-top: 1px solid var(--border); flex-wrap: wrap; }
+.complete-btn { display: flex; align-items: center; gap: 8px; padding: 14px 28px; background: var(--red); color: white; border: none; border-radius: 4px; font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; letter-spacing: 0.04em; }
+.complete-btn:hover { background: var(--red-deep); transform: translateY(-1px); }
+.complete-btn.done { background: var(--success); cursor: default; transform: none; }
+.nav-arrows { display: flex; gap: 10px; }
+.nav-arrow { display: flex; align-items: center; gap: 6px; padding: 12px 20px; border: 1px solid var(--border); border-radius: 4px; background: white; font-size: 13px; font-weight: 500; color: var(--text-mid); cursor: pointer; transition: all 0.2s; font-family: 'Outfit', sans-serif; }
+.nav-arrow:hover:not(:disabled) { border-color: var(--red); color: var(--red); background: var(--red-glow); }
+.nav-arrow:disabled { opacity: 0.3; cursor: not-allowed; }
+.nav-arrow.next { background: var(--ink); border-color: var(--ink); color: white; }
+.nav-arrow.next:hover:not(:disabled) { background: var(--red-deep); border-color: var(--red-deep); color: white; }
+.module-complete-banner { display: none; background: linear-gradient(135deg, var(--ink), var(--ink-soft)); border-radius: 8px; padding: 36px 40px; margin: 40px 64px; max-width: calc(var(--lesson-w) - 128px); margin-left: auto; margin-right: auto; text-align: center; position: relative; overflow: hidden; animation: lessonFade 0.5s ease; }
+.module-complete-banner::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--red), var(--gold), var(--red)); }
+.module-complete-banner.visible { display: block; }
+.complete-maple { font-size: 48px; margin-bottom: 16px; display: block; }
+.complete-title { font-family: 'Lora', serif; font-size: 24px; font-weight: 700; color: white; margin-bottom: 12px; }
+.complete-sub { font-size: 14px; color: rgba(255,255,255,0.6); line-height: 1.65; margin-bottom: 24px; }
+.complete-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.complete-btn-next { padding: 12px 28px; background: var(--red); color: white; border: none; border-radius: 4px; font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; transition: background 0.2s; }
+.complete-btn-next:hover { background: var(--red-deep); }
+.complete-btn-dashboard { padding: 12px 28px; background: transparent; color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.2s; }
+.complete-btn-dashboard:hover { border-color: rgba(255,255,255,0.5); color: white; }
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .lesson-hero, .lesson-body, .lesson-footer { padding-left: 24px; padding-right: 24px; }
+  .module-complete-banner { margin-left: 24px; margin-right: 24px; }
+  .topnav { padding: 0 16px; }
+  .nav-breadcrumb { display: none; }
+  .method-compare { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="nav-left">
+    <a href="members.html" class="nav-back">← Dashboard</a>
+    <div class="nav-divider"></div>
+    <div class="nav-breadcrumb">Module 03 — <span id="currentLessonTitle">OSAP Repayment</span></div>
+  </div>
+  <div class="nav-right">
+    <div class="reading-progress-wrap">
+      <span class="reading-time" id="readingTimeDisplay">~8 min read</span>
+      <div class="nav-progress-bar">
+        <div class="nav-progress-fill" id="navProgressFill"></div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-module-label">🍁 Module 03</div>
+    <div class="sidebar-module-title">Debt Elimination Blueprint</div>
+    <div class="lesson-nav-item active" id="nav-0" onclick="goToLesson(0)">
+      <div class="lesson-num-badge">1</div>
+      <div class="lesson-nav-text">
+        <div class="lesson-nav-title">OSAP Repayment</div>
+        <div class="lesson-nav-meta">~8 min · Student debt strategy</div>
+      </div>
+    </div>
+    <div class="lesson-nav-item" id="nav-1" onclick="goToLesson(1)">
+      <div class="lesson-num-badge">2</div>
+      <div class="lesson-nav-text">
+        <div class="lesson-nav-title">Avalanche vs Snowball</div>
+        <div class="lesson-nav-meta">~9 min · The payoff math</div>
+      </div>
+    </div>
+    <div class="lesson-nav-item" id="nav-2" onclick="goToLesson(2)">
+      <div class="lesson-num-badge">3</div>
+      <div class="lesson-nav-text">
+        <div class="lesson-nav-title">Credit Card Traps</div>
+        <div class="lesson-nav-meta">~7 min · Escape the cycle</div>
+      </div>
+    </div>
+    <div class="lesson-nav-item" id="nav-3" onclick="goToLesson(3)">
+      <div class="lesson-num-badge">4</div>
+      <div class="lesson-nav-text">
+        <div class="lesson-nav-title">Debt-Free Timeline</div>
+        <div class="lesson-nav-meta">~8 min · Build your plan</div>
+      </div>
+    </div>
+    <div class="sidebar-footer">
+      <div class="module-progress-label">
+        <span>Module progress</span>
+        <span id="progressText">0 / 4</span>
+      </div>
+      <div class="module-progress-bar">
+        <div class="module-progress-fill" id="moduleProgressFill" style="width:0%"></div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="content-area" id="contentArea">
+
+    <!-- LESSON 1: OSAP Repayment -->
+    <div class="lesson-panel active" id="lesson-0">
+      <div class="lesson-hero">
+        <div class="lesson-tag">🍁 Lesson 1 of 4</div>
+        <h1 class="lesson-title">OSAP Repayment — The Strategy Most Graduates Get Wrong</h1>
+        <p class="lesson-subtitle">Your student loan is not just a bill. It's a financial instrument — and knowing how to manage it correctly can save you thousands and accelerate your path to wealth.</p>
+        <div class="lesson-meta">
+          <div class="meta-item">⏱ ~8 min read</div>
+          <div class="meta-dot"></div>
+          <div class="meta-item">📘 Module 03</div>
+          <div class="meta-dot"></div>
+          <div class="meta-item">🎓 Student Debt Strategy</div>
+        </div>
+      </div>
+      <div class="lesson-body">
+        <p>Over 1.7 million Canadians carry OSAP debt. The average Ontario graduate owes approximately $28,000. And most of them have no plan beyond making the minimum payment and hoping it goes away.</p>
+        <p>That's an expensive mistake. Here's what they don't teach you at convocation.</p>
+
+        <h2>How OSAP Works After Graduation</h2>
+        <p>When you graduate — or leave school — OSAP gives you a <strong>6-month non-repayment period</strong>. During this time, you don't have to make payments. But interest <em>does</em> accumulate on the federal portion of your loan.</p>
+        <p>After those 6 months, you enter repayment. Your loan is divided into two parts:</p>
+        <ul>
+          <li><strong>Federal portion</strong> — administered by the National Student Loans Service Centre (NSLSC)</li>
+          <li><strong>Ontario provincial portion</strong> — administered separately, but now interest-free since 2023</li>
+        </ul>
+
+        <div class="callout callout-fact">
+          <div class="callout-label">📊 2023 Policy Win</div>
+          <p>As of November 2023, the federal government eliminated interest on the federal portion of OSAP loans entirely. This is a massive change — it means your OSAP balance no longer grows through interest. Every dollar you pay goes directly to principal reduction. If you graduated before this change, your remaining balance is still subject to the old terms — check your NSLSC account.</p>
+        </div>
+
+        <h2>The Repayment Assistance Plan (RAP)</h2>
+        <p>If your income is low after graduation, you may qualify for the <strong>Repayment Assistance Plan</strong>. RAP caps your monthly payment at a percentage of your income — and if your income is below a certain threshold, your payment could be $0.</p>
+        <p>RAP thresholds for a single person (2025):</p>
+        <table class="data-table">
+          <thead><tr><th>Annual Income</th><th>Monthly Payment Cap</th><th>Strategy</th></tr></thead>
+          <tbody>
+            <tr><td>Under $25,000</td><td class="good">$0/month</td><td>Apply for RAP immediately</td></tr>
+            <tr><td>$25,000–$40,000</td><td>Reduced amount</td><td>Consider RAP while building emergency fund</td></tr>
+            <tr><td>$40,000–$60,000</td><td>Standard payment</td><td>Make standard payments + extra on principal</td></tr>
+            <tr><td>Over $60,000</td><td>Full payment</td><td>Aggressive payoff — no interest means pure principal</td></tr>
+          </tbody>
+        </table>
+
+        <div class="callout callout-tip">
+          <div class="callout-label">💡 The RAP Strategy</div>
+          <p>If you qualify for RAP and your loan is now interest-free, there's a case for making minimum payments while investing the difference. An OSAP loan at 0% interest is the cheapest money you'll ever have. Putting extra cash into a TFSA earning 7–8% annually beats paying down a 0% loan every time — mathematically.</p>
+        </div>
+
+        <h2>OSAP vs. Other Debts — The Priority Order</h2>
+        <p>Not all debt is created equal. Here's how to rank your debts for payoff priority when OSAP is in the mix:</p>
+        <ol>
+          <li><strong>Credit cards (19–29% interest)</strong> — Kill these first, always</li>
+          <li><strong>Payday loans (300–600% effective APR)</strong> — Emergency — eliminate immediately</li>
+          <li><strong>Personal loans (8–18%)</strong> — High priority after credit cards</li>
+          <li><strong>Car loans (4–9%)</strong> — Medium priority</li>
+          <li><strong>OSAP (now 0% federal / 0% Ontario)</strong> — Lowest priority — invest instead</li>
+          <li><strong>Mortgage (4–6%)</strong> — Consider investing in TFSA/RRSP before extra mortgage payments</li>
+        </ol>
+
+        <div class="callout callout-warning">
+          <div class="callout-label">⚠️ The OSAP Default Risk</div>
+          <p>Missing OSAP payments has serious consequences: your credit score drops significantly, the government can garnish your wages without a court order, and your tax refunds can be intercepted. Always make the minimum payment — even if you're also aggressively paying other debts. If you can't afford the minimum, call NSLSC and apply for RAP before you miss a payment.</p>
+        </div>
+
+        <h2>The OSAP Interest Tax Credit</h2>
+        <p>If you do have an older OSAP loan that still carries interest, remember: <strong>student loan interest is tax-deductible</strong> at the federal level. You can claim interest paid on eligible student loans on line 31900 of your T1 return. The credit is worth approximately 15–20% of the interest paid, depending on your province.</p>
+        <p>Note: You can carry forward unclaimed interest credits for up to 5 years. Check your previous returns if you haven't been claiming this.</p>
+
+        <div class="callout callout-canadian">
+          <div class="callout-label">🍁 The Ontario Advantage</div>
+          <p>Ontario's OSAP is means-tested more aggressively than other provinces, meaning lower-income students receive more grant funding (non-repayable) versus loan funding. If you're still in school or have a family member entering post-secondary, always apply for OSAP regardless of expected income — the grant assessment may surprise you. Grants don't need to be repaid and don't appear on your debt ledger.</p>
+        </div>
+
+        <div class="takeaways">
+          <div class="takeaways-label">🎯 Key Takeaways</div>
+          <h3>What You Just Learned</h3>
+          <ul>
+            <li><span class="takeaway-check">✦</span> Federal OSAP loans are now interest-free — every payment reduces principal directly</li>
+            <li><span class="takeaway-check">✦</span> RAP can reduce or eliminate payments when income is low — always apply rather than defaulting</li>
+            <li><span class="takeaway-check">✦</span> A 0% OSAP loan is the cheapest debt you'll ever have — prioritize higher-interest debts first</li>
+            <li><span class="takeaway-check">✦</span> Mathematically, investing in a TFSA at 7–8% beats paying extra on a 0% OSAP loan</li>
+            <li><span class="takeaway-check">✦</span> Student loan interest (if applicable) is tax-deductible — claim it on line 31900</li>
+          </ul>
+        </div>
+
+        <div class="action-box">
+          <div class="action-box-title">⚡ This Week's Action Items</div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Log into your NSLSC account and confirm your current balance and interest rate</span></div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Check if you qualify for RAP — apply online at canada.ca/student-loans if your income is below $40K</span></div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>List all your debts by interest rate — OSAP should be at or near the bottom</span></div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>If you paid OSAP interest in previous years, check if you can claim it on an amended T1 return</span></div>
+        </div>
+      </div>
+      <div class="lesson-footer">
+        <button class="complete-btn" onclick="markComplete(0)" id="complete-0">✓ Mark Lesson Complete</button>
+        <div class="nav-arrows">
+          <button class="nav-arrow" disabled>← Previous</button>
+          <button class="nav-arrow next" onclick="goToLesson(1)">Next →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- LESSON 2: Avalanche vs Snowball -->
+    <div class="lesson-panel" id="lesson-1">
+      <div class="lesson-hero">
+        <div class="lesson-tag">🍁 Lesson 2 of 4</div>
+        <h1 class="lesson-title">Avalanche vs. Snowball — The Debt Payoff Math Every Canadian Needs</h1>
+        <p class="lesson-subtitle">Two proven methods for eliminating multiple debts. One saves you more money. One keeps you more motivated. Here's how to decide — and how to build your personal payoff stack.</p>
+        <div class="lesson-meta">
+          <div class="meta-item">⏱ ~9 min read</div>
+          <div class="meta-dot"></div>
+          <div class="meta-item">📘 Module 03</div>
+          <div class="meta-dot"></div>
+          <div class="meta-item">💳 The Payoff Math</div>
+        </div>
+      </div>
+      <div class="lesson-body">
+        <p>If you carry more than one debt — a credit card, a car loan, a line of credit, and an OSAP balance — you face a strategic decision: which one do you attack first?</p>
+        <p>There are two dominant frameworks. Here's the breakdown.</p>
+
+        <h2>The Avalanche Method</h2>
+        <p>The avalanche method is mathematically optimal. You <strong>order your debts by interest rate, highest to lowest</strong> — then throw every extra dollar at the highest-rate debt while making minimum payments on everything else.</p>
+        <p>Once the top debt is gone, you roll that entire payment to the next highest-rate debt. Your monthly payment amount stays the same, but progressively more of it attacks principal.</p>
+
+        <div class="callout callout-fact">
+          <div class="callout-label">📊 The Avalanche in Numbers</div>
+          <p>On a $20,000 debt portfolio (credit card at 22%, car loan at 7%, OSAP at 0%), the avalanche method saves an average of <strong>$1,800–$3,400</strong> in interest versus the snowball method, and eliminates the portfolio <strong>4–8 months faster</strong>. The gap widens significantly with higher balances and interest rates.</p>
+        </div>
+
+        <h2>The Snowball Method</h2>
+        <p>The snowball method is psychologically optimal. You <strong>order your debts by balance, smallest to largest</strong> — regardless of interest rate — and attack the smallest balance first.</p>
+        <p>The logic: eliminate a debt completely, feel the win, build momentum. Research shows this method produces better long-term adherence for people who struggle with motivation or have tried and failed to pay down debt before.</p>
+
+        <div class="method-compare">
+          <div class="method-card">
+            <div class="method-header avalanche">❄️ Avalanche Method</div>
+            <div class="method-body">
+              <div class="method-row"><strong>Order by</strong>Interest rate — highest first</div>
+              <div class="method-row"><strong>Best for</strong>Math-focused people, large balances, high rates</div>
+              <div class="method-row"><strong>Advantage</strong>Saves the most money in interest</div>
+              <div class="method-row"><strong>Risk</strong>First payoff can take longer — harder to stay motivated</div>
+            </div>
+          </div>
+          <div class="method-card">
+            <div class="method-header snowball">⛄ Snowball Method</div>
+            <div class="method-body">
+              <div class="method-row"><strong>Order by</strong>Balance — smallest first</div>
+              <div class="method-row"><strong>Best for</strong>People who need early wins to stay motivated</div>
+              <div class="method-row"><strong>Advantage</strong>Quick wins build momentum and adherence</div>
+              <div class="method-row"><strong>Risk</strong>Costs more in total interest over time</div>
+            </div>
+          </div>
+        </div>
+
+        <h2>Building Your Canadian Debt Stack</h2>
+        <p>Here's how to set up your payoff plan in 4 steps:</p>
+        <ol>
+          <li><strong>List every debt</strong> — balance, interest rate, minimum payment</li>
+          <li><strong>Choose your method</strong> — avalanche (more savings) or snowball (more momentum)</li>
+          <li><strong>Calculate your "extra payment"</strong> — total income minus expenses minus all minimums</li>
+          <li><strong>Automate the attack</strong> — set up an automatic extra payment to your target debt on payday</li>
+        </ol>
+
+        <h2>A Real Canadian Example</h2>
+        <table class="data-table">
+          <thead><tr><th>Debt</th><th>Balance</th><th>Rate</th><th>Min. Payment</th><th>Avalanche Order</th><th>Snowball Order</th></tr></thead>
+          <tbody>
+            <tr><td>Visa Credit Card</td><td>$4,200</td><td class="bad">22.99%</td><td>$84</td><td class="highlight">#1</td><td>#2</td></tr>
+            <tr><td>Mastercard</td><td>$1,800</td><td class="bad">19.99%</td><td>$36</td><td>#2</td><td class="highlight">#1</td></tr>
+            <tr><td>Car Loan (TD)</td><td>$12,000</td><td>7.5%</td><td>$240</td><td>#3</td><td>#3</td></tr>
+            <tr><td>OSAP</td><td>$18,500</td><td class="good">0%</td><td>$185</td><td>#4</td><td>#4</td></tr>
+          </tbody>
+        </table>
+
+        <div class="callout callout-tip">
+          <div class="callout-label">💡 The Hybrid Approach</div>
+          <p>If your two smallest debts are also your highest-rate debts, the methods converge. In that case, use snowball order — you get the psychological win <em>and</em> the financial win simultaneously. Also: if your largest debt has an interest rate less than 5%, consider pausing aggressive paydown and investing in your TFSA instead — the investment return likely exceeds the debt cost.</p>
+        </div>
+
+        <h2>The Debt-Free Date Calculator</h2>
+        <p>Once you have your stack, calculate your debt-free date with this formula:</p>
+        <div class="formula-box">
+          Months to Payoff = Balance ÷ (Monthly Extra Payment + Minimum Payment)
+        </div>
+        <p>Example: $4,200 Visa at $84 minimum + $300 extra = $384/month → 4,200 ÷ 384 = <strong>10.9 months</strong> to debt free on that card.</p>
+        <p>Once that card is gone, roll the full $384 to the next debt in your stack. This compounding payment is why people call it the "debt snowball" — the monthly attack payment grows with every elimination.</p>
+
+        <div class="callout callout-warning">
+          <div class="callout-label">⚠️ The Minimum Payment Trap</div>
+          <p>On a $5,000 credit card at 22.99% with a $100 minimum payment, it takes <strong>over 8 years</strong> to pay off and costs <strong>$4,300 in interest alone</strong> — nearly doubling the original debt. The minimum payment is designed to keep you in debt. Even an extra $50/month cuts that timeline in half.</p>
+        </div>
+
+        <div class="takeaways">
+          <div class="takeaways-label">🎯 Key Takeaways</div>
+          <h3>What You Just Learned</h3>
+          <ul>
+            <li><span class="takeaway-check">✦</span> Avalanche saves the most money — attack highest interest rate debts first</li>
+            <li><span class="takeaway-check">✦</span> Snowball builds the most momentum — attack smallest balance debts first</li>
+            <li><span class="takeaway-check">✦</span> The method you stick to is always better than the perfect method you abandon</li>
+            <li><span class="takeaway-check">✦</span> Rolling eliminated payments to the next debt accelerates your timeline exponentially</li>
+            <li><span class="takeaway-check">✦</span> Minimum payments on credit cards can keep you in debt for a decade — always pay extra</li>
+          </ul>
+        </div>
+
+        <div class="action-box">
+          <div class="action-box-title">⚡ This Week's Action Items</div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>List every debt you carry with current balance, interest rate, and minimum payment</span></div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Choose your method — avalanche or snowball — and rank your debts accordingly</span></div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Calculate your debt-free date for your #1 target debt using the formula above</span></div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Set up an automatic extra payment on payday — even $25 extra accelerates your timeline</span></div>
+        </div>
+      </div>
+      <div class="lesson-footer">
+        <button class="complete-btn" onclick="markComplete(1)" id="complete-1">✓ Mark Lesson Complete</button>
+        <div class="nav-arrows">
+          <button class="nav-arrow" onclick="goToLesson(0)">← Previous</button>
+          <button class="nav-arrow next" onclick="goToLesson(2)">Next →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- LESSON 3: Credit Card Traps -->
+    <div class="lesson-panel" id="lesson-2">
+      <div class="lesson-hero">
+        <div class="lesson-tag">🍁 Lesson 3 of 4</div>
+        <h1 class="lesson-title">Credit Card Traps — How Canadian Banks Keep You in Debt</h1>
+        <p class="lesson-subtitle">Canadian credit cards carry some of the highest interest rates in the developed world. Here's exactly how the trap is designed — and the step-by-step escape plan.</p>
+        <div class="lesson-meta">
+          <div class="meta-item">⏱ ~7 min read</div>
+          <div class="meta-dot"></div>
+          <div class="meta-item">📘 Module 03</div>
+          <div class="meta-dot"></div>
+          <div class="meta-item">💳 Escape the Cycle</div>
+        </div>
+      </div>
+      <div class="lesson-body">
+        <p>Canada's Big 5 banks charge credit card interest rates between <strong>19.99% and 22.99%</strong> — among the highest in the developed world. In comparison, the US averages 20.75%, while many European countries cap rates at 10–12%.</p>
+        <p>This isn't accidental. The credit card product is engineered to maximize revolving balances. Understanding the design helps you defeat it.</p>
+
+        <h2>How the Minimum Payment System Works Against You</h2>
+        <p>Banks set minimum payments low — typically 2–3% of your balance or $10, whichever is greater. This keeps you feeling like you're managing your debt while ensuring maximum interest is collected.</p>
+        <table class="data-table">
+          <thead><tr><th>Balance</th><th>Rate</th><th>Minimum Only</th><th>+$100/mo Extra</th><th>Interest Saved</th></tr></thead>
+          <tbody>
+            <tr><td>$3,000</td><td>19.99%</td><td class="bad">6.5 years / $2,100 interest</td><td class="good">2.1 years / $580 interest</td><td class="good">$1,520</td></tr>
+            <tr><td>$7,500</td><td>22.99%</td><td class="bad">11+ years / $7,800 interest</td><td class="good">3.8 years / $1,900 interest</td><td class="good">$5,900</td></tr>
+            <tr><td>$15,000</td><td>22.99%</td><td class="bad">18+ years / $18,000 interest</td><td class="good">6 years / $4,100 interest</td><td class="good">$13,900</td></tr>
+          </tbody>
+        </table>
+
+        <h2>The 5 Credit Card Traps to Avoid</h2>
+
+        <h3>Trap 1: The Balance Transfer Honeymoon</h3>
+        <p>Banks offer 0% balance transfers for 6–12 months to pull balances from competitors. The trap: if you don't pay the full balance before the promotional period ends, <strong>the deferred interest hits all at once</strong> at the full rate (often 22.99%). Always set a calendar reminder 30 days before the promotional period expires.</p>
+
+        <h3>Trap 2: The Cash Advance</h3>
+        <p>Cash advances on credit cards carry <strong>no grace period</strong> — interest starts the moment you take the cash, not at the next billing cycle. Combined with typical cash advance rates of 22–28%, this is one of the most expensive borrowing options in Canada. Never use a credit card for cash unless it's a genuine emergency.</p>
+
+        <h3>Trap 3: Retail Store Cards</h3>
+        <p>Store credit cards (Canadian Tire, Bay, Sport Chek) often carry rates of <strong>25–29.99%</strong>. They're pitched at checkout with a discount offer. The discount rarely justifies the cost of carrying even one month's balance at those rates.</p>
+
+        <h3>Trap 4: Skipping a Payment</h3>
+        <p>Many cards offer "skip a payment" options, marketed as a benefit. Skipping doesn't eliminate the payment — it adds to your balance and extends your debt timeline while interest continues accumulating. It's a product that benefits the bank, not you.</p>
+
+        <h3>Trap 5: The Rewards Trap</h3>
+        <p>Rewards cards justify higher annual fees and higher rates. Studies show that rewards card holders carry higher average balances — the psychological effect of "earning points" creates permission to spend more. If you're carrying a balance, the rewards are worth far less than the interest you're paying. Downgrade to a low-interest card (Scotiabank Value Visa at 12.99%, for example) until you're debt-free.</p>
+
+        <div class="callout callout-canadian">
+          <div class="callout-label">🍁 The Low-Interest Card Strategy</div>
+          <p>Canada has a class of low-interest credit cards capped at 8.99–12.99%. Scotiabank Value Visa, MBNA True Line, and National Bank MC Platinum are examples. If you're carrying a balance on a 22% card, transferring it to a 12.99% card while you pay it off saves significant interest — even with a balance transfer fee of 1–3%. Run the math for your specific balance before transferring.</p>
+        </div>
+
+        <h2>How to Negotiate Your Interest Rate</h2>
+        <p>Few Canadians know this: you can call your credit card provider and ask for a rate reduction. It works more often than you'd expect. Here's the script:</p>
+        <div class="callout callout-tip">
+          <div class="callout-label">💡 The Rate Negotiation Script</div>
+          <p>"Hi, I've been a customer for [X] years and I have a good payment history. I've been offered a lower rate from [competitor]. I'd like to stay with you — can you reduce my rate to [10–15%]? If not, I may need to transfer my balance." You have the most leverage with: a long account history, no missed payments, and a competing offer (real or implied). Success rate for customers with good history: approximately 60–70%.</p>
+        </div>
+
+        <div class="takeaways">
+          <div class="takeaways-label">🎯 Key Takeaways</div>
+          <h3>What You Just Learned</h3>
+          <ul>
+            <li><span class="takeaway-check">✦</span> Canadian credit card rates (19–22.99%) are among the highest in the world — minimum payments are engineered to maximize bank profit</li>
+            <li><span class="takeaway-check">✦</span> Balance transfers can save money, but always pay off before the promotional period ends</li>
+            <li><span class="takeaway-check">✦</span> Cash advances charge interest immediately with no grace period — avoid them</li>
+            <li><span class="takeaway-check">✦</span> Rewards cards cost more than they return if you carry a balance — switch to a low-interest card</li>
+            <li><span class="takeaway-check">✦</span> Calling your bank to negotiate a rate reduction works ~65% of the time for good customers</li>
+          </ul>
+        </div>
+
+        <div class="action-box">
+          <div class="action-box-title">⚡ This Week's Action Items</div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Call your credit card issuer and ask for a rate reduction — use the script above</span></div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>If you have a rewards card with a balance, research low-interest card alternatives (Scotiabank Value Visa, MBNA True Line)</span></div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Set your credit card to auto-pay the statement balance in full each month once you're debt-free</span></div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Check for any balance transfer promotional offers — calculate if the math works for your balance</span></div>
+        </div>
+      </div>
+      <div class="lesson-footer">
+        <button class="complete-btn" onclick="markComplete(2)" id="complete-2">✓ Mark Lesson Complete</button>
+        <div class="nav-arrows">
+          <button class="nav-arrow" onclick="goToLesson(1)">← Previous</button>
+          <button class="nav-arrow next" onclick="goToLesson(3)">Next →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- LESSON 4: Debt-Free Timeline -->
+    <div class="lesson-panel" id="lesson-3">
+      <div class="lesson-hero">
+        <div class="lesson-tag">🍁 Lesson 4 of 4</div>
+        <h1 class="lesson-title">Your Debt-Free Timeline — Build the Plan That Actually Works</h1>
+        <p class="lesson-subtitle">Theory is worthless without execution. This lesson gives you the exact framework to map your personal debt-free date and build the habits that make it inevitable.</p>
+        <div class="lesson-meta">
+          <div class="meta-item">⏱ ~8 min read</div>
+          <div class="meta-dot"></div>
+          <div class="meta-item">📘 Module 03</div>
+          <div class="meta-dot"></div>
+          <div class="meta-item">📅 Build Your Plan</div>
+        </div>
+      </div>
+      <div class="lesson-body">
+        <p>The difference between people who eliminate debt and those who don't isn't income. It isn't willpower. It's <strong>specificity</strong>. Vague goals produce vague results. A written, dated, automated debt-free plan produces results.</p>
+        <p>By the end of this lesson, you'll have one.</p>
+
+        <h2>Step 1 — The Debt Inventory</h2>
+        <p>Open a spreadsheet or notebook. List every debt with these five columns:</p>
+        <table class="data-table">
+          <thead><tr><th>Debt Name</th><th>Balance</th><th>Interest Rate</th><th>Minimum Payment</th><th>Payoff Priority</th></tr></thead>
+          <tbody>
+            <tr><td>Visa (RBC)</td><td>$4,200</td><td class="bad">22.99%</td><td>$84</td><td class="highlight">#1 (Avalanche)</td></tr>
+            <tr><td>Mastercard (TD)</td><td>$1,800</td><td class="bad">19.99%</td><td>$36</td><td>#2</td></tr>
+            <tr><td>Car Loan</td><td>$11,200</td><td>7.5%</td><td>$240</td><td>#3</td></tr>
+            <tr><td>OSAP</td><td>$16,500</td><td class="good">0%</td><td>$165</td><td>#4</td></tr>
+            <tr><td><strong>Total</strong></td><td><strong>$33,700</strong></td><td>—</td><td><strong>$525/mo</strong></td><td>—</td></tr>
+          </tbody>
+        </table>
+
+        <h2>Step 2 — Find Your Attack Budget</h2>
+        <p>Your attack budget is the money available to accelerate debt payoff beyond minimums:</p>
+        <div class="formula-box">
+          Attack Budget = Take-Home Pay − Fixed Expenses − Variable Spending − All Debt Minimums
+        </div>
+        <p>Even $100–$300/month makes a dramatic difference. On the example above, an extra $200/month attack budget eliminates the $4,200 Visa in 15 months instead of 5+ years on minimums alone.</p>
+
+        <div class="stat-highlight">
+          <div class="stat-box">
+            <div class="stat-box-num">$100</div>
+            <div class="stat-box-label">Extra/month on $5K debt at 22% saves 4 years and $3,100 in interest</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-box-num">$250</div>
+            <div class="stat-box-label">Extra/month turns a 7-year payoff into under 2 years on most credit card balances</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-box-num">$500</div>
+            <div class="stat-box-label">Extra/month on a $20K debt portfolio produces debt freedom in under 3 years</div>
+          </div>
+        </div>
+
+        <h2>Step 3 — The Acceleration Tactics</h2>
+        <p>Beyond your regular attack budget, use these Canadian-specific strategies to inject lump sums into your debt payoff:</p>
+        <ul>
+          <li><strong>Tax refund</strong> — the average Canadian gets ~$1,800 back. Direct 100% to your #1 priority debt</li>
+          <li><strong>GST/HST credit</strong> — quarterly payments of $150–$400 depending on income. Redirect to debt</li>
+          <li><strong>Canada Child Benefit (CCB)</strong> — if you have children, consider allocating a portion to debt payoff</li>
+          <li><strong>Work bonus or raise</strong> — commit 50% of any income increase to debt before lifestyle inflation sets in</li>
+          <li><strong>Side hustle income</strong> — Module 05 covers this in depth, but even $300/month from gig work adds $3,600/year to your debt attack</li>
+          <li><strong>Selling unused items</strong> — Facebook Marketplace, Kijiji, and eBay can generate $500–$2,000 quickly</li>
+        </ul>
+
+        <h2>Step 4 — The Automated System</h2>
+        <p>Automation removes willpower from the equation. Set up:</p>
+        <ol>
+          <li><strong>Auto-pay minimums</strong> on all debts — this protects your credit score and prevents late fees</li>
+          <li><strong>Auto-transfer</strong> your attack budget to a separate "debt attack" account on payday</li>
+          <li><strong>Weekly manual payment</strong> from that account to your #1 priority debt — making weekly payments reduces average daily balance and cuts interest slightly</li>
+        </ol>
+
+        <div class="callout callout-canadian">
+          <div class="callout-label">🍁 The Canadian Debt-Free Milestone</div>
+          <p>Becoming debt-free (excluding mortgage) fundamentally changes your monthly cash flow. The average Canadian carrying $33,000 in consumer debt has $525/month in minimum payments. Eliminating that debt frees up $525/month — $6,300/year — to redirect into TFSA and RRSP investments. At 7% annual growth, that $6,300/year becomes <strong>over $280,000 in 20 years</strong>. Debt freedom isn't just about being debt-free — it's about unleashing your wealth-building capacity.</p>
+        </div>
+
+        <h2>The Psychological Side of Debt Payoff</h2>
+        <p>Paying off debt is a marathon. These evidence-based strategies maintain momentum:</p>
+        <ul>
+          <li><strong>Track visually</strong> — a simple progress bar or chart showing your balance dropping is powerful motivation</li>
+          <li><strong>Celebrate milestones</strong> — every $1,000 paid off deserves a small reward (not on a credit card)</li>
+          <li><strong>Tell one person</strong> — accountability partners increase follow-through rates significantly</li>
+          <li><strong>Review monthly</strong> — recalculate your debt-free date monthly to see it getting closer</li>
+          <li><strong>Don't add new debt</strong> — cut cards if necessary, use a debit card, delete saved payment info online</li>
+        </ul>
+
+        <div class="callout callout-fact">
+          <div class="callout-label">📊 The Debt-Free Transformation</div>
+          <p>Studies of debt payoff programs show that Canadians who use a written plan with automated payments are <strong>3x more likely</strong> to complete debt payoff versus those who manage it manually. The plan removes the daily decision — you don't have to choose to pay down debt because it's already automated. The choice was made once, in advance, when you set it up.</p>
+        </div>
+
+        <div class="takeaways">
+          <div class="takeaways-label">🎯 Key Takeaways</div>
+          <h3>What You Just Learned</h3>
+          <ul>
+            <li><span class="takeaway-check">✦</span> A written debt inventory with payoff priority is the foundation of every successful debt elimination</li>
+            <li><span class="takeaway-check">✦</span> Your attack budget — even $100/month extra — dramatically accelerates your debt-free date</li>
+            <li><span class="takeaway-check">✦</span> Canadian windfalls (tax refunds, GST credits, CCB) are powerful lump-sum debt accelerators</li>
+            <li><span class="takeaway-check">✦</span> Automation removes the daily willpower requirement — set it up once, let it run</li>
+            <li><span class="takeaway-check">✦</span> Becoming debt-free transforms your monthly cash flow — freeing hundreds to build wealth</li>
+          </ul>
+        </div>
+
+        <div class="action-box">
+          <div class="action-box-title">⚡ Module Completion Actions</div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Complete your debt inventory: list every debt with balance, rate, minimum, and priority order</span></div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Calculate your attack budget and set up an automatic transfer to a dedicated debt payoff account</span></div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Calculate your debt-free date for your #1 priority debt and write it down somewhere visible</span></div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Commit your next tax refund in advance to your highest-rate debt — make the decision now</span></div>
+        </div>
+      </div>
+      <div class="lesson-footer">
+        <button class="complete-btn" onclick="markComplete(3)" id="complete-3">✓ Mark Lesson Complete</button>
+        <div class="nav-arrows">
+          <button class="nav-arrow" onclick="goToLesson(2)">← Previous</button>
+          <button class="nav-arrow next" disabled>Module Complete ✓</button>
+        </div>
+      </div>
+
+      <div class="module-complete-banner" id="completeBanner">
+        <span class="complete-maple">🍁</span>
+        <div class="complete-title">Module 03 Complete!</div>
+        <p class="complete-sub">You now have a complete Canadian debt elimination system — from OSAP strategy to the avalanche/snowball frameworks to credit card traps to your personal debt-free timeline. This knowledge, applied, is worth thousands in saved interest.</p>
+        <div class="complete-actions">
+          <a href="module-04.html" class="complete-btn-next">Next Module →</a>
+          <a href="members.html" class="complete-btn-dashboard">Back to Dashboard</a>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  const READING_TIMES = ['~8 min read', '~9 min read', '~7 min read', '~8 min read'];
+  const LESSON_TITLES = ['OSAP Repayment', 'Avalanche vs Snowball', 'Credit Card Traps', 'Debt-Free Timeline'];
+  let currentLesson = 0;
+  let completed = new Array(4).fill(false);
+  try {
+    const saved = JSON.parse(localStorage.getItem('cwo_m03') || '{}');
+    if (saved.completed) completed = saved.completed;
+    if (saved.lesson !== undefined) currentLesson = saved.lesson;
+  } catch(e) {}
+  function saveState() {
+    try { localStorage.setItem('cwo_m03', JSON.stringify({ completed, lesson: currentLesson })); } catch(e) {}
+  }
+  function goToLesson(index) {
+    document.getElementById('lesson-' + currentLesson).classList.remove('active');
+    document.getElementById('nav-' + currentLesson).classList.remove('active');
+    currentLesson = index;
+    document.getElementById('lesson-' + index).classList.add('active');
+    document.getElementById('nav-' + index).classList.add('active');
+    document.getElementById('contentArea').scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    document.getElementById('readingTimeDisplay').textContent = READING_TIMES[index];
+    document.getElementById('currentLessonTitle').textContent = LESSON_TITLES[index];
+    if (completed[index]) {
+      const btn = document.getElementById('complete-' + index);
+      btn.textContent = '✓ Completed';
+      btn.classList.add('done');
+    }
+    updateProgress();
+    saveState();
+  }
+  function markComplete(index) {
+    completed[index] = true;
+    const btn = document.getElementById('complete-' + index);
+    btn.textContent = '✓ Completed';
+    btn.classList.add('done');
+    document.getElementById('nav-' + index).classList.add('completed');
+    if (index === 3 && completed.every(Boolean)) {
+      setTimeout(() => {
+        document.getElementById('completeBanner').classList.add('visible');
+        document.getElementById('completeBanner').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 600);
+    }
+    updateProgress();
+    saveState();
+  }
+  function updateProgress() {
+    const count = completed.filter(Boolean).length;
+    const pct = (count / 4) * 100;
+    document.getElementById('moduleProgressFill').style.width = pct + '%';
+    document.getElementById('navProgressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = count + ' / 4';
+  }
+  function toggleCheck(el) {
+    el.classList.toggle('checked');
+    el.textContent = el.classList.contains('checked') ? '✓' : '';
+  }
+  goToLesson(currentLesson);
+  updateProgress();
+</script>
+</body>
+</html>

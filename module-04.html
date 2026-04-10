@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 04 — Investing for Canadians | CanadaWealthOS</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --red: #C0392B; --red-deep: #922B21; --red-glow: rgba(192,57,43,0.15);
+  --gold: #D4A017; --gold-light: #F0C040; --gold-glow: rgba(212,160,23,0.12);
+  --ink: #0F0F0F; --ink-soft: #1E1E1E; --paper: #F7F3EE; --paper-dark: #EDE8E0;
+  --text: #1A1208; --text-mid: #4A3F2F; --text-soft: #7A6E5F;
+  --border: rgba(26,18,8,0.1); --border-gold: rgba(212,160,23,0.3);
+  --white: #FFFFFF; --success: #1A6B3C; --success-bg: #E8F5EE; --lesson-w: 720px;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Outfit', sans-serif; background: var(--paper); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+body::after { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; opacity: 0.4; }
+.topnav { position: sticky; top: 0; z-index: 100; height: 56px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; background: rgba(247,243,238,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+.nav-left { display: flex; align-items: center; gap: 20px; }
+.nav-back { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; color: var(--text-soft); text-decoration: none; padding: 6px 12px; border: 1px solid var(--border); border-radius: 4px; transition: all 0.2s; background: white; }
+.nav-back:hover { border-color: var(--red); color: var(--red); background: var(--red-glow); }
+.nav-divider { width: 1px; height: 20px; background: var(--border); }
+.nav-breadcrumb { font-size: 12px; color: var(--text-soft); letter-spacing: 0.04em; }
+.nav-breadcrumb span { color: var(--red); font-weight: 600; }
+.nav-right { display: flex; align-items: center; gap: 12px; }
+.reading-progress-wrap { display: flex; align-items: center; gap: 8px; }
+.reading-time { font-size: 11px; color: var(--text-soft); font-family: 'JetBrains Mono', monospace; letter-spacing: 0.05em; }
+.nav-progress-bar { width: 80px; height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.nav-progress-fill { height: 100%; background: linear-gradient(90deg, var(--red), var(--gold)); border-radius: 2px; width: 0%; transition: width 0.3s ease; }
+.layout { display: flex; min-height: calc(100vh - 56px); }
+.sidebar { width: 280px; flex-shrink: 0; position: sticky; top: 56px; height: calc(100vh - 56px); overflow-y: auto; background: white; border-right: 1px solid var(--border); padding: 32px 0; }
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+.sidebar-module-label { padding: 0 24px 16px; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-soft); font-weight: 600; }
+.sidebar-module-title { padding: 0 24px 24px; font-family: 'Lora', serif; font-size: 15px; font-weight: 700; color: var(--text); line-height: 1.4; border-bottom: 1px solid var(--border); margin-bottom: 8px; }
+.lesson-nav-item { display: flex; align-items: flex-start; gap: 12px; padding: 14px 24px; cursor: pointer; transition: background 0.2s; border-left: 3px solid transparent; }
+.lesson-nav-item:hover { background: var(--paper); }
+.lesson-nav-item.active { background: var(--red-glow); border-left-color: var(--red); }
+.lesson-num-badge { width: 24px; height: 24px; border-radius: 50%; background: var(--paper-dark); display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 500; color: var(--text-soft); flex-shrink: 0; margin-top: 1px; transition: all 0.2s; }
+.lesson-nav-item.active .lesson-num-badge { background: var(--red); color: white; }
+.lesson-nav-item.completed .lesson-num-badge { background: var(--success); color: white; }
+.lesson-nav-text { flex: 1; }
+.lesson-nav-title { font-size: 13px; font-weight: 600; color: var(--text); line-height: 1.3; margin-bottom: 3px; }
+.lesson-nav-meta { font-size: 11px; color: var(--text-soft); font-family: 'JetBrains Mono', monospace; }
+.lesson-nav-item.active .lesson-nav-title { color: var(--red-deep); }
+.sidebar-footer { padding: 24px; margin-top: 16px; border-top: 1px solid var(--border); }
+.module-progress-label { font-size: 11px; color: var(--text-soft); margin-bottom: 8px; display: flex; justify-content: space-between; }
+.module-progress-bar { height: 4px; background: var(--paper-dark); border-radius: 2px; overflow: hidden; }
+.module-progress-fill { height: 100%; background: linear-gradient(90deg, var(--red), var(--gold)); border-radius: 2px; transition: width 0.6s ease; }
+.content-area { flex: 1; overflow-y: auto; padding: 0 0 80px; }
+.lesson-panel { display: none; animation: lessonFade 0.4s ease both; }
+.lesson-panel.active { display: block; }
+@keyframes lessonFade { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+.lesson-hero { padding: 56px 64px 48px; max-width: var(--lesson-w); margin: 0 auto; position: relative; }
+.lesson-hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--red), var(--gold), transparent); }
+.lesson-tag { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; background: var(--red-glow); border: 1px solid rgba(192,57,43,0.2); border-radius: 20px; font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--red); margin-bottom: 20px; }
+.lesson-title { font-family: 'Lora', serif; font-size: clamp(26px, 4vw, 38px); font-weight: 700; line-height: 1.2; color: var(--text); margin-bottom: 16px; }
+.lesson-subtitle { font-size: 17px; color: var(--text-mid); line-height: 1.65; font-weight: 300; max-width: 600px; margin-bottom: 28px; }
+.lesson-meta { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+.meta-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-soft); font-family: 'JetBrains Mono', monospace; }
+.meta-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--border); }
+.lesson-body { padding: 0 64px 48px; max-width: var(--lesson-w); margin: 0 auto; }
+.lesson-body h2 { font-family: 'Lora', serif; font-size: 22px; font-weight: 700; color: var(--text); margin: 48px 0 16px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+.lesson-body h3 { font-family: 'Lora', serif; font-size: 17px; font-weight: 600; color: var(--text); margin: 32px 0 12px; }
+.lesson-body p { font-size: 16px; line-height: 1.85; color: var(--text-mid); margin-bottom: 20px; }
+.lesson-body strong { color: var(--text); font-weight: 600; }
+.lesson-body ul, .lesson-body ol { margin: 16px 0 24px 20px; }
+.lesson-body li { font-size: 16px; line-height: 1.75; color: var(--text-mid); margin-bottom: 8px; padding-left: 8px; }
+.lesson-body ul li::marker { color: var(--red); }
+.lesson-body ol li::marker { color: var(--red); font-weight: 600; font-family: 'JetBrains Mono', monospace; font-size: 13px; }
+.callout { border-radius: 4px; padding: 20px 24px; margin: 28px 0; border-left: 4px solid; }
+.callout-canadian { background: linear-gradient(135deg, rgba(192,57,43,0.06), rgba(212,160,23,0.04)); border-color: var(--red); }
+.callout-tip { background: var(--gold-glow); border-color: var(--gold); }
+.callout-warning { background: rgba(231,76,60,0.06); border-color: #E74C3C; }
+.callout-fact { background: rgba(26,107,60,0.06); border-color: var(--success); }
+.callout-label { font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+.callout-canadian .callout-label { color: var(--red); }
+.callout-tip .callout-label { color: var(--gold); }
+.callout-warning .callout-label { color: #C0392B; }
+.callout-fact .callout-label { color: var(--success); }
+.callout p { font-size: 14.5px; margin-bottom: 0; line-height: 1.7; }
+.data-table { width: 100%; border-collapse: collapse; margin: 24px 0; font-size: 14px; border-radius: 6px; overflow: hidden; border: 1px solid var(--border); }
+.data-table th { background: var(--ink-soft); color: white; padding: 12px 16px; text-align: left; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; font-family: 'JetBrains Mono', monospace; }
+.data-table td { padding: 12px 16px; border-bottom: 1px solid var(--border); color: var(--text-mid); vertical-align: top; }
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:nth-child(even) td { background: var(--paper); }
+.data-table tr:hover td { background: var(--red-glow); }
+.data-table .highlight { color: var(--red); font-weight: 600; }
+.data-table .good { color: var(--success); font-weight: 600; }
+.data-table .bad { color: var(--red); font-weight: 600; }
+.data-table .gold { color: var(--gold); font-weight: 600; }
+.stat-highlight { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin: 28px 0; }
+.stat-box { background: white; border: 1px solid var(--border); border-radius: 6px; padding: 20px; text-align: center; transition: border-color 0.2s, transform 0.2s; }
+.stat-box:hover { border-color: var(--gold); transform: translateY(-2px); }
+.stat-box-num { font-family: 'Lora', serif; font-size: 28px; font-weight: 700; color: var(--red); margin-bottom: 6px; line-height: 1; }
+.stat-box-label { font-size: 12px; color: var(--text-soft); line-height: 1.4; }
+.takeaways { background: var(--ink); border-radius: 8px; padding: 32px 36px; margin: 40px 0; position: relative; overflow: hidden; }
+.takeaways::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--red), var(--gold)); }
+.takeaways-label { font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+.takeaways h3 { font-family: 'Lora', serif; font-size: 18px; color: white; margin-bottom: 16px; font-weight: 700; }
+.takeaways ul { margin: 0; padding: 0; list-style: none; }
+.takeaways li { color: rgba(255,255,255,0.8); font-size: 14.5px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.07); display: flex; align-items: flex-start; gap: 10px; line-height: 1.6; }
+.takeaways li:last-child { border-bottom: none; }
+.takeaway-check { color: var(--gold); font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+.action-box { background: white; border: 1px solid var(--border); border-radius: 6px; padding: 28px 32px; margin: 32px 0; }
+.action-box-title { font-family: 'Lora', serif; font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 16px; }
+.action-item { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 14px; color: var(--text-mid); line-height: 1.6; }
+.action-item:last-child { border-bottom: none; }
+.action-checkbox { width: 18px; height: 18px; border: 2px solid var(--border); border-radius: 4px; flex-shrink: 0; margin-top: 1px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; font-size: 11px; color: transparent; }
+.action-checkbox.checked { background: var(--success); border-color: var(--success); color: white; }
+.platform-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 28px 0; }
+.platform-card { background: white; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+.platform-header { padding: 16px 20px; font-family: 'Lora', serif; font-weight: 700; font-size: 15px; color: white; }
+.platform-header.ws { background: #2E7D32; }
+.platform-header.qt { background: #1565C0; }
+.platform-body { padding: 16px 20px; }
+.platform-row { font-size: 13px; color: var(--text-mid); padding: 8px 0; border-bottom: 1px solid var(--border); line-height: 1.5; }
+.platform-row:last-child { border-bottom: none; }
+.platform-row strong { color: var(--text); display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 2px; }
+.lesson-footer { padding: 40px 64px 0; max-width: var(--lesson-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 20px; border-top: 1px solid var(--border); flex-wrap: wrap; }
+.complete-btn { display: flex; align-items: center; gap: 8px; padding: 14px 28px; background: var(--red); color: white; border: none; border-radius: 4px; font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; letter-spacing: 0.04em; }
+.complete-btn:hover { background: var(--red-deep); transform: translateY(-1px); }
+.complete-btn.done { background: var(--success); cursor: default; transform: none; }
+.nav-arrows { display: flex; gap: 10px; }
+.nav-arrow { display: flex; align-items: center; gap: 6px; padding: 12px 20px; border: 1px solid var(--border); border-radius: 4px; background: white; font-size: 13px; font-weight: 500; color: var(--text-mid); cursor: pointer; transition: all 0.2s; font-family: 'Outfit', sans-serif; }
+.nav-arrow:hover:not(:disabled) { border-color: var(--red); color: var(--red); background: var(--red-glow); }
+.nav-arrow:disabled { opacity: 0.3; cursor: not-allowed; }
+.nav-arrow.next { background: var(--ink); border-color: var(--ink); color: white; }
+.nav-arrow.next:hover:not(:disabled) { background: var(--red-deep); border-color: var(--red-deep); color: white; }
+.module-complete-banner { display: none; background: linear-gradient(135deg, var(--ink), var(--ink-soft)); border-radius: 8px; padding: 36px 40px; margin: 40px 64px; max-width: calc(var(--lesson-w) - 128px); margin-left: auto; margin-right: auto; text-align: center; position: relative; overflow: hidden; animation: lessonFade 0.5s ease; }
+.module-complete-banner::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--red), var(--gold), var(--red)); }
+.module-complete-banner.visible { display: block; }
+.complete-maple { font-size: 48px; margin-bottom: 16px; display: block; }
+.complete-title { font-family: 'Lora', serif; font-size: 24px; font-weight: 700; color: white; margin-bottom: 12px; }
+.complete-sub { font-size: 14px; color: rgba(255,255,255,0.6); line-height: 1.65; margin-bottom: 24px; }
+.complete-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.complete-btn-next { padding: 12px 28px; background: var(--red); color: white; border: none; border-radius: 4px; font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; transition: background 0.2s; }
+.complete-btn-next:hover { background: var(--red-deep); }
+.complete-btn-dashboard { padding: 12px 28px; background: transparent; color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.2s; }
+.complete-btn-dashboard:hover { border-color: rgba(255,255,255,0.5); color: white; }
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .lesson-hero, .lesson-body, .lesson-footer { padding-left: 24px; padding-right: 24px; }
+  .module-complete-banner { margin-left: 24px; margin-right: 24px; }
+  .topnav { padding: 0 16px; }
+  .nav-breadcrumb { display: none; }
+  .platform-compare { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<nav class="topnav">
+  <div class="nav-left">
+    <a href="members.html" class="nav-back">← Dashboard</a>
+    <div class="nav-divider"></div>
+    <div class="nav-breadcrumb">Module 04 — <span id="currentLessonTitle">ETFs vs Mutual Funds</span></div>
+  </div>
+  <div class="nav-right">
+    <div class="reading-progress-wrap">
+      <span class="reading-time" id="readingTimeDisplay">~9 min read</span>
+      <div class="nav-progress-bar"><div class="nav-progress-fill" id="navProgressFill"></div></div>
+    </div>
+  </div>
+</nav>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-module-label">🍁 Module 04</div>
+    <div class="sidebar-module-title">Investing for Canadians</div>
+    <div class="lesson-nav-item active" id="nav-0" onclick="goToLesson(0)">
+      <div class="lesson-num-badge">1</div>
+      <div class="lesson-nav-text">
+        <div class="lesson-nav-title">ETFs vs Mutual Funds</div>
+        <div class="lesson-nav-meta">~9 min · The fee truth</div>
+      </div>
+    </div>
+    <div class="lesson-nav-item" id="nav-1" onclick="goToLesson(1)">
+      <div class="lesson-num-badge">2</div>
+      <div class="lesson-nav-text">
+        <div class="lesson-nav-title">Wealthsimple vs Questrade</div>
+        <div class="lesson-nav-meta">~8 min · Pick your platform</div>
+      </div>
+    </div>
+    <div class="lesson-nav-item" id="nav-2" onclick="goToLesson(2)">
+      <div class="lesson-num-badge">3</div>
+      <div class="lesson-nav-text">
+        <div class="lesson-nav-title">XEQT &amp; XBAL Strategy</div>
+        <div class="lesson-nav-meta">~8 min · The one-fund portfolio</div>
+      </div>
+    </div>
+    <div class="lesson-nav-item" id="nav-3" onclick="goToLesson(3)">
+      <div class="lesson-num-badge">4</div>
+      <div class="lesson-nav-text">
+        <div class="lesson-nav-title">DRIP Investing</div>
+        <div class="lesson-nav-meta">~7 min · Dividends reinvested</div>
+      </div>
+    </div>
+    <div class="sidebar-footer">
+      <div class="module-progress-label">
+        <span>Module progress</span><span id="progressText">0 / 4</span>
+      </div>
+      <div class="module-progress-bar"><div class="module-progress-fill" id="moduleProgressFill" style="width:0%"></div></div>
+    </div>
+  </aside>
+
+  <main class="content-area" id="contentArea">
+
+    <!-- LESSON 1: ETFs vs Mutual Funds -->
+    <div class="lesson-panel active" id="lesson-0">
+      <div class="lesson-hero">
+        <div class="lesson-tag">🍁 Lesson 1 of 4</div>
+        <h1 class="lesson-title">ETFs vs. Mutual Funds — The Fee Truth Canadian Banks Don't Advertise</h1>
+        <p class="lesson-subtitle">Canada has some of the highest mutual fund fees in the world. This lesson reveals exactly what you're paying — and why switching to ETFs could add hundreds of thousands to your retirement.</p>
+        <div class="lesson-meta">
+          <div class="meta-item">⏱ ~9 min read</div>
+          <div class="meta-dot"></div>
+          <div class="meta-item">📘 Module 04</div>
+          <div class="meta-dot"></div>
+          <div class="meta-item">📊 The Fee Truth</div>
+        </div>
+      </div>
+      <div class="lesson-body">
+        <p>Canada has a problem. Our mutual fund Management Expense Ratios (MERs) average <strong>2.0–2.5%</strong> annually — among the highest in the developed world. The US average is 0.5%. Australia: 0.8%. The UK: 0.9%.</p>
+        <p>That gap doesn't sound dramatic. Over 30 years, it's the difference between retiring comfortably and not retiring at all.</p>
+
+        <h2>What Is an MER and Why Does It Destroy Wealth?</h2>
+        <p>The Management Expense Ratio is the annual fee charged by a fund to cover management, administration, and distribution costs. It's expressed as a percentage of your invested assets — and it's deducted automatically, so you never see it leave your account. That invisibility is by design.</p>
+        <table class="data-table">
+          <thead><tr><th>$100,000 Invested</th><th>Annual Return</th><th>MER</th><th>After 30 Years</th></tr></thead>
+          <tbody>
+            <tr><td>Canadian Mutual Fund (avg)</td><td>7%</td><td class="bad">2.3%</td><td class="bad">$432,000</td></tr>
+            <tr><td>Canadian ETF (XEQT)</td><td>7%</td><td class="good">0.20%</td><td class="good">$743,000</td></tr>
+            <tr><td class="gold">Difference</td><td>—</td><td>—</td><td class="gold">+$311,000</td></tr>
+          </tbody>
+        </table>
+        <p>That $311,000 gap is entirely caused by fees. Same market returns. Same time period. The only variable is what the fund charges you every year.</p>
+
+        <div class="callout callout-warning">
+          <div class="callout-label">⚠️ The Trailer Fee System</div>
+          <p>Until recently, Canadian financial advisors received "trailer fees" — ongoing annual commissions paid by mutual fund companies for keeping client money in their funds. These fees (0.5–1% annually) were paid by the fund's MER, which you paid. Many advisors recommended higher-fee funds simply because they paid higher trailers. While regulators have tightened rules, conflicts of interest still exist. Always ask: "How are you compensated for recommending this product?"</p>
+        </div>
+
+        <h2>ETFs: The Structural Advantage</h2>
+        <p>Exchange-Traded Funds (ETFs) are investment funds that trade on a stock exchange like a share. They typically track an index — a basket of hundreds or thousands of stocks — passively, without active management. This is why they cost almost nothing to run.</p>
+        <p>Key structural advantages over mutual funds:</p>
+        <ul>
+          <li><strong>Lower MER</strong> — typically 0.10–0.25% vs. 1.5–2.5% for actively managed mutual funds</li>
+          <li><strong>Intraday trading</strong> — ETFs trade throughout the day; mutual funds price once daily at market close</li>
+          <li><strong>Tax efficiency</strong> — ETFs generate fewer taxable capital gain distributions than mutual funds</li>
+          <li><strong>Transparency</strong> — ETF holdings are published daily; mutual funds often only quarterly</li>
+          <li><strong>No minimums</strong> — buy one share at a time; mutual funds often require $500–$5,000 minimum purchases</li>
+        </ul>
+
+        <div class="callout callout-fact">
+          <div class="callout-label">📊 The Active Management Myth</div>
+          <p>Every year, SPIVA (S&P Indices Versus Active) publishes data on how actively managed funds perform versus their benchmark index. The 2024 report shows that over a 15-year period, <strong>over 90% of Canadian actively managed equity funds underperformed</strong> their benchmark index after fees. You pay 10x more in fees for worse performance. The data is unambiguous.</p>
+        </div>
+
+        <h2>The Exception: When Mutual Funds Still Make Sense</h2>
+        <p>Despite the fee disadvantage, mutual funds can still be appropriate in specific situations:</p>
+        <ul>
+          <li><strong>Group RRSPs</strong> — employer-sponsored plans often only offer mutual funds; still contribute for the employer match</li>
+          <li><strong>Robo-advisors</strong> — platforms like Wealthsimple Invest use ETF portfolios but charge a platform fee (0.4–0.5%); slightly higher than DIY but fully automated</li>
+          <li><strong>Behavioural guardrails</strong> — if you'll panic-sell during a market drop, a locked-in mutual fund structure may prevent costly mistakes</li>
+        </ul>
+
+        <div class="takeaways">
+          <div class="takeaways-label">🎯 Key Takeaways</div>
+          <h3>What You Just Learned</h3>
+          <ul>
+            <li><span class="takeaway-check">✦</span> Canadian mutual fund MERs (2–2.5%) are among the highest globally — ETFs average 0.10–0.25%</li>
+            <li><span class="takeaway-check">✦</span> The fee gap creates a $300,000+ wealth difference on $100,000 invested over 30 years</li>
+            <li><span class="takeaway-check">✦</span> Over 90% of actively managed funds underperform their benchmark index over 15 years</li>
+            <li><span class="takeaway-check">✦</span> ETFs offer structural advantages: lower cost, tax efficiency, transparency, and no minimums</li>
+            <li><span class="takeaway-check">✦</span> Group RRSPs with employer match are still valuable even if they only offer mutual funds</li>
+          </ul>
+        </div>
+
+        <div class="action-box">
+          <div class="action-box-title">⚡ This Week's Action Items</div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Log into your investment accounts and find the MER of every fund you currently hold</span></div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Use the fee calculator at getsmarteraboutmoney.ca to see your 30-year fee cost</span></div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Research XEQT on the iShares Canada website — note the MER, holdings, and 5-year performance</span></div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Ask your bank or advisor in writing: "What is the MER of each fund I hold?"</span></div>
+        </div>
+      </div>
+      <div class="lesson-footer">
+        <button class="complete-btn" onclick="markComplete(0)" id="complete-0">✓ Mark Lesson Complete</button>
+        <div class="nav-arrows">
+          <button class="nav-arrow" disabled>← Previous</button>
+          <button class="nav-arrow next" onclick="goToLesson(1)">Next →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- LESSON 2: Wealthsimple vs Questrade -->
+    <div class="lesson-panel" id="lesson-1">
+      <div class="lesson-hero">
+        <div class="lesson-tag">🍁 Lesson 2 of 4</div>
+        <h1 class="lesson-title">Wealthsimple vs. Questrade — Which Platform Is Right for You</h1>
+        <p class="lesson-subtitle">Canada's two dominant discount brokerages serve different investor types. Here's the honest comparison — and how to choose the right platform for your situation.</p>
+        <div class="lesson-meta">
+          <div class="meta-item">⏱ ~8 min read</div>
+          <div class="meta-dot"></div>
+          <div class="meta-item">📘 Module 04</div>
+          <div class="meta-dot"></div>
+          <div class="meta-item">💻 Pick Your Platform</div>
+        </div>
+      </div>
+      <div class="lesson-body">
+        <p>The Big 5 banks charge commissions of $6–$10 per trade and push their own mutual funds. Canada's discount brokerages disrupted this model — and two platforms dominate for Canadian investors building ETF portfolios: Wealthsimple Trade and Questrade.</p>
+        <p>They serve different needs. Here's the full comparison.</p>
+
+        <div class="platform-compare">
+          <div class="platform-card">
+            <div class="platform-header ws">💚 Wealthsimple Trade</div>
+            <div class="platform-body">
+              <div class="platform-row"><strong>ETF Commissions</strong>Free (no trade fees)</div>
+              <div class="platform-row"><strong>Stock Commissions</strong>Free (CAD), $1.99 USD trades on basic</div>
+              <div class="platform-row"><strong>FX Fee</strong>1.5% on USD transactions</div>
+              <div class="platform-row"><strong>TFSA/RRSP/FHSA</strong>Yes — free registered accounts</div>
+              <div class="platform-row"><strong>Best For</strong>Beginners, simple ETF portfolios, mobile-first investors</div>
+            </div>
+          </div>
+          <div class="platform-card">
+            <div class="platform-header qt">💙 Questrade</div>
+            <div class="platform-body">
+              <div class="platform-row"><strong>ETF Commissions</strong>Free to buy ETFs; $4.95–$9.95 to sell</div>
+              <div class="platform-row"><strong>Stock Commissions</strong>$4.95–$9.95 per trade</div>
+              <div class="platform-row"><strong>FX Fee</strong>1.99% on USD transactions (can reduce with Norbert's Gambit)</div>
+              <div class="platform-row"><strong>TFSA/RRSP/FHSA</strong>Yes — all registered account types</div>
+              <div class="platform-row"><strong>Best For</strong>Active investors, US stock exposure, options traders</div>
+            </div>
+          </div>
+        </div>
+
+        <h2>The Decision Framework</h2>
+        <p>For most Canadians building a simple index ETF portfolio (XEQT or XBAL inside a TFSA), <strong>Wealthsimple Trade is the better choice</strong>. Here's why:</p>
+        <ul>
+          <li>Zero commissions on both buying and selling Canadian ETFs</li>
+          <li>Mobile app is best-in-class for user experience</li>
+          <li>Instant deposits up to $5,000 with direct bank link</li>
+          <li>No account minimums</li>
+          <li>TFSA, RRSP, and FHSA all available for free</li>
+        </ul>
+        <p>Choose <strong>Questrade</strong> if:</p>
+        <ul>
+          <li>You're trading US stocks or ETFs frequently (with Norbert's Gambit to reduce FX fees)</li>
+          <li>You want access to options trading</li>
+          <li>You prefer a desktop-first trading experience</li>
+          <li>You need margin accounts or more complex order types</li>
+        </ul>
+
+        <div class="callout callout-tip">
+          <div class="callout-label">💡 Norbert's Gambit — The Currency Hack</div>
+          <p>If you use Questrade and want to buy US-listed ETFs without paying 1.99% FX fees, Google "Norbert's Gambit Questrade." The process involves buying a Canada-listed ETF (like DLR) and journaling it to the US side, then selling. It's a 2-3 day process that cuts currency conversion costs from ~2% to ~0.1%. Worth it on conversions over $5,000.</p>
+        </div>
+
+        <h2>Account Types Available at Both Platforms</h2>
+        <table class="data-table">
+          <thead><tr><th>Account Type</th><th>Wealthsimple</th><th>Questrade</th><th>Why It Matters</th></tr></thead>
+          <tbody>
+            <tr><td>TFSA</td><td class="good">✓ Free</td><td class="good">✓ Free</td><td>Tax-free growth — priority #1</td></tr>
+            <tr><td>RRSP</td><td class="good">✓ Free</td><td class="good">✓ Free</td><td>Tax-deferred, employer match potential</td></tr>
+            <tr><td>FHSA</td><td class="good">✓ Free</td><td class="good">✓ Free</td><td>First Home Savings Account — priority for buyers</td></tr>
+            <tr><td>Personal (non-reg)</td><td class="good">✓ Free</td><td class="good">✓ Free</td><td>Overflow investing after registered accounts maxed</td></tr>
+            <tr><td>Options</td><td class="bad">✗</td><td class="good">✓</td><td>Advanced — not needed for index strategy</td></tr>
+            <tr><td>Margin</td><td class="bad">✗ Basic plan</td><td class="good">✓</td><td>Advanced — not needed for index strategy</td></tr>
+          </tbody>
+        </table>
+
+        <div class="callout callout-canadian">
+          <div class="callout-label">🍁 The CDIC Protection Note</div>
+          <p>Both Wealthsimple Trade and Questrade are members of the Canadian Investor Protection Fund (CIPF), which protects eligible investment accounts up to $1,000,000 per account category if the brokerage becomes insolvent. This is separate from CDIC protection (which covers bank deposits). Your ETF holdings are protected at both platforms.</p>
+        </div>
+
+        <div class="takeaways">
+          <div class="takeaways-label">🎯 Key Takeaways</div>
+          <h3>What You Just Learned</h3>
+          <ul>
+            <li><span class="takeaway-check">✦</span> Wealthsimple Trade is best for simple ETF portfolios — zero commissions, excellent mobile app</li>
+            <li><span class="takeaway-check">✦</span> Questrade is better for US stock exposure, options, and active traders using Norbert's Gambit</li>
+            <li><span class="takeaway-check">✦</span> Both platforms offer TFSA, RRSP, and FHSA accounts for free — far better than Big 5 banks</li>
+            <li><span class="takeaway-check">✦</span> Both platforms are CIPF-protected up to $1M — your investments are safe</li>
+            <li><span class="takeaway-check">✦</span> For 90% of Canadian investors, Wealthsimple Trade is the right starting platform</li>
+          </ul>
+        </div>
+
+        <div class="action-box">
+          <div class="action-box-title">⚡ This Week's Action Items</div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Open a Wealthsimple Trade account if you don't already have one — takes 10 minutes</span></div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Open a TFSA within Wealthsimple Trade — it's free and the tax-free growth starts immediately</span></div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Link your bank account and set up your first deposit — minimum $1 to get started</span></div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>If you invest in US stocks, research Questrade and Norbert's Gambit as a future option</span></div>
+        </div>
+      </div>
+      <div class="lesson-footer">
+        <button class="complete-btn" onclick="markComplete(1)" id="complete-1">✓ Mark Lesson Complete</button>
+        <div class="nav-arrows">
+          <button class="nav-arrow" onclick="goToLesson(0)">← Previous</button>
+          <button class="nav-arrow next" onclick="goToLesson(2)">Next →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- LESSON 3: XEQT & XBAL Strategy -->
+    <div class="lesson-panel" id="lesson-2">
+      <div class="lesson-hero">
+        <div class="lesson-tag">🍁 Lesson 3 of 4</div>
+        <h1 class="lesson-title">XEQT &amp; XBAL — The One-Fund Canadian Portfolio Strategy</h1>
+        <p class="lesson-subtitle">You don't need 12 ETFs to build a well-diversified Canadian portfolio. Two funds — XEQT and XBAL — cover the entire world market. Here's how to choose between them and why they work.</p>
+        <div class="lesson-meta">
+          <div class="meta-item">⏱ ~8 min read</div>
+          <div class="meta-dot"></div>
+          <div class="meta-item">📘 Module 04</div>
+          <div class="meta-dot"></div>
+          <div class="meta-item">📈 The One-Fund Portfolio</div>
+        </div>
+      </div>
+      <div class="lesson-body">
+        <p>One of the biggest myths in investing is that building wealth requires complexity — a portfolio of 10–15 carefully selected funds rebalanced quarterly. The evidence says otherwise.</p>
+        <p>A single all-in-one ETF, held consistently and added to regularly, outperforms most actively managed multi-fund portfolios over any 20-year period. Here's the Canadian version.</p>
+
+        <h2>What Is XEQT?</h2>
+        <p><strong>XEQT</strong> (iShares Core Equity ETF Portfolio) is a single fund that holds approximately 9,000 global stocks across Canada, the US, international developed markets, and emerging markets. It's 100% equity — meaning no bonds — and automatically rebalances itself.</p>
+        <table class="data-table">
+          <thead><tr><th>XEQT — Key Details</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td>MER</td><td class="good">0.20%/year</td></tr>
+            <tr><td>Geographic Allocation</td><td>US 45% / Canada 25% / International 20% / Emerging 10%</td></tr>
+            <tr><td>Number of Holdings</td><td>~9,000 global stocks</td></tr>
+            <tr><td>Asset Type</td><td>100% equities (no bonds)</td></tr>
+            <tr><td>Historical Annual Return (10yr)</td><td class="good">~9.5%</td></tr>
+            <tr><td>Best For</td><td>Investors under 45, high risk tolerance, long time horizons</td></tr>
+          </tbody>
+        </table>
+
+        <h2>What Is XBAL?</h2>
+        <p><strong>XBAL</strong> (iShares Core Balanced ETF Portfolio) holds the same global equity exposure as XEQT but adds a <strong>40% fixed income (bond) allocation</strong>. This reduces volatility at the cost of some long-term return.</p>
+        <table class="data-table">
+          <thead><tr><th>XBAL — Key Details</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td>MER</td><td class="good">0.20%/year</td></tr>
+            <tr><td>Allocation</td><td>60% Global Equity / 40% Canadian & Global Bonds</td></tr>
+            <tr><td>Volatility</td><td>Lower than XEQT — smaller swings in market downturns</td></tr>
+            <tr><td>Historical Annual Return (10yr)</td><td class="gold">~7.2%</td></tr>
+            <tr><td>Best For</td><td>Investors over 50, lower risk tolerance, shorter time horizons</td></tr>
+          </tbody>
+        </table>
+
+        <h2>XEQT vs XBAL — The Decision</h2>
+        <p>The standard rule of thumb: <strong>your bond allocation should roughly equal your age</strong>. A 30-year-old might hold 30% bonds (closer to XBAL), while a 25-year-old with a 40-year horizon holds 100% equity (XEQT).</p>
+        <p>But the modern approach for Canadians investing in a TFSA or RRSP with a 20+ year horizon: <strong>XEQT all the way</strong>. Here's why:</p>
+        <ul>
+          <li>You have decades to ride out market volatility</li>
+          <li>Your TFSA/RRSP contributions are long-term — not money you need next year</li>
+          <li>The historical return difference (9.5% vs 7.2%) compounds to a massive wealth gap over 30 years</li>
+          <li>Bonds provide diversification but also drag returns in strong equity markets</li>
+        </ul>
+
+        <div class="callout callout-tip">
+          <div class="callout-label">💡 The 2024 Market Context</div>
+          <p>In 2022, when interest rates spiked, bonds fell alongside stocks — their traditional diversification benefit temporarily disappeared. XBAL investors saw losses in both their equity and bond allocations simultaneously. For long-term investors under 50, this event reinforced the case for XEQT over XBAL during the accumulation phase.</p>
+        </div>
+
+        <h2>The Dollar-Cost Averaging Strategy</h2>
+        <p>The most powerful strategy with XEQT or XBAL isn't timing the market — it's consistent contributions regardless of market conditions.</p>
+        <p><strong>Dollar-cost averaging (DCA)</strong> means buying a fixed dollar amount at regular intervals (monthly or biweekly with your paycheque). This automatically buys more shares when prices are low and fewer when prices are high.</p>
+        <div class="callout callout-fact">
+          <div class="callout-label">📊 DCA vs Lump Sum — The Canadian Reality</div>
+          <p>Studies show lump-sum investing outperforms DCA approximately 68% of the time when a large amount is available. But most Canadians don't have $20,000 available at once — they have $500/month from their paycheque. For regular paycheque investors, DCA is not just the practical choice — it's the psychologically sustainable one. Automatic biweekly contributions to XEQT, held for 30 years, is the foundation of most Canadian retirement wealth.</p>
+        </div>
+
+        <div class="takeaways">
+          <div class="takeaways-label">🎯 Key Takeaways</div>
+          <h3>What You Just Learned</h3>
+          <ul>
+            <li><span class="takeaway-check">✦</span> XEQT — 100% global equity, 9,000 stocks, 0.20% MER — the ideal TFSA core holding for most Canadians under 50</li>
+            <li><span class="takeaway-check">✦</span> XBAL — 60% equity / 40% bonds — lower volatility, suitable for shorter time horizons or conservative investors</li>
+            <li><span class="takeaway-check">✦</span> Both automatically rebalance — no manual intervention needed after purchase</li>
+            <li><span class="takeaway-check">✦</span> Dollar-cost averaging with monthly paycheque contributions is the sustainable strategy for most Canadians</li>
+            <li><span class="takeaway-check">✦</span> Complexity doesn't equal better returns — one well-chosen ETF, held consistently, beats most active strategies</li>
+          </ul>
+        </div>
+
+        <div class="action-box">
+          <div class="action-box-title">⚡ This Week's Action Items</div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Search "XEQT" in your Wealthsimple Trade or Questrade account and review the fund details</span></div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Decide: XEQT (long horizon, higher growth) or XBAL (shorter horizon, lower volatility)?</span></div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Set up an automatic recurring investment — weekly, biweekly, or monthly — in your TFSA</span></div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Commit to not checking your portfolio more than once per month — consistency beats timing</span></div>
+        </div>
+      </div>
+      <div class="lesson-footer">
+        <button class="complete-btn" onclick="markComplete(2)" id="complete-2">✓ Mark Lesson Complete</button>
+        <div class="nav-arrows">
+          <button class="nav-arrow" onclick="goToLesson(1)">← Previous</button>
+          <button class="nav-arrow next" onclick="goToLesson(3)">Next →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- LESSON 4: DRIP Investing -->
+    <div class="lesson-panel" id="lesson-3">
+      <div class="lesson-hero">
+        <div class="lesson-tag">🍁 Lesson 4 of 4</div>
+        <h1 class="lesson-title">DRIP Investing — How Reinvested Dividends Build Passive Wealth</h1>
+        <p class="lesson-subtitle">The Dividend Reinvestment Plan is one of the most underused wealth-building tools available to Canadian investors. Here's how it works — and why enabling it is one of the highest-leverage decisions you can make.</p>
+        <div class="lesson-meta">
+          <div class="meta-item">⏱ ~7 min read</div>
+          <div class="meta-dot"></div>
+          <div class="meta-item">📘 Module 04</div>
+          <div class="meta-dot"></div>
+          <div class="meta-item">💰 Dividends Reinvested</div>
+        </div>
+      </div>
+      <div class="lesson-body">
+        <p>When XEQT or any dividend-paying ETF distributes income, you have two choices: take the cash, or reinvest it automatically into more shares. The second option — the DRIP — is the difference between good wealth-building and exceptional wealth-building.</p>
+
+        <h2>How DRIP Works</h2>
+        <p>A Dividend Reinvestment Plan (DRIP) automatically uses dividend and distribution payments to purchase additional shares of the same fund. Instead of receiving $47 in distributions and having it sit in cash, it immediately buys more XEQT shares — which then generate their own distributions — which buy more shares — in a continuously compounding loop.</p>
+
+        <div class="stat-highlight">
+          <div class="stat-box">
+            <div class="stat-box-num">+1.8%</div>
+            <div class="stat-box-label">Additional annual return from DRIP versus taking dividends as cash (historical average)</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-box-num">$180K</div>
+            <div class="stat-box-label">Additional wealth after 30 years on a $100K portfolio from DRIP vs. cash dividends</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-box-num">$0</div>
+            <div class="stat-box-label">Cost to enable DRIP on Wealthsimple Trade or Questrade — it's free</div>
+          </div>
+        </div>
+
+        <h2>DRIP Inside a TFSA — The Ultimate Setup</h2>
+        <p>DRIP is powerful in any account. Inside a TFSA, it's extraordinary — because:</p>
+        <ul>
+          <li>Dividends and distributions are <strong>completely tax-free</strong></li>
+          <li>Reinvested distributions generate more tax-free distributions</li>
+          <li>Every compounding cycle happens with zero CRA involvement</li>
+          <li>Over 30+ years, the DRIP within a TFSA creates a compounding engine that grows exponentially faster than a taxable account</li>
+        </ul>
+
+        <div class="callout callout-fact">
+          <div class="callout-label">📊 The 40-Year DRIP Illustration</div>
+          <p>An investor who puts $7,000/year into XEQT inside a TFSA with DRIP enabled, starting at age 25, accumulates approximately <strong>$1.85M by age 65</strong> at a 9% average annual return. The same investor without DRIP (taking distributions as cash) accumulates approximately <strong>$1.52M</strong>. The DRIP creates an additional $330,000 — entirely from reinvesting distributions automatically. No extra work. No extra contributions. Just the compounding of dividends.</p>
+        </div>
+
+        <h2>How to Enable DRIP on Wealthsimple and Questrade</h2>
+        <p><strong>Wealthsimple Trade:</strong> Go to your account settings → Dividend Reinvestment → toggle on. Distributions from ETFs will automatically purchase fractional shares (Wealthsimple supports fractional shares, which means every cent of distribution buys more shares immediately).</p>
+        <p><strong>Questrade:</strong> DRIP is available but requires a phone call or in-app request to enable per-security. Worth the 5-minute call for long-term holdings.</p>
+
+        <div class="callout callout-tip">
+          <div class="callout-label">💡 Fractional Shares Matter</div>
+          <p>Wealthsimple Trade supports fractional share purchases with DRIP, meaning a $47.32 distribution buys exactly $47.32 worth of XEQT — no cash left sitting idle. Questrade's DRIP only works when the distribution is large enough to buy a full share. For smaller accounts, Wealthsimple's fractional DRIP is more efficient.</p>
+        </div>
+
+        <h2>The Canadian Dividend Tax Credit — For Non-Registered Accounts</h2>
+        <p>If you're investing in a non-registered (taxable) account — meaning you've maxed your TFSA and RRSP — Canadian eligible dividends receive preferential tax treatment through the <strong>Dividend Tax Credit (DTC)</strong>.</p>
+        <p>Eligible Canadian dividends are "grossed up" by 38% on your tax return, then you receive a federal DTC of 15.02% of the grossed-up amount. For many investors in lower tax brackets, Canadian eligible dividends are taxed at near-zero — sometimes negative — effective rates. This makes Canadian dividend ETFs (like XDV or CDZ) compelling in non-registered accounts.</p>
+
+        <div class="takeaways">
+          <div class="takeaways-label">🎯 Key Takeaways</div>
+          <h3>What You Just Learned</h3>
+          <ul>
+            <li><span class="takeaway-check">✦</span> DRIP automatically reinvests dividends into more shares — creating a compounding loop that accelerates wealth</li>
+            <li><span class="takeaway-check">✦</span> Over 40 years, DRIP adds approximately $330,000 to a maxed TFSA portfolio versus taking dividends as cash</li>
+            <li><span class="takeaway-check">✦</span> DRIP inside a TFSA is the most powerful setup — all growth and distributions are completely tax-free</li>
+            <li><span class="takeaway-check">✦</span> Wealthsimple Trade supports fractional DRIP — every cent of distribution reinvests immediately</li>
+            <li><span class="takeaway-check">✦</span> In non-registered accounts, Canadian eligible dividends receive preferential tax treatment via the DTC</li>
+          </ul>
+        </div>
+
+        <div class="action-box">
+          <div class="action-box-title">⚡ Module Completion Actions</div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Enable DRIP on your Wealthsimple Trade or Questrade account for your primary ETF holding</span></div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Confirm your DRIP is set up inside your TFSA — not just your non-registered account</span></div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>Set a calendar reminder for 6 months from now to review your holdings and contribution progress</span></div>
+          <div class="action-item"><div class="action-checkbox" onclick="toggleCheck(this)"></div><span>If you have a non-registered account, research XDV (iShares Canadian Dividend ETF) as a tax-efficient option</span></div>
+        </div>
+      </div>
+      <div class="lesson-footer">
+        <button class="complete-btn" onclick="markComplete(3)" id="complete-3">✓ Mark Lesson Complete</button>
+        <div class="nav-arrows">
+          <button class="nav-arrow" onclick="goToLesson(2)">← Previous</button>
+          <button class="nav-arrow next" disabled>Module Complete ✓</button>
+        </div>
+      </div>
+
+      <div class="module-complete-banner" id="completeBanner">
+        <span class="complete-maple">🍁</span>
+        <div class="complete-title">Module 04 Complete!</div>
+        <p class="complete-sub">You now understand the full Canadian investing framework — ETF vs. mutual fund fees, platform selection, the XEQT/XBAL one-fund strategy, and the DRIP compounding system. This knowledge is the foundation of every wealthy Canadian investor.</p>
+        <div class="complete-actions">
+          <a href="module-05.html" class="complete-btn-next">Next Module →</a>
+          <a href="members.html" class="complete-btn-dashboard">Back to Dashboard</a>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  const READING_TIMES = ['~9 min read', '~8 min read', '~8 min read', '~7 min read'];
+  const LESSON_TITLES = ['ETFs vs Mutual Funds', 'Wealthsimple vs Questrade', 'XEQT & XBAL Strategy', 'DRIP Investing'];
+  let currentLesson = 0;
+  let completed = new Array(4).fill(false);
+  try {
+    const saved = JSON.parse(localStorage.getItem('cwo_m04') || '{}');
+    if (saved.completed) completed = saved.completed;
+    if (saved.lesson !== undefined) currentLesson = saved.lesson;
+  } catch(e) {}
+  function saveState() {
+    try { localStorage.setItem('cwo_m04', JSON.stringify({ completed, lesson: currentLesson })); } catch(e) {}
+  }
+  function goToLesson(index) {
+    document.getElementById('lesson-' + currentLesson).classList.remove('active');
+    document.getElementById('nav-' + currentLesson).classList.remove('active');
+    currentLesson = index;
+    document.getElementById('lesson-' + index).classList.add('active');
+    document.getElementById('nav-' + index).classList.add('active');
+    document.getElementById('contentArea').scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    document.getElementById('readingTimeDisplay').textContent = READING_TIMES[index];
+    document.getElementById('currentLessonTitle').textContent = LESSON_TITLES[index];
+    if (completed[index]) { const btn = document.getElementById('complete-' + index); btn.textContent = '✓ Completed'; btn.classList.add('done'); }
+    updateProgress(); saveState();
+  }
+  function markComplete(index) {
+    completed[index] = true;
+    const btn = document.getElementById('complete-' + index);
+    btn.textContent = '✓ Completed'; btn.classList.add('done');
+    document.getElementById('nav-' + index).classList.add('completed');
+    if (index === 3 && completed.every(Boolean)) {
+      setTimeout(() => { document.getElementById('completeBanner').classList.add('visible'); document.getElementById('completeBanner').scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 600);
+    }
+    updateProgress(); saveState();
+  }
+  function updateProgress() {
+    const count = completed.filter(Boolean).length;
+    const pct = (count / 4) * 100;
+    document.getElementById('moduleProgressFill').style.width = pct + '%';
+    document.getElementById('navProgressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = count + ' / 4';
+  }
+  function toggleCheck(el) { el.classList.toggle('checked'); el.textContent = el.classList.contains('checked') ? '✓' : ''; }
+  goToLesson(currentLesson); updateProgress();
+</script>
+</body>
+</html>
