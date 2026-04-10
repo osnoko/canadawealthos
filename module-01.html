@@ -1,0 +1,1819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 01 — Canadian Money Foundations | CanadaWealthOS</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --red: #C0392B;
+  --red-deep: #922B21;
+  --red-glow: rgba(192,57,43,0.15);
+  --gold: #D4A017;
+  --gold-light: #F0C040;
+  --gold-glow: rgba(212,160,23,0.12);
+  --ink: #0F0F0F;
+  --ink-soft: #1E1E1E;
+  --paper: #F7F3EE;
+  --paper-dark: #EDE8E0;
+  --text: #1A1208;
+  --text-mid: #4A3F2F;
+  --text-soft: #7A6E5F;
+  --border: rgba(26,18,8,0.1);
+  --border-gold: rgba(212,160,23,0.3);
+  --white: #FFFFFF;
+  --success: #1A6B3C;
+  --success-bg: #E8F5EE;
+  --lesson-w: 720px;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--paper);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Grain overlay ── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.4;
+}
+
+/* ══════════════════════════════════════
+   TOP NAV
+══════════════════════════════════════ */
+.topnav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  background: rgba(247,243,238,0.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-left { display: flex; align-items: center; gap: 20px; }
+
+.nav-back {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-soft);
+  text-decoration: none;
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  transition: all 0.2s;
+  background: white;
+}
+.nav-back:hover { border-color: var(--red); color: var(--red); background: var(--red-glow); }
+
+.nav-divider { width: 1px; height: 20px; background: var(--border); }
+
+.nav-breadcrumb {
+  font-size: 12px;
+  color: var(--text-soft);
+  letter-spacing: 0.04em;
+}
+.nav-breadcrumb span { color: var(--red); font-weight: 600; }
+
+.nav-right { display: flex; align-items: center; gap: 12px; }
+
+.reading-progress-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.reading-time {
+  font-size: 11px;
+  color: var(--text-soft);
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.05em;
+}
+
+.nav-progress-bar {
+  width: 80px;
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.nav-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--red), var(--gold));
+  border-radius: 2px;
+  width: 0%;
+  transition: width 0.3s ease;
+}
+
+/* ══════════════════════════════════════
+   MODULE SIDEBAR
+══════════════════════════════════════ */
+.layout {
+  display: flex;
+  min-height: calc(100vh - 56px);
+}
+
+.sidebar {
+  width: 280px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 56px;
+  height: calc(100vh - 56px);
+  overflow-y: auto;
+  background: white;
+  border-right: 1px solid var(--border);
+  padding: 32px 0;
+}
+
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-track { background: transparent; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+.sidebar-module-label {
+  padding: 0 24px 16px;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+  font-weight: 600;
+}
+
+.sidebar-module-title {
+  padding: 0 24px 24px;
+  font-family: 'Lora', serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.4;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 8px;
+}
+
+.lesson-nav-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 24px;
+  cursor: pointer;
+  transition: background 0.2s;
+  border-left: 3px solid transparent;
+  position: relative;
+}
+
+.lesson-nav-item:hover { background: var(--paper); }
+
+.lesson-nav-item.active {
+  background: var(--red-glow);
+  border-left-color: var(--red);
+}
+
+.lesson-nav-item.completed { opacity: 0.7; }
+
+.lesson-num-badge {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--paper-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-soft);
+  flex-shrink: 0;
+  margin-top: 1px;
+  transition: all 0.2s;
+}
+
+.lesson-nav-item.active .lesson-num-badge {
+  background: var(--red);
+  color: white;
+}
+
+.lesson-nav-item.completed .lesson-num-badge {
+  background: var(--success);
+  color: white;
+}
+
+.lesson-nav-text { flex: 1; }
+
+.lesson-nav-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.3;
+  margin-bottom: 3px;
+}
+
+.lesson-nav-meta {
+  font-size: 11px;
+  color: var(--text-soft);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.lesson-nav-item.active .lesson-nav-title { color: var(--red-deep); }
+
+.sidebar-footer {
+  padding: 24px;
+  margin-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.module-progress-label {
+  font-size: 11px;
+  color: var(--text-soft);
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.module-progress-bar {
+  height: 4px;
+  background: var(--paper-dark);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.module-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--red), var(--gold));
+  border-radius: 2px;
+  transition: width 0.6s ease;
+}
+
+/* ══════════════════════════════════════
+   LESSON CONTENT AREA
+══════════════════════════════════════ */
+.content-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 0 80px;
+}
+
+.lesson-panel {
+  display: none;
+  animation: lessonFade 0.4s ease both;
+}
+
+.lesson-panel.active { display: block; }
+
+@keyframes lessonFade {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Lesson Hero ── */
+.lesson-hero {
+  padding: 56px 64px 48px;
+  max-width: var(--lesson-w);
+  margin: 0 auto;
+  position: relative;
+}
+
+.lesson-hero::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--red), var(--gold), transparent);
+}
+
+.lesson-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  background: var(--red-glow);
+  border: 1px solid rgba(192,57,43,0.2);
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 20px;
+}
+
+.lesson-title {
+  font-family: 'Lora', serif;
+  font-size: clamp(26px, 4vw, 38px);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--text);
+  margin-bottom: 16px;
+}
+
+.lesson-subtitle {
+  font-size: 17px;
+  color: var(--text-mid);
+  line-height: 1.65;
+  font-weight: 300;
+  max-width: 600px;
+  margin-bottom: 28px;
+}
+
+.lesson-meta {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-soft);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.meta-dot {
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--border);
+}
+
+/* ── Lesson Body ── */
+.lesson-body {
+  padding: 0 64px 48px;
+  max-width: var(--lesson-w);
+  margin: 0 auto;
+}
+
+.lesson-body h2 {
+  font-family: 'Lora', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 48px 0 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.lesson-body h3 {
+  font-family: 'Lora', serif;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text);
+  margin: 32px 0 12px;
+}
+
+.lesson-body p {
+  font-size: 16px;
+  line-height: 1.85;
+  color: var(--text-mid);
+  margin-bottom: 20px;
+}
+
+.lesson-body strong { color: var(--text); font-weight: 600; }
+
+.lesson-body ul, .lesson-body ol {
+  margin: 16px 0 24px 20px;
+}
+
+.lesson-body li {
+  font-size: 16px;
+  line-height: 1.75;
+  color: var(--text-mid);
+  margin-bottom: 8px;
+  padding-left: 8px;
+}
+
+.lesson-body ul li::marker { color: var(--red); }
+.lesson-body ol li::marker { color: var(--red); font-weight: 600; font-family: 'JetBrains Mono', monospace; font-size: 13px; }
+
+/* ── Callout boxes ── */
+.callout {
+  border-radius: 4px;
+  padding: 20px 24px;
+  margin: 28px 0;
+  border-left: 4px solid;
+  position: relative;
+}
+
+.callout-canadian {
+  background: linear-gradient(135deg, rgba(192,57,43,0.06), rgba(212,160,23,0.04));
+  border-color: var(--red);
+}
+
+.callout-tip {
+  background: var(--gold-glow);
+  border-color: var(--gold);
+}
+
+.callout-warning {
+  background: rgba(231,76,60,0.06);
+  border-color: #E74C3C;
+}
+
+.callout-fact {
+  background: rgba(26,107,60,0.06);
+  border-color: var(--success);
+}
+
+.callout-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.callout-canadian .callout-label { color: var(--red); }
+.callout-tip .callout-label { color: var(--gold); }
+.callout-warning .callout-label { color: #C0392B; }
+.callout-fact .callout-label { color: var(--success); }
+
+.callout p {
+  font-size: 14.5px;
+  margin-bottom: 0;
+  line-height: 1.7;
+}
+
+/* ── Data tables ── */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 24px 0;
+  font-size: 14px;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.data-table th {
+  background: var(--ink-soft);
+  color: white;
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.data-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-mid);
+  vertical-align: top;
+}
+
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:nth-child(even) td { background: var(--paper); }
+.data-table tr:hover td { background: var(--red-glow); }
+
+.data-table .highlight { color: var(--red); font-weight: 600; }
+.data-table .good { color: var(--success); font-weight: 600; }
+.data-table .bad { color: var(--red); font-weight: 600; }
+
+/* ── Key number highlight ── */
+.stat-highlight {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+  margin: 28px 0;
+}
+
+.stat-box {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 20px;
+  text-align: center;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.stat-box:hover { border-color: var(--gold); transform: translateY(-2px); }
+
+.stat-box-num {
+  font-family: 'Lora', serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--red);
+  margin-bottom: 6px;
+  line-height: 1;
+}
+
+.stat-box-label {
+  font-size: 12px;
+  color: var(--text-soft);
+  line-height: 1.4;
+}
+
+/* ── Key Takeaways ── */
+.takeaways {
+  background: var(--ink);
+  border-radius: 8px;
+  padding: 32px 36px;
+  margin: 40px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.takeaways::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--red), var(--gold));
+}
+
+.takeaways-label {
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 700;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.takeaways h3 {
+  font-family: 'Lora', serif;
+  font-size: 18px;
+  color: white;
+  margin-bottom: 16px;
+  font-weight: 700;
+}
+
+.takeaways ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.takeaways li {
+  color: rgba(255,255,255,0.8);
+  font-size: 14.5px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  line-height: 1.6;
+}
+
+.takeaways li:last-child { border-bottom: none; }
+
+.takeaway-check {
+  color: var(--gold);
+  font-size: 14px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* ── Action items ── */
+.action-box {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 28px 32px;
+  margin: 32px 0;
+}
+
+.action-box-title {
+  font-family: 'Lora', serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.action-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+  color: var(--text-mid);
+  line-height: 1.6;
+}
+
+.action-item:last-child { border-bottom: none; }
+
+.action-checkbox {
+  width: 18px; height: 18px;
+  border: 2px solid var(--border);
+  border-radius: 4px;
+  flex-shrink: 0;
+  margin-top: 1px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: transparent;
+}
+
+.action-checkbox.checked {
+  background: var(--success);
+  border-color: var(--success);
+  color: white;
+}
+
+/* ── Lesson footer nav ── */
+.lesson-footer {
+  padding: 40px 64px 0;
+  max-width: var(--lesson-w);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+
+.complete-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  background: var(--red);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.04em;
+}
+
+.complete-btn:hover { background: var(--red-deep); transform: translateY(-1px); }
+
+.complete-btn.done {
+  background: var(--success);
+  cursor: default;
+  transform: none;
+}
+
+.nav-arrows {
+  display: flex;
+  gap: 10px;
+}
+
+.nav-arrow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 20px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: white;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-mid);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Outfit', sans-serif;
+}
+
+.nav-arrow:hover:not(:disabled) {
+  border-color: var(--red);
+  color: var(--red);
+  background: var(--red-glow);
+}
+
+.nav-arrow:disabled { opacity: 0.3; cursor: not-allowed; }
+
+.nav-arrow.next {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: white;
+}
+
+.nav-arrow.next:hover:not(:disabled) {
+  background: var(--red-deep);
+  border-color: var(--red-deep);
+  color: white;
+}
+
+/* ── Module complete banner ── */
+.module-complete-banner {
+  display: none;
+  background: linear-gradient(135deg, var(--ink), var(--ink-soft));
+  border-radius: 8px;
+  padding: 36px 40px;
+  margin: 40px 64px;
+  max-width: calc(var(--lesson-w) - 128px);
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  animation: lessonFade 0.5s ease;
+}
+
+.module-complete-banner::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--red), var(--gold), var(--red));
+}
+
+.module-complete-banner.visible { display: block; }
+
+.complete-maple { font-size: 48px; margin-bottom: 16px; display: block; }
+
+.complete-title {
+  font-family: 'Lora', serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 12px;
+}
+
+.complete-sub {
+  font-size: 14px;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.65;
+  margin-bottom: 24px;
+}
+
+.complete-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.complete-btn-next {
+  padding: 12px 28px;
+  background: var(--red);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: background 0.2s;
+}
+
+.complete-btn-next:hover { background: var(--red-deep); }
+
+.complete-btn-dashboard {
+  padding: 12px 28px;
+  background: transparent;
+  color: rgba(255,255,255,0.7);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 4px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.2s;
+}
+
+.complete-btn-dashboard:hover { border-color: rgba(255,255,255,0.5); color: white; }
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .lesson-hero, .lesson-body, .lesson-footer { padding-left: 24px; padding-right: 24px; }
+  .module-complete-banner { margin-left: 24px; margin-right: 24px; }
+  .topnav { padding: 0 16px; }
+  .nav-breadcrumb { display: none; }
+  .takeaways { padding: 24px 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="topnav">
+  <div class="nav-left">
+    <a href="members.html" class="nav-back">← Dashboard</a>
+    <div class="nav-divider"></div>
+    <div class="nav-breadcrumb">Module 01 — <span id="currentLessonTitle">Lesson 1</span></div>
+  </div>
+  <div class="nav-right">
+    <div class="reading-progress-wrap">
+      <span class="reading-time" id="readingTimeDisplay">~8 min read</span>
+      <div class="nav-progress-bar">
+        <div class="nav-progress-fill" id="navProgressFill"></div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-module-label">🍁 Module 01</div>
+    <div class="sidebar-module-title">Canadian Money Foundations</div>
+
+    <div class="lesson-nav-item active" onclick="goToLesson(0)" id="nav-0">
+      <div class="lesson-num-badge">1</div>
+      <div class="lesson-nav-text">
+        <div class="lesson-nav-title">How CRA Works</div>
+        <div class="lesson-nav-meta">~8 min · Tax fundamentals</div>
+      </div>
+    </div>
+
+    <div class="lesson-nav-item" onclick="goToLesson(1)" id="nav-1">
+      <div class="lesson-num-badge">2</div>
+      <div class="lesson-nav-text">
+        <div class="lesson-nav-title">Credit Score Canada</div>
+        <div class="lesson-nav-meta">~7 min · Build your score</div>
+      </div>
+    </div>
+
+    <div class="lesson-nav-item" onclick="goToLesson(2)" id="nav-2">
+      <div class="lesson-num-badge">3</div>
+      <div class="lesson-nav-text">
+        <div class="lesson-nav-title">Big 5 Banks vs Credit Unions</div>
+        <div class="lesson-nav-meta">~6 min · Choose wisely</div>
+      </div>
+    </div>
+
+    <div class="lesson-nav-item" onclick="goToLesson(3)" id="nav-3">
+      <div class="lesson-num-badge">4</div>
+      <div class="lesson-nav-text">
+        <div class="lesson-nav-title">Your Financial Baseline</div>
+        <div class="lesson-nav-meta">~9 min · Know your numbers</div>
+      </div>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="module-progress-label">
+        <span>Module progress</span>
+        <span id="progressText">0 / 4</span>
+      </div>
+      <div class="module-progress-bar">
+        <div class="module-progress-fill" id="moduleProgressFill" style="width:0%"></div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- CONTENT AREA -->
+  <main class="content-area" id="contentArea">
+
+    <!-- ════════════════════════════════
+         LESSON 1 — HOW CRA WORKS
+    ════════════════════════════════ -->
+    <div class="lesson-panel active" id="lesson-0">
+      <div class="lesson-hero">
+        <div class="lesson-tag">🍁 Lesson 1 of 4</div>
+        <h1 class="lesson-title">How the CRA Works — and Why It Matters to Your Wealth</h1>
+        <p class="lesson-subtitle">The Canada Revenue Agency touches every dollar you earn. Understanding it isn't optional — it's the foundation of every smart financial decision you'll make in this country.</p>
+        <div class="lesson-meta">
+          <span class="meta-item">⏱ ~8 min read</span>
+          <span class="meta-dot"></span>
+          <span class="meta-item">📚 Module 01</span>
+          <span class="meta-dot"></span>
+          <span class="meta-item">🏛 Tax Fundamentals</span>
+        </div>
+      </div>
+
+      <div class="lesson-body">
+
+        <p>Most Canadians think of the CRA as the organization that takes money from them every April. That's not wrong — but it's an incomplete picture. The CRA is also the organization that <strong>gives money back to you</strong> through credits, benefits, and refunds — if you know how to use it correctly.</p>
+
+        <p>This lesson is about understanding the CRA as a system you can work with, not just a bill you have to pay.</p>
+
+        <h2>What is the CRA?</h2>
+
+        <p>The Canada Revenue Agency is the federal government agency responsible for administering tax laws and delivering benefit programs on behalf of the Canadian government. They operate under the <em>Income Tax Act</em>, one of the most complex pieces of legislation in the country.</p>
+
+        <p>The CRA has three core jobs that directly affect your finances:</p>
+
+        <ul>
+          <li><strong>Collecting taxes</strong> — income tax, GST/HST, payroll deductions (CPP and EI)</li>
+          <li><strong>Distributing benefits</strong> — Canada Child Benefit, GST/HST credit, Climate Action Incentive, disability tax credit</li>
+          <li><strong>Administering registered accounts</strong> — TFSA, RRSP, FHSA, RESP contribution room tracking</li>
+        </ul>
+
+        <div class="callout callout-canadian">
+          <div class="callout-label">🍁 Canadian Context</div>
+          <p>Canada uses a <strong>self-assessment tax system</strong>. This means the government trusts you to report your own income accurately. In return, you have both the legal obligation to report correctly AND the legal right to minimize your tax bill through every legitimate deduction available to you.</p>
+        </div>
+
+        <h2>How Canadian Tax Actually Works</h2>
+
+        <p>Canada uses a <strong>progressive marginal tax system</strong>. This is one of the most misunderstood concepts in personal finance. Here's what it actually means:</p>
+
+        <p>Your income is divided into brackets. Each bracket has its own tax rate. You only pay the higher rate on the income <em>within that bracket</em> — not on your entire income.</p>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Federal Tax Bracket (2025)</th>
+              <th>Tax Rate</th>
+              <th>What This Means</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>$0 – $57,375</td>
+              <td class="good">15%</td>
+              <td>Everyone pays this on their first $57K</td>
+            </tr>
+            <tr>
+              <td>$57,375 – $114,750</td>
+              <td>20.5%</td>
+              <td>Only the income in this range</td>
+            </tr>
+            <tr>
+              <td>$114,750 – $158,519</td>
+              <td>26%</td>
+              <td>Only the income in this range</td>
+            </tr>
+            <tr>
+              <td>$158,519 – $220,000</td>
+              <td>29%</td>
+              <td>Only the income in this range</td>
+            </tr>
+            <tr>
+              <td>Over $220,000</td>
+              <td class="bad">33%</td>
+              <td>Only the income above $220K</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="callout callout-tip">
+          <div class="callout-label">💡 Key Insight</div>
+          <p>If you earn $80,000, you do NOT pay 20.5% on all of it. You pay 15% on the first $57,375 and 20.5% only on the remaining $22,625. This is why tax planning matters — every dollar you move into an RRSP or TFSA reduces your taxable income strategically.</p>
+        </div>
+
+        <p>On top of federal tax, each province adds its own provincial tax. In Ontario, that means your combined marginal rate on income between $57K–$100K is roughly <strong>29.65%</strong> (federal + provincial combined). Quebec and Alberta have different rates.</p>
+
+        <h2>What CRA Tracks About You</h2>
+
+        <p>The CRA maintains a detailed file on your financial life. Understanding what they track helps you stay compliant and use the system to your advantage:</p>
+
+        <ul>
+          <li><strong>Employment income</strong> — reported by your employer via T4 slips every February</li>
+          <li><strong>Investment income</strong> — reported by your bank, brokerage, or investment platform via T3, T5 slips</li>
+          <li><strong>Self-employment income</strong> — you report this yourself on Schedule T2125</li>
+          <li><strong>TFSA contribution room</strong> — tracked in real time; over-contributing triggers a 1% monthly penalty</li>
+          <li><strong>RRSP contribution room</strong> — builds at 18% of your previous year's earned income</li>
+          <li><strong>Benefit eligibility</strong> — based on your net family income reported each tax year</li>
+        </ul>
+
+        <div class="callout callout-warning">
+          <div class="callout-label">⚠️ Common Mistake</div>
+          <p>Many Canadians don't realize the CRA already has most of their income information from third-party slips (T4, T5, etc.). The CRA uses this to cross-check your return. Filing incomplete or inaccurate returns — even accidentally — can trigger a review or reassessment years later.</p>
+        </div>
+
+        <h2>Benefits the CRA Sends You</h2>
+
+        <p>The CRA isn't just a tax collector — it distributes billions in benefits to Canadians every year. Here are the major ones you may qualify for:</p>
+
+        <div class="stat-highlight">
+          <div class="stat-box">
+            <div class="stat-box-num">$7,787</div>
+            <div class="stat-box-label">Max CCB per child under 6 (2024–25)</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-box-num">$496</div>
+            <div class="stat-box-label">Max GST/HST credit per adult (2024)</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-box-num">$1,800</div>
+            <div class="stat-box-label">Max Climate Action Incentive (Ontario family of 4)</div>
+          </div>
+        </div>
+
+        <p>These benefits are <strong>income-tested</strong> — meaning they phase out as your income rises. Filing your taxes on time every year, even if you owe nothing, is essential to receiving these payments. The CRA calculates your benefit eligibility based on your most recent tax return.</p>
+
+        <h2>My Account — Your Most Important Financial Tool</h2>
+
+        <p>CRA My Account is a free online portal that gives you direct access to your full tax and benefit file. Every Canadian should have this set up. Here's what you can do inside it:</p>
+
+        <ul>
+          <li>View your TFSA contribution room in real time</li>
+          <li>See your RRSP deduction limit</li>
+          <li>Track benefit and credit payment dates</li>
+          <li>View past tax returns and notices of assessment</li>
+          <li>Set up direct deposit for refunds and benefits</li>
+          <li>Check if you have any outstanding balances owing</li>
+          <li>Download all your tax slips (T4, T5, etc.) directly</li>
+        </ul>
+
+        <div class="callout callout-fact">
+          <div class="callout-label">✅ Action Required</div>
+          <p>If you haven't registered for CRA My Account yet, do it this week at <strong>canada.ca/my-cra-account</strong>. Use your bank login (Sign-In Partner) for the fastest setup. This single step gives you full visibility into your tax file and contribution room.</p>
+        </div>
+
+        <h2>Tax Filing Deadlines — Never Miss These</h2>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Deadline</th>
+              <th>Who It Applies To</th>
+              <th>Consequence of Missing</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>April 30</strong></td>
+              <td>Most Canadians (employed)</td>
+              <td class="bad">5% late penalty + 1%/month interest</td>
+            </tr>
+            <tr>
+              <td><strong>June 15</strong></td>
+              <td>Self-employed individuals</td>
+              <td>Extended deadline — but taxes owed still due April 30</td>
+            </tr>
+            <tr>
+              <td><strong>February 28</strong></td>
+              <td>RRSP contribution deadline (previous tax year)</td>
+              <td class="bad">Miss this = lose the deduction for that year</td>
+            </tr>
+            <tr>
+              <td><strong>December 31</strong></td>
+              <td>TFSA / FHSA contributions (current year room)</td>
+              <td>Room carries forward, but you miss a year of tax-free growth</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="takeaways">
+          <div class="takeaways-label">🎯 Key Takeaways</div>
+          <h3>What You Just Learned</h3>
+          <ul>
+            <li><span class="takeaway-check">✦</span> Canada uses a progressive marginal tax system — only income within each bracket is taxed at that bracket's rate</li>
+            <li><span class="takeaway-check">✦</span> The CRA both collects taxes AND distributes significant benefits — filing on time protects your access to both</li>
+            <li><span class="takeaway-check">✦</span> Your TFSA room, RRSP room, and benefit eligibility are all tracked in CRA My Account</li>
+            <li><span class="takeaway-check">✦</span> Self-assessment means you have both the legal obligation to report accurately AND the right to minimize your tax bill legitimately</li>
+            <li><span class="takeaway-check">✦</span> The April 30 filing deadline is non-negotiable if you owe tax — late penalties add up fast</li>
+          </ul>
+        </div>
+
+        <div class="action-box">
+          <div class="action-box-title">⚡ This Week's Action Items</div>
+          <div class="action-item">
+            <div class="action-checkbox" onclick="toggleCheck(this)"></div>
+            <span>Register for CRA My Account at canada.ca/my-cra-account if you haven't already</span>
+          </div>
+          <div class="action-item">
+            <div class="action-checkbox" onclick="toggleCheck(this)"></div>
+            <span>Log in and check your TFSA contribution room — write down the exact number</span>
+          </div>
+          <div class="action-item">
+            <div class="action-checkbox" onclick="toggleCheck(this)"></div>
+            <span>Verify your direct deposit info is set up for tax refunds and benefits</span>
+          </div>
+          <div class="action-item">
+            <div class="action-checkbox" onclick="toggleCheck(this)"></div>
+            <span>Check your Notice of Assessment from last year — confirm no balance owing</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="lesson-footer">
+        <button class="complete-btn" onclick="markComplete(0)" id="complete-0">
+          ✓ Mark Lesson Complete
+        </button>
+        <div class="nav-arrows">
+          <button class="nav-arrow" disabled>← Previous</button>
+          <button class="nav-arrow next" onclick="goToLesson(1)">Next Lesson →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════
+         LESSON 2 — CREDIT SCORE CANADA
+    ════════════════════════════════ -->
+    <div class="lesson-panel" id="lesson-1">
+      <div class="lesson-hero">
+        <div class="lesson-tag">🍁 Lesson 2 of 4</div>
+        <h1 class="lesson-title">Credit Score Canada — How It Works and How to Build It Fast</h1>
+        <p class="lesson-subtitle">Your credit score is a three-digit number that controls your access to housing, vehicles, and loans. Most Canadians never learn how it's actually calculated — and that ignorance costs them thousands.</p>
+        <div class="lesson-meta">
+          <span class="meta-item">⏱ ~7 min read</span>
+          <span class="meta-dot"></span>
+          <span class="meta-item">📚 Module 01</span>
+          <span class="meta-dot"></span>
+          <span class="meta-item">💳 Credit Building</span>
+        </div>
+      </div>
+
+      <div class="lesson-body">
+
+        <p>In Canada, your credit score is a number between <strong>300 and 900</strong>. It's calculated by two credit bureaus: <strong>Equifax</strong> and <strong>TransUnion</strong>. Lenders — banks, mortgage companies, landlords, even some employers — use this number to decide whether to work with you and at what rate.</p>
+
+        <p>A difference of 100 points in your credit score can mean the difference between being approved for a mortgage and being denied, or between a 5% interest rate and a 7% rate. Over a 25-year mortgage, that difference is <strong>tens of thousands of dollars</strong>.</p>
+
+        <h2>What Score Range Means What</h2>
+
+        <div class="stat-highlight">
+          <div class="stat-box">
+            <div class="stat-box-num" style="color:#27AE60">800+</div>
+            <div class="stat-box-label">Excellent — Best rates, all products available</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-box-num" style="color:#2E86C1">720–799</div>
+            <div class="stat-box-label">Very Good — Approved for most products, strong rates</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-box-num" style="color:#D4A017">660–719</div>
+            <div class="stat-box-label">Good — Generally approved, may not get best rates</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-box-num" style="color:#E67E22">560–659</div>
+            <div class="stat-box-label">Fair — Limited products, higher rates</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-box-num" style="color:#C0392B">Below 560</div>
+            <div class="stat-box-label">Poor — Likely declined by major lenders</div>
+          </div>
+        </div>
+
+        <h2>The 5 Factors That Build Your Score</h2>
+
+        <p>Your credit score isn't random. It's calculated using a weighted formula across five specific factors:</p>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Factor</th>
+              <th>Weight</th>
+              <th>What to Do</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Payment History</strong></td>
+              <td class="highlight">35%</td>
+              <td>Pay every bill on time, every time — even the minimum</td>
+            </tr>
+            <tr>
+              <td><strong>Credit Utilization</strong></td>
+              <td class="highlight">30%</td>
+              <td>Keep usage below 30% of your limit (below 10% is ideal)</td>
+            </tr>
+            <tr>
+              <td><strong>Credit History Length</strong></td>
+              <td>15%</td>
+              <td>Never close your oldest card — age of credit matters</td>
+            </tr>
+            <tr>
+              <td><strong>Credit Mix</strong></td>
+              <td>10%</td>
+              <td>Having both revolving (cards) and installment (loans) credit helps</td>
+            </tr>
+            <tr>
+              <td><strong>New Credit Inquiries</strong></td>
+              <td>10%</td>
+              <td>Limit hard inquiries — each application can drop score temporarily</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="callout callout-canadian">
+          <div class="callout-label">🍁 Canadian Context</div>
+          <p>In Canada, <strong>credit utilization</strong> is calculated at the statement date — not the payment due date. So even if you pay your card in full every month, if your statement shows a high balance, your score takes a temporary hit. The fix: pay your card down <em>before</em> your statement closes.</p>
+        </div>
+
+        <h2>Hard vs. Soft Inquiries — The Difference Matters</h2>
+
+        <p>Every time someone checks your credit, it creates an "inquiry." But not all inquiries are equal:</p>
+
+        <ul>
+          <li><strong>Soft inquiries</strong> — checking your own credit, pre-approval offers, background checks — do NOT affect your score</li>
+          <li><strong>Hard inquiries</strong> — applying for a new credit card, loan, or mortgage — temporarily drop your score by 5–10 points and stay on file for 2 years</li>
+        </ul>
+
+        <div class="callout callout-tip">
+          <div class="callout-label">💡 Pro Tip</div>
+          <p>When shopping for a mortgage or car loan, multiple hard inquiries within a <strong>14–45 day window</strong> are typically grouped as a single inquiry by the bureaus. Rate shopping from multiple lenders in a short window won't crater your score — spread them out and each one counts separately.</p>
+        </div>
+
+        <h2>How to Check Your Credit Score for Free in Canada</h2>
+
+        <p>You are legally entitled to a free copy of your credit report from both Equifax and TransUnion. Here are the best free ways to check in Canada:</p>
+
+        <ul>
+          <li><strong>Borrowell</strong> — Free Equifax score, updated weekly (borrowell.com)</li>
+          <li><strong>Credit Karma Canada</strong> — Free TransUnion score, updated weekly</li>
+          <li><strong>Your bank's app</strong> — TD, RBC, Scotiabank, BMO all offer free score monitoring</li>
+          <li><strong>Equifax/TransUnion directly</strong> — Free annual report by mail (no score, just the full report)</li>
+        </ul>
+
+        <div class="callout callout-warning">
+          <div class="callout-label">⚠️ Watch Out</div>
+          <p>Equifax and TransUnion both offer paid "monitoring" subscriptions. You do NOT need to pay for these. The free tools above give you everything you need to track and build your score. Never pay for your credit score in Canada.</p>
+        </div>
+
+        <h2>The Fastest Way to Build Credit in Canada</h2>
+
+        <p>If you're new to Canada, starting from zero, or rebuilding after financial difficulty, here is the fastest legitimate path:</p>
+
+        <ol>
+          <li><strong>Get a secured credit card</strong> — You deposit money as collateral (usually $500–$2,000) and get a card with that limit. Use it for small purchases and pay it off in full every month. Capital One, Home Trust, and some credit unions offer these.</li>
+          <li><strong>Become an authorized user</strong> — A family member or trusted person can add you to their existing card. Their payment history partially benefits your file.</li>
+          <li><strong>Use your card monthly but lightly</strong> — Charge one small recurring bill (Netflix, groceries) to your card and pay the full balance before the statement date.</li>
+          <li><strong>Never miss a payment</strong> — One missed payment at 30+ days can drop your score by 50–100 points and stays on file for 6 years in Canada.</li>
+          <li><strong>Request a limit increase after 6–12 months</strong> — Higher limit with the same spending = lower utilization = higher score.</li>
+        </ol>
+
+        <div class="callout callout-fact">
+          <div class="callout-label">📊 Real Numbers</div>
+          <p>A new Canadian with no credit history can reach a score of <strong>720+ within 12–18 months</strong> by following this strategy consistently. The key is on-time payments and keeping utilization below 30% — these two factors alone control 65% of your score.</p>
+        </div>
+
+        <div class="takeaways">
+          <div class="takeaways-label">🎯 Key Takeaways</div>
+          <h3>What You Just Learned</h3>
+          <ul>
+            <li><span class="takeaway-check">✦</span> Canadian credit scores range from 300–900; 720+ gets you the best rates and products</li>
+            <li><span class="takeaway-check">✦</span> Payment history (35%) and credit utilization (30%) control 65% of your score — master these two</li>
+            <li><span class="takeaway-check">✦</span> Pay your credit card balance before the statement closes to reduce utilization impact</li>
+            <li><span class="takeaway-check">✦</span> Never close your oldest credit card — credit history length is 15% of your score</li>
+            <li><span class="takeaway-check">✦</span> Check your score free via Borrowell or Credit Karma — never pay for it</li>
+          </ul>
+        </div>
+
+        <div class="action-box">
+          <div class="action-box-title">⚡ This Week's Action Items</div>
+          <div class="action-item">
+            <div class="action-checkbox" onclick="toggleCheck(this)"></div>
+            <span>Sign up for Borrowell (free) and check your Equifax score today</span>
+          </div>
+          <div class="action-item">
+            <div class="action-checkbox" onclick="toggleCheck(this)"></div>
+            <span>Calculate your current credit utilization: (balance ÷ limit) × 100 — it should be under 30%</span>
+          </div>
+          <div class="action-item">
+            <div class="action-checkbox" onclick="toggleCheck(this)"></div>
+            <span>Set up autopay for the minimum payment on every credit card (prevents missed payments)</span>
+          </div>
+          <div class="action-item">
+            <div class="action-checkbox" onclick="toggleCheck(this)"></div>
+            <span>If you have no credit, research secured credit cards at your bank or Capital One this week</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="lesson-footer">
+        <button class="complete-btn" onclick="markComplete(1)" id="complete-1">
+          ✓ Mark Lesson Complete
+        </button>
+        <div class="nav-arrows">
+          <button class="nav-arrow" onclick="goToLesson(0)">← Previous</button>
+          <button class="nav-arrow next" onclick="goToLesson(2)">Next Lesson →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════
+         LESSON 3 — BIG 5 VS CREDIT UNIONS
+    ════════════════════════════════ -->
+    <div class="lesson-panel" id="lesson-2">
+      <div class="lesson-hero">
+        <div class="lesson-tag">🍁 Lesson 3 of 4</div>
+        <h1 class="lesson-title">Big 5 Banks vs. Credit Unions — Choosing the Right Home for Your Money</h1>
+        <p class="lesson-subtitle">Where you bank determines the fees you pay, the rates you get, and the products available to you. Most Canadians default to the same bank their parents used. That default is costing them.</p>
+        <div class="lesson-meta">
+          <span class="meta-item">⏱ ~6 min read</span>
+          <span class="meta-dot"></span>
+          <span class="meta-item">📚 Module 01</span>
+          <span class="meta-dot"></span>
+          <span class="meta-item">🏦 Banking Strategy</span>
+        </div>
+      </div>
+
+      <div class="lesson-body">
+
+        <p>Canada's banking system is one of the most concentrated in the world. Five banks control over 85% of all banking assets in the country. These are the "Big Five" — and they're not your only option.</p>
+
+        <h2>Canada's Big 5 Banks</h2>
+
+        <div class="stat-highlight">
+          <div class="stat-box">
+            <div class="stat-box-num" style="font-size:18px; color: var(--text)">RBC</div>
+            <div class="stat-box-label">Royal Bank of Canada — Canada's largest by assets</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-box-num" style="font-size:18px; color: var(--text)">TD</div>
+            <div class="stat-box-label">Toronto-Dominion Bank — Strong in US and digital</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-box-num" style="font-size:18px; color: var(--text)">BNS</div>
+            <div class="stat-box-label">Scotiabank — Known for international reach</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-box-num" style="font-size:18px; color: var(--text)">BMO</div>
+            <div class="stat-box-label">Bank of Montreal — Canada's oldest bank</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-box-num" style="font-size:18px; color: var(--text)">CIBC</div>
+            <div class="stat-box-label">Canadian Imperial Bank of Commerce</div>
+          </div>
+        </div>
+
+        <h2>Big 5 Banks — The Real Cost</h2>
+
+        <p>The Big 5 offer stability, physical branches everywhere, and full-service financial products. But they come with costs that quietly drain your wealth over time:</p>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Fee Type</th>
+              <th>Typical Big 5 Cost</th>
+              <th>Annual Impact</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Monthly chequing account fee</td>
+              <td>$4 – $30/month</td>
+              <td class="bad">Up to $360/year</td>
+            </tr>
+            <tr>
+              <td>Mutual fund MER (Management Expense Ratio)</td>
+              <td>1.5% – 2.5%/year</td>
+              <td class="bad">$1,500–$2,500 on $100K portfolio</td>
+            </tr>
+            <tr>
+              <td>Non-network ATM fees</td>
+              <td>$3 – $5 per transaction</td>
+              <td>$36–$60/year (1x/week)</td>
+            </tr>
+            <tr>
+              <td>NSF (insufficient funds) fee</td>
+              <td>$45 – $50 per incident</td>
+              <td>Varies — very painful</td>
+            </tr>
+            <tr>
+              <td>High-interest savings rate</td>
+              <td>0.01% – 1.5%</td>
+              <td class="bad">Far below inflation</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="callout callout-warning">
+          <div class="callout-label">⚠️ The Mutual Fund Trap</div>
+          <p>The biggest wealth drain from the Big 5 isn't account fees — it's mutual fund MERs. A 2% annual fee on a $200,000 portfolio costs you $4,000 per year. Over 20 years, the compounding effect means you lose <strong>over $150,000</strong> in potential growth compared to low-cost ETFs with a 0.2% MER. This alone is why millions of Canadians are switching to Wealthsimple and Questrade.</p>
+        </div>
+
+        <h2>Credit Unions — The Alternative Most Canadians Overlook</h2>
+
+        <p>Credit unions are member-owned financial cooperatives. You're not a customer — you're an owner. This changes the incentive structure entirely.</p>
+
+        <ul>
+          <li><strong>Profits returned to members</strong> — as dividends, better rates, or lower fees</li>
+          <li><strong>Better savings rates</strong> — typically 0.5%–2% higher on savings accounts and GICs</li>
+          <li><strong>Lower mortgage rates</strong> — credit unions often beat Big 5 rates, especially for self-employed borrowers</li>
+          <li><strong>No shareholder pressure</strong> — decisions are made for members, not quarterly earnings</li>
+          <li><strong>Provincial deposit insurance</strong> — CDIC doesn't cover credit unions, but each province has its own deposit protection (Ontario has DICO, BC has CUDIC, etc.)</li>
+        </ul>
+
+        <div class="callout callout-canadian">
+          <div class="callout-label">🍁 Canadian Context</div>
+          <p>Canada's largest credit unions include <strong>Desjardins</strong> (Quebec, massive), <strong>Meridian Credit Union</strong> (Ontario), <strong>Coast Capital</strong> (BC), and <strong>Conexus</strong> (Saskatchewan). Each province has strong regional options. They often offer free chequing accounts and better GIC rates than any Big 5 bank.</p>
+        </div>
+
+        <h2>Digital-First Banks — The New Option</h2>
+
+        <p>A third category has emerged that combines the best of both worlds — digital banks with no physical branches and dramatically lower fees:</p>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Institution</th>
+              <th>Best For</th>
+              <th>Key Feature</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>EQ Bank</strong></td>
+              <td>Savings</td>
+              <td class="good">High-interest savings, no fees, TFSA/RRSP available</td>
+            </tr>
+            <tr>
+              <td><strong>Wealthsimple</strong></td>
+              <td>Investing + banking</td>
+              <td class="good">Commission-free trades, high-interest cash account</td>
+            </tr>
+            <tr>
+              <td><strong>Simplii Financial</strong></td>
+              <td>Free chequing</td>
+              <td>CIBC subsidiary — free account, full features</td>
+            </tr>
+            <tr>
+              <td><strong>Tangerine</strong></td>
+              <td>Free banking</td>
+              <td>Scotiabank subsidiary — free accounts, decent savings rates</td>
+            </tr>
+            <tr>
+              <td><strong>Neo Financial</strong></td>
+              <td>Cash back + savings</td>
+              <td>High cash back card + competitive savings rate</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>The Smart Canadian Banking Stack</h2>
+
+        <p>You don't have to choose one institution. The savviest Canadians use a combination:</p>
+
+        <ol>
+          <li><strong>Big 5 bank</strong> — for your main chequing account (employer direct deposit, bill payments, mortgage relationship)</li>
+          <li><strong>EQ Bank or credit union</strong> — for your savings and emergency fund (higher interest, no fees)</li>
+          <li><strong>Wealthsimple or Questrade</strong> — for your TFSA, RRSP, and FHSA investments (low-cost ETFs)</li>
+        </ol>
+
+        <div class="callout callout-tip">
+          <div class="callout-label">💡 The Wealth Stack in Practice</div>
+          <p>Paycheque lands in TD (free Unlimited plan via employer). Automated transfer of savings to EQ Bank (currently ~4% interest). Automated investment contribution to Wealthsimple TFSA (buying XEQT ETF at 0.2% MER). This setup eliminates banking fees, maximizes savings interest, and minimizes investment costs — all on autopilot.</p>
+        </div>
+
+        <div class="takeaways">
+          <div class="takeaways-label">🎯 Key Takeaways</div>
+          <h3>What You Just Learned</h3>
+          <ul>
+            <li><span class="takeaway-check">✦</span> Canada's Big 5 banks are stable and convenient but expensive — especially their mutual fund fees</li>
+            <li><span class="takeaway-check">✦</span> Credit unions are member-owned, often have better rates and lower fees, and are fully insured provincially</li>
+            <li><span class="takeaway-check">✦</span> Digital banks like EQ Bank offer significantly higher savings rates with no monthly fees</li>
+            <li><span class="takeaway-check">✦</span> The smartest Canadians use a banking "stack" — one institution for each job rather than one institution for everything</li>
+            <li><span class="takeaway-check">✦</span> Mutual fund MERs at Big 5 banks are the single largest hidden cost for most Canadian investors</li>
+          </ul>
+        </div>
+
+        <div class="action-box">
+          <div class="action-box-title">⚡ This Week's Action Items</div>
+          <div class="action-item">
+            <div class="action-checkbox" onclick="toggleCheck(this)"></div>
+            <span>List every monthly bank fee you currently pay — add them up for an annual total</span>
+          </div>
+          <div class="action-item">
+            <div class="action-checkbox" onclick="toggleCheck(this)"></div>
+            <span>Open a free EQ Bank savings account and move your emergency fund there for higher interest</span>
+          </div>
+          <div class="action-item">
+            <div class="action-checkbox" onclick="toggleCheck(this)"></div>
+            <span>Check if your current chequing account has a fee waiver based on minimum balance — many do</span>
+          </div>
+          <div class="action-item">
+            <div class="action-checkbox" onclick="toggleCheck(this)"></div>
+            <span>If you have mutual funds at a Big 5 bank, look up their MER — compare to XEQT (0.20%)</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="lesson-footer">
+        <button class="complete-btn" onclick="markComplete(2)" id="complete-2">
+          ✓ Mark Lesson Complete
+        </button>
+        <div class="nav-arrows">
+          <button class="nav-arrow" onclick="goToLesson(1)">← Previous</button>
+          <button class="nav-arrow next" onclick="goToLesson(3)">Next Lesson →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════
+         LESSON 4 — YOUR FINANCIAL BASELINE
+    ════════════════════════════════ -->
+    <div class="lesson-panel" id="lesson-3">
+      <div class="lesson-hero">
+        <div class="lesson-tag">🍁 Lesson 4 of 4</div>
+        <h1 class="lesson-title">Your Financial Baseline — The Numbers Every Canadian Must Know</h1>
+        <p class="lesson-subtitle">You can't build wealth without knowing where you stand. This lesson walks you through calculating the four numbers that define your entire financial picture — and what to do with them.</p>
+        <div class="lesson-meta">
+          <span class="meta-item">⏱ ~9 min read</span>
+          <span class="meta-dot"></span>
+          <span class="meta-item">📚 Module 01</span>
+          <span class="meta-dot"></span>
+          <span class="meta-item">📊 Financial Planning</span>
+        </div>
+      </div>
+
+      <div class="lesson-body">
+
+        <p>Most financial advice assumes you already know your numbers. But the uncomfortable truth is that the majority of Canadians don't know their net income after tax, their actual monthly expenses, or their current net worth. Building wealth starts with an honest audit of where you are right now.</p>
+
+        <p>In this lesson, you'll calculate your four financial baseline numbers — and we'll use the bonus tools included in your CanadaWealthOS package to do it properly.</p>
+
+        <h2>Baseline Number 1 — Your True Net Income</h2>
+
+        <p>Your salary is not your income. Your <strong>net take-home pay</strong> — after federal tax, provincial tax, CPP contributions, and EI premiums — is your real income. This is the only number that matters for budgeting.</p>
+
+        <p>If you're employed, find this on your last pay stub under "Net Pay." If you're self-employed, it's more complex — your net income is your gross revenue minus all legitimate business expenses, then minus your estimated CRA tax owing.</p>
+
+        <div class="callout callout-canadian">
+          <div class="callout-label">🍁 What Gets Deducted From Your Paycheque</div>
+          <p>Every employed Canadian pays: <strong>Federal income tax</strong> (15–33%), <strong>Ontario/provincial income tax</strong> (5.05–13.16% in Ontario), <strong>CPP contributions</strong> (5.95% on earnings up to $68,500), and <strong>EI premiums</strong> (1.66% on insurable earnings). These deductions can reduce your gross salary by 25–40% depending on your income level.</p>
+        </div>
+
+        <h2>Baseline Number 2 — Your Monthly Expenses (The Truth)</h2>
+
+        <p>Most people underestimate their expenses by 20–30%. They know their rent and their phone bill but forget about the coffee runs, Amazon orders, and annual subscriptions that hit monthly. Getting an accurate number requires looking at 3 months of bank and credit card statements, not guessing.</p>
+
+        <p>Use the <strong>Canadian Budget Spreadsheet</strong> included in your bonus tools to capture every category. Here's how to categorize correctly:</p>
+
+        <ul>
+          <li><strong>Fixed expenses</strong> — rent/mortgage, insurance, phone, internet — same every month</li>
+          <li><strong>Variable necessities</strong> — groceries, gas, utilities — change but are non-negotiable</li>
+          <li><strong>Discretionary</strong> — dining out, streaming, clothing, hobbies — can be adjusted</li>
+          <li><strong>Savings & investing</strong> — TFSA contributions, emergency fund top-ups — treat these as non-negotiable expenses first</li>
+        </ul>
+
+        <div class="callout callout-tip">
+          <div class="callout-label">💡 The Pay Yourself First Rule</div>
+          <p>Before you budget anything else, decide what percentage of your income goes directly to savings and investment. Automate that transfer the day your paycheque arrives. The rest is what you live on. This single habit is the core difference between Canadians who build wealth and those who don't.</p>
+        </div>
+
+        <h2>Baseline Number 3 — Your Net Worth</h2>
+
+        <p>Net worth is the single most important number in your financial life. It's simple:</p>
+
+        <p style="text-align:center; font-family: 'Lora', serif; font-size: 20px; font-weight: 700; color: var(--text); padding: 24px; background: white; border: 1px solid var(--border); border-radius: 6px; margin: 24px 0;">
+          Net Worth = Total Assets − Total Liabilities
+        </p>
+
+        <p><strong>Assets</strong> are everything you own that has value: cash, savings, TFSA balance, RRSP balance, FHSA balance, investments, home equity, vehicle value, business assets.</p>
+
+        <p><strong>Liabilities</strong> are everything you owe: mortgage balance, car loan, student loans (OSAP), credit card balances, lines of credit, personal loans, CRA taxes owing.</p>
+
+        <div class="callout callout-fact">
+          <div class="callout-label">📊 Canadian Net Worth Benchmarks (2024)</div>
+          <p>According to Statistics Canada, the median net worth of Canadian families is approximately <strong>$385,000</strong> — but this is heavily weighted by homeowners. For Canadians under 35, the median net worth is closer to <strong>$48,000</strong>. Don't compare yourself to averages — compare yourself to your past self, month over month.</p>
+        </div>
+
+        <p>Your net worth will likely be negative or low when you're starting out — especially if you carry student debt or haven't yet invested. That's normal. What matters is the <strong>direction and velocity</strong>: is it growing? By how much each month?</p>
+
+        <h2>Baseline Number 4 — Your Savings Rate</h2>
+
+        <p>Your savings rate is the percentage of your net income that you save or invest each month. This single number predicts your financial future more accurately than your salary does.</p>
+
+        <p style="text-align:center; font-family: 'Lora', serif; font-size: 18px; font-weight: 700; color: var(--text); padding: 20px; background: white; border: 1px solid var(--border); border-radius: 6px; margin: 24px 0;">
+          Savings Rate = (Amount Saved ÷ Net Income) × 100
+        </p>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Savings Rate</th>
+              <th>What It Means</th>
+              <th>Wealth-Building Speed</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Below 5%</td>
+              <td>Barely keeping up</td>
+              <td class="bad">Very slow — 40+ years to FI</td>
+            </tr>
+            <tr>
+              <td>10–15%</td>
+              <td>Canadian average</td>
+              <td>Slow — 30+ years to FI</td>
+            </tr>
+            <tr>
+              <td>20–30%</td>
+              <td>Good — intentional saver</td>
+              <td class="good">Moderate — 20 years to FI</td>
+            </tr>
+            <tr>
+              <td>40–50%</td>
+              <td>Aggressive builder</td>
+              <td class="good">Fast — 15 years to FI</td>
+            </tr>
+            <tr>
+              <td>60%+</td>
+              <td>FIRE path</td>
+              <td class="good">Very fast — under 12 years</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="callout callout-canadian">
+          <div class="callout-label">🍁 The Canadian Target</div>
+          <p>Financial planners in Canada generally recommend a minimum savings rate of <strong>20%</strong> for healthy wealth accumulation. This includes TFSA contributions, RRSP contributions, and emergency fund growth. If you can't hit 20% today, start where you are and increase by 1% every time you get a raise.</p>
+        </div>
+
+        <h2>Putting Your Baseline Together</h2>
+
+        <p>Here's how your four numbers connect and what you do with them:</p>
+
+        <ol>
+          <li><strong>Know your net income</strong> → This sets your ceiling for all spending and saving</li>
+          <li><strong>Map your expenses</strong> → Subtract from net income to find your current surplus or deficit</li>
+          <li><strong>Calculate your net worth</strong> → Track this monthly to measure wealth-building progress</li>
+          <li><strong>Calculate your savings rate</strong> → This is your lever — increasing it is the fastest path to financial independence</li>
+        </ol>
+
+        <div class="callout callout-tip">
+          <div class="callout-label">💡 Use Your Tools</div>
+          <p>Your <strong>Canadian Budget Spreadsheet</strong> calculates your savings rate automatically once you fill in your income and expenses. Your <strong>Net Worth Tracker</strong> has a 12-month view so you can watch your wealth grow month over month. Both tools are in your Bonus Tools section in the dashboard.</p>
+        </div>
+
+        <div class="takeaways">
+          <div class="takeaways-label">🎯 Key Takeaways</div>
+          <h3>What You Just Learned</h3>
+          <ul>
+            <li><span class="takeaway-check">✦</span> Your four baseline numbers are: net income, monthly expenses, net worth, and savings rate</li>
+            <li><span class="takeaway-check">✦</span> Your salary is not your income — only your after-tax take-home pay counts for budgeting</li>
+            <li><span class="takeaway-check">✦</span> Pay yourself first — automate savings transfers on payday before spending anything</li>
+            <li><span class="takeaway-check">✦</span> A 20% savings rate is the Canadian minimum for meaningful wealth accumulation</li>
+            <li><span class="takeaway-check">✦</span> Net worth direction matters more than the number itself — track it monthly</li>
+          </ul>
+        </div>
+
+        <div class="action-box">
+          <div class="action-box-title">⚡ Module Completion Actions</div>
+          <div class="action-item">
+            <div class="action-checkbox" onclick="toggleCheck(this)"></div>
+            <span>Open your Canadian Budget Spreadsheet and fill in your actual monthly income and all expenses</span>
+          </div>
+          <div class="action-item">
+            <div class="action-checkbox" onclick="toggleCheck(this)"></div>
+            <span>Open your Net Worth Tracker and enter your current assets and liabilities for this month</span>
+          </div>
+          <div class="action-item">
+            <div class="action-checkbox" onclick="toggleCheck(this)"></div>
+            <span>Calculate your current savings rate — is it above 20%? If not, identify one expense to cut</span>
+          </div>
+          <div class="action-item">
+            <div class="action-checkbox" onclick="toggleCheck(this)"></div>
+            <span>Set a calendar reminder on the 1st of every month to update your Net Worth Tracker</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="lesson-footer">
+        <button class="complete-btn" onclick="markComplete(3)" id="complete-3">
+          ✓ Mark Lesson Complete
+        </button>
+        <div class="nav-arrows">
+          <button class="nav-arrow" onclick="goToLesson(2)">← Previous</button>
+          <button class="nav-arrow next" disabled>Module Complete ✓</button>
+        </div>
+      </div>
+
+      <!-- Module Complete Banner -->
+      <div class="module-complete-banner" id="completeBanner">
+        <span class="complete-maple">🍁</span>
+        <div class="complete-title">Module 01 Complete!</div>
+        <p class="complete-sub">You've finished Canadian Money Foundations. You now understand how the CRA works, how to build your credit score, how to choose the right banking institutions, and how to calculate your financial baseline. This is the foundation everything else is built on.</p>
+        <div class="complete-actions">
+          <a href="members.html" class="complete-btn-next">← Back to Dashboard</a>
+          <a href="members.html" class="complete-btn-dashboard">View All Modules</a>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+</div>
+
+<script>
+  const READING_TIMES = ['~8 min read', '~7 min read', '~6 min read', '~9 min read'];
+  const LESSON_TITLES = ['How CRA Works', 'Credit Score Canada', 'Big 5 Banks vs Credit Unions', 'Your Financial Baseline'];
+
+  let currentLesson = 0;
+  let completed = new Array(4).fill(false);
+
+  // Load saved state
+  try {
+    const saved = JSON.parse(localStorage.getItem('cwo_m01') || '{}');
+    if (saved.completed) completed = saved.completed;
+    if (saved.lesson !== undefined) currentLesson = saved.lesson;
+  } catch(e) {}
+
+  function saveState() {
+    try {
+      localStorage.setItem('cwo_m01', JSON.stringify({ completed, lesson: currentLesson }));
+    } catch(e) {}
+  }
+
+  function goToLesson(index) {
+    // Hide current
+    document.getElementById('lesson-' + currentLesson).classList.remove('active');
+    document.getElementById('nav-' + currentLesson).classList.remove('active');
+
+    // Show new
+    currentLesson = index;
+    document.getElementById('lesson-' + index).classList.add('active');
+    document.getElementById('nav-' + index).classList.add('active');
+
+    // Scroll to top
+    document.getElementById('contentArea').scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // Update nav labels
+    document.getElementById('readingTimeDisplay').textContent = READING_TIMES[index];
+    document.getElementById('currentLessonTitle').textContent = LESSON_TITLES[index];
+
+    // Restore complete button state
+    if (completed[index]) {
+      const btn = document.getElementById('complete-' + index);
+      btn.textContent = '✓ Completed';
+      btn.classList.add('done');
+    }
+
+    updateProgress();
+    saveState();
+  }
+
+  function markComplete(index) {
+    completed[index] = true;
+    const btn = document.getElementById('complete-' + index);
+    btn.textContent = '✓ Completed';
+    btn.classList.add('done');
+
+    // Update sidebar
+    document.getElementById('nav-' + index).classList.add('completed');
+
+    // Show module complete banner on last lesson
+    if (index === 3 && completed.every(Boolean)) {
+      setTimeout(() => {
+        document.getElementById('completeBanner').classList.add('visible');
+        document.getElementById('completeBanner').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 600);
+    }
+
+    updateProgress();
+    saveState();
+  }
+
+  function updateProgress() {
+    const count = completed.filter(Boolean).length;
+    const pct = (count / 4) * 100;
+
+    document.getElementById('moduleProgressFill').style.width = pct + '%';
+    document.getElementById('navProgressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = count + ' / 4';
+  }
+
+  function toggleCheck(el) {
+    el.classList.toggle('checked');
+    el.textContent = el.classList.contains('checked') ? '✓' : '';
+  }
+
+  // Scroll-based reading progress
+  const contentArea = document.getElementById('contentArea');
+  window.addEventListener('scroll', updateReadingProgress);
+  contentArea && contentArea.addEventListener('scroll', updateReadingProgress);
+
+  function updateReadingProgress() {
+    const panel = document.getElementById('lesson-' + currentLesson);
+    if (!panel) return;
+    const rect = panel.getBoundingClientRect();
+    const panelHeight = panel.offsetHeight;
+    const scrolled = Math.max(0, -rect.top);
+    const pct = Math.min(100, (scrolled / (panelHeight - window.innerHeight)) * 100);
+    document.getElementById('navProgressFill').style.width = Math.max(pct, (completed.filter(Boolean).length / 4) * 100) + '%';
+  }
+
+  // Init
+  goToLesson(currentLesson);
+  updateProgress();
+</script>
+
+</body>
+</html>
