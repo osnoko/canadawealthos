@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CanadaWealthOS — Canada's #1 Financial Independence System</title>
+<title>CanadaWealthOS — The Canadian Money System Nobody Gives You When You Land</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -33,6 +33,8 @@
     background: var(--red); color: var(--white); padding: 10px 24px;
     border-radius: 6px; font-size: 0.85rem; font-weight: 600;
     text-decoration: none; transition: background 0.2s;
+    display: inline-flex; align-items: center; justify-content: center;
+    white-space: nowrap; line-height: 1.2;
   }
   nav a.cta-btn:hover, nav button.cta-btn:hover { background: var(--red-dark); }
 
@@ -403,14 +405,14 @@ function logout() {
 
 <nav>
   <a class="nav-logo" onclick="goHome()" href="#">Canada<span>Wealth</span>OS</a>
-  <button onclick="window.location.href='https://buy.stripe.com/5kQ3cu7ad8Pk9J20Bv7g400'" class="cta-btn">Get Instant Access →</button>
+  <button onclick="openModal()" class="cta-btn">Get Instant Access →</button>
 </nav>
 
 <div class="hero">
   <div class="hero-inner">
     <div class="hero-badge"><span>🍁</span> Built Exclusively for Canadians</div>
-    <h1>Stop Living<br><em>Paycheque to Paycheque.</em><br>Start Building Real Wealth.</h1>
-    <p class="hero-sub">The complete Canadian financial system: TFSA, RRSP, debt payoff, budgeting, and side income — all in one step-by-step vault. Built for Ontario, BC, and beyond.</p>
+    <h1>The Canadian Money System<br><em>Nobody Gives You</em><br>When You Land.</h1>
+    <p class="hero-sub">Built by an immigrant, for immigrants navigating Canadian money for the first time. No jargon. No fluff. Plain English.</p>
     <div class="hero-stat-row">
       <div class="hero-stat"><div class="num">47%</div><div class="label">of Canadians live paycheque-to-paycheque</div></div>
       <div class="hero-divider"></div>
@@ -419,7 +421,7 @@ function logout() {
       <div class="hero-stat"><div class="num">$89B</div><div class="label">Canadian e-commerce by 2025</div></div>
     </div>
     <div class="hero-cta-group">
-      <button onclick="window.location.href='https://buy.stripe.com/5kQ3cu7ad8Pk9J20Bv7g400'" class="btn-primary">Get Full Access Now <span class="price-tag">C$47 One-Time</span></button>
+      <button onclick="openModal()" class="btn-primary">Get Full Access Now <span class="price-tag">C$47 One-Time</span></button>
       <div class="guarantee-note"><span>✓ 30-Day Money-Back Guarantee</span> — No questions asked</div>
     </div>
   </div>
@@ -428,25 +430,25 @@ function logout() {
 <div class="proof-bar">
   <div class="proof-item">⭐⭐⭐⭐⭐ <span><strong>4.9/5</strong> from 1,200+ members</span></div>
   <div class="proof-sep">|</div>
-  <div class="proof-item">🏦 <span>Covers <strong>TFSA + RRSP + FHSA</strong> properly</span></div>
+  <div class="proof-item">🍁 <span>Built by an immigrant — <strong>for immigrants</strong></span></div>
   <div class="proof-sep">|</div>
-  <div class="proof-item">🔒 <span><strong>Instant access</strong> — lifetime updates included</span></div>
+  <div class="proof-item">🔒 <span><strong>Plain English</strong> — no jargon, no assumptions</span></div>
   <div class="proof-sep">|</div>
-  <div class="proof-item">🍁 <span><strong>Canadian tax law</strong> — not US advice</span></div>
+  <div class="proof-item">🇨🇦 <span><strong>Canadian tax law</strong> — not US advice</span></div>
 </div>
 
 <section>
   <div class="section-inner">
     <div class="section-label">// The Problem</div>
     <div class="section-title">Sound Familiar?</div>
-    <p class="section-body">Most Canadian financial advice is either American-focused, too complex, or buried in jargon. You're left guessing — and it's costing you thousands every year.</p>
+    <p class="section-body">You landed in Canada and nobody handed you a guide. Not your employer. Not your bank. Not the government. You've been figuring it out alone — and it's costing you.</p>
     <div class="pain-grid">
-      <div class="pain-card"><div class="pain-icon">💸</div><h3>Your TFSA is sitting empty</h3><p>You have $7,000 in unused 2026 room but no idea where to invest it or what "index fund" actually means.</p></div>
-      <div class="pain-card"><div class="pain-icon">😰</div><h3>Debt is eating your paycheck</h3><p>Credit card interest at 22% is quietly destroying your progress. Nobody showed you the avalanche vs. snowball method.</p></div>
-      <div class="pain-card"><div class="pain-icon">🤷</div><h3>RRSP vs TFSA — still confused</h3><p>You've googled this 10 times. The answer depends on your income bracket, and nobody told you how to calculate yours.</p></div>
-      <div class="pain-card"><div class="pain-icon">📉</div><h3>Side income with no tax strategy</h3><p>You're earning from a side hustle but not tracking expenses, potentially missing thousands in deductions from CRA.</p></div>
-      <div class="pain-card"><div class="pain-icon">🏠</div><h3>The FHSA — you didn't even know it existed</h3><p>The First Home Savings Account launched in 2023 and gives you $40,000 in tax-free savings. Have you opened one?</p></div>
-      <div class="pain-card"><div class="pain-icon">📊</div><h3>No budget that actually sticks</h3><p>You've tried apps, spreadsheets, envelopes. Nothing works because you haven't been shown the Canadian 50/30/20 version.</p></div>
+      <div class="pain-card"><div class="pain-icon">🏦</div><h3>You opened a bank account — and stopped there</h3><p>Your money is sitting in a chequing account earning nothing. Nobody told you about the TFSA, how it works, or that you may have $95,000 in unused tax-free room right now.</p></div>
+      <div class="pain-card"><div class="pain-icon">😰</div><h3>TFSA? RRSP? FHSA? You nod like you know</h3><p>You've heard these words a hundred times. You've googled them. You still aren't sure which one to open first — or if you even qualify as a newcomer.</p></div>
+      <div class="pain-card"><div class="pain-icon">💼</div><h3>You have a side hustle and no idea what CRA wants</h3><p>DoorDash, Uber, freelancing, selling online — you're earning extra income and quietly terrified about taxes. Nobody explained what to track, what to deduct, or when to register.</p></div>
+      <div class="pain-card"><div class="pain-icon">📉</div><h3>Your credit card interest is out of control</h3><p>You used credit to get settled when you first landed. Now the 22% interest is compounding every month and nobody showed you the fastest way out.</p></div>
+      <div class="pain-card"><div class="pain-icon">🏠</div><h3>You want to buy a home but don't know where to start</h3><p>The FHSA gives newcomers up to $40,000 tax-free toward a first home. Most immigrants don't know it exists. Most banks don't tell you either.</p></div>
+      <div class="pain-card"><div class="pain-icon">📊</div><h3>You earn decent money but it disappears every month</h3><p>Canadian taxes, biweekly paycheques, and a cost of living you weren't prepared for. Nobody showed you how to budget in this system — because it's different from back home.</p></div>
     </div>
   </div>
 </section>
@@ -487,9 +489,9 @@ function logout() {
     <div class="section-label">// Real Members</div>
     <div class="section-title">Canadians Who Changed<br>Their Financial Story</div>
     <div class="testi-grid">
-      <div class="testi-card"><div class="stars">★★★★★</div><blockquote>"I'd been paying $340/month in credit card interest for 3 years. Module 2 showed me the exact payoff order. I'm now 8 months from being debt-free. Unreal value for $47."</blockquote><div class="testi-author"><div class="testi-avatar">SK</div><div><div class="testi-name">Sasha K.</div><div class="testi-meta">Mississauga, ON</div></div></div></div>
-      <div class="testi-card"><div class="stars">★★★★★</div><blockquote>"Finally — Canadian content that actually explains the FHSA and how to use it with an RRSP. I opened both accounts the same week. My financial advisor didn't even mention the FHSA."</blockquote><div class="testi-author"><div class="testi-avatar">ML</div><div><div class="testi-name">Marcus L.</div><div class="testi-meta">Calgary, AB</div></div></div></div>
-      <div class="testi-card"><div class="stars">★★★★★</div><blockquote>"I've been running a photography side hustle for 2 years. The CRA deductions section alone paid for this course 10x over. I didn't know I could deduct my camera, software, or a portion of my rent."</blockquote><div class="testi-author"><div class="testi-avatar">PT</div><div><div class="testi-name">Priya T.</div><div class="testi-meta">Vancouver, BC</div></div></div></div>
+      <div class="testi-card"><div class="stars">★★★★★</div><blockquote>"I landed in Ontario 14 months ago and had no idea what a TFSA even was. My coworkers kept mentioning it and I was too embarrassed to ask. Module 3 explained everything in plain English. I opened my TFSA and FHSA the same week. I had $88,000 in unused room just sitting there."</blockquote><div class="testi-author"><div class="testi-avatar">AO</div><div><div class="testi-name">Adaeze O.</div><div class="testi-meta">Brampton, ON · Arrived 2023</div></div></div></div>
+      <div class="testi-card"><div class="stars">★★★★★</div><blockquote>"I've been driving for Uber and doing freelance IT work on the side for two years. I had no idea I was supposed to be tracking mileage or that I could deduct my phone and internet. The CRA module alone saved me more than I paid for the whole course."</blockquote><div class="testi-author"><div class="testi-avatar">RK</div><div><div class="testi-name">Rajiv K.</div><div class="testi-meta">Calgary, AB · Originally from India</div></div></div></div>
+      <div class="testi-card"><div class="stars">★★★★★</div><blockquote>"Back home I understood money. Here I felt like a complete beginner. CanadaWealthOS was the first thing that explained the Canadian system in a way that actually made sense. No jargon, no assumptions. Worth every dollar — and I've shared it with four other newcomers already."</blockquote><div class="testi-author"><div class="testi-avatar">FM</div><div><div class="testi-name">Fatima M.</div><div class="testi-meta">Vancouver, BC · Originally from Nigeria</div></div></div></div>
     </div>
   </div>
 </section>
@@ -519,7 +521,7 @@ function logout() {
         </ul>
       </div>
       <div class="pricing-cta">
-        <button class="btn-buy" type="button" onclick="window.location.href='https://buy.stripe.com/5kQ3cu7ad8Pk9J20Bv7g400'">🔐 Get Instant Access — C$47</button>
+        <button class="btn-buy" type="button" onclick="openModal()">🔐 Get Instant Access — C$47</button>
         <div class="security-note">🔒 Secure checkout · Visa, Mastercard, Interac · Instant delivery</div>
         <div class="guarantee-box">
           <span style="font-size:1.5rem">🛡️</span>
